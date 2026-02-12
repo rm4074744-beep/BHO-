@@ -8,25 +8,26 @@
 <style>
 body{
     margin:0;
-    font-family: Arial, sans-serif;
-    background:#f5f5f5;
+    font-family:Arial, sans-serif;
+    background:#f2f2f2;
 }
 
-/* Header */
+/* HEADER */
 .header{
     display:flex;
     justify-content:space-between;
     align-items:center;
     padding:12px 15px;
-    background:#fff;
+    background:#ffffff;
     box-shadow:0 2px 5px rgba(0,0,0,0.05);
     position:sticky;
     top:0;
+    z-index:100;
 }
 
 .logo{
-    font-weight:bold;
     font-size:18px;
+    font-weight:bold;
 }
 
 .icons span{
@@ -35,37 +36,39 @@ body{
     cursor:pointer;
 }
 
-/* Story Section */
+/* STORY SECTION (SQUARE) */
 .story-section{
     display:flex;
     overflow-x:auto;
     padding:10px;
-    background:#fff;
+    background:#ffffff;
 }
 
 .story{
+    width:75px;
     text-align:center;
-    margin-right:12px;
+    margin-right:10px;
 }
 
 .story img{
-    width:65px;
-    height:65px;
-    border-radius:50%;
-    border:3px solid #007bff;
+    width:75px;
+    height:75px;
+    object-fit:cover;
+    border-radius:0;
+    border:2px solid #007bff;
 }
 
 .story p{
     font-size:12px;
-    margin:5px 0 0 0;
+    margin-top:5px;
 }
 
-/* Create Post */
+/* CREATE POST */
 .create-post{
-    background:#fff;
+    background:#ffffff;
     margin:10px;
     padding:10px;
-    border-radius:12px;
+    border-radius:10px;
     box-shadow:0 2px 5px rgba(0,0,0,0.05);
 }
 
@@ -76,13 +79,13 @@ body{
     border:1px solid #ddd;
 }
 
-/* Feed */
+/* POST */
 .post{
-    background:#fff;
+    background:#ffffff;
     margin:10px;
-    border-radius:12px;
-    box-shadow:0 2px 5px rgba(0,0,0,0.05);
     padding:10px;
+    border-radius:10px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.05);
 }
 
 .post-header{
@@ -92,12 +95,11 @@ body{
 
 .post img{
     width:100%;
-    border-radius:10px;
+    border-radius:8px;
 }
 
 .post-actions{
     margin-top:8px;
-    font-size:14px;
 }
 
 .post-actions span{
@@ -105,12 +107,12 @@ body{
     cursor:pointer;
 }
 
-/* Bottom Navigation */
+/* BOTTOM NAV */
 .bottom-nav{
     display:flex;
     justify-content:space-around;
-    background:#fff;
-    padding:10px 0;
+    background:#ffffff;
+    padding:8px 0;
     position:fixed;
     bottom:0;
     width:100%;
@@ -118,7 +120,7 @@ body{
 }
 
 .bottom-nav div{
-    font-size:14px;
+    font-size:13px;
     text-align:center;
 }
 </style>
@@ -126,7 +128,7 @@ body{
 
 <body>
 
-<!-- Header -->
+<!-- HEADER -->
 <div class="header">
     <div class="logo">MingleJoys</div>
     <div class="icons">
@@ -136,28 +138,32 @@ body{
     </div>
 </div>
 
-<!-- Story Section -->
+<!-- STORY SECTION -->
 <div class="story-section">
     <div class="story">
-        <img src="https://via.placeholder.com/65">
+        <img src="https://via.placeholder.com/150">
         <p>Your</p>
     </div>
     <div class="story">
-        <img src="https://via.placeholder.com/65">
+        <img src="https://via.placeholder.com/150">
         <p>Rafi</p>
     </div>
     <div class="story">
-        <img src="https://via.placeholder.com/65">
+        <img src="https://via.placeholder.com/150">
         <p>Nila</p>
+    </div>
+    <div class="story">
+        <img src="https://via.placeholder.com/150">
+        <p>Toma</p>
     </div>
 </div>
 
-<!-- Create Post -->
+<!-- CREATE POST -->
 <div class="create-post">
     <input type="text" placeholder="What's on your mind?">
 </div>
 
-<!-- Feed Post -->
+<!-- POST -->
 <div class="post">
     <div class="post-header">Rafi • 2h ago</div>
     <img src="https://via.placeholder.com/400x250">
@@ -167,7 +173,16 @@ body{
     </div>
 </div>
 
-<!-- Bottom Navigation -->
+<div class="post">
+    <div class="post-header">Nila • 5h ago</div>
+    <img src="https://via.placeholder.com/400x250">
+    <div class="post-actions">
+        <span>❤️ Like</span>
+        <span>💬 Comment</span>
+    </div>
+</div>
+
+<!-- BOTTOM NAV -->
 <div class="bottom-nav">
     <div>🏠<br>Home</div>
     <div>🎬<br>Reels</div>
