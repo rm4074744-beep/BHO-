@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MingleJoys</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#f5f5f5;
+}
+
+/* Header */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 15px;
+    background:#fff;
+    box-shadow:0 2px 5px rgba(0,0,0,0.05);
+    position:sticky;
+    top:0;
+}
+
+.logo{
+    font-weight:bold;
+    font-size:18px;
+}
+
+.icons span{
+    margin-left:15px;
+    font-size:18px;
+    cursor:pointer;
+}
+
+/* Story Section */
+.story-section{
+    display:flex;
+    overflow-x:auto;
+    padding:10px;
+    background:#fff;
+}
+
+.story{
+    text-align:center;
+    margin-right:12px;
+}
+
+.story img{
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    border:3px solid #007bff;
+}
+
+.story p{
+    font-size:12px;
+    margin:5px 0 0 0;
+}
+
+/* Create Post */
+.create-post{
+    background:#fff;
+    margin:10px;
+    padding:10px;
+    border-radius:12px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.05);
+}
+
+.create-post input{
+    width:100%;
+    padding:8px;
+    border-radius:20px;
+    border:1px solid #ddd;
+}
+
+/* Feed */
+.post{
+    background:#fff;
+    margin:10px;
+    border-radius:12px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.05);
+    padding:10px;
+}
+
+.post-header{
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.post img{
+    width:100%;
+    border-radius:10px;
+}
+
+.post-actions{
+    margin-top:8px;
+    font-size:14px;
+}
+
+.post-actions span{
+    margin-right:15px;
+    cursor:pointer;
+}
+
+/* Bottom Navigation */
+.bottom-nav{
+    display:flex;
+    justify-content:space-around;
+    background:#fff;
+    padding:10px 0;
+    position:fixed;
+    bottom:0;
+    width:100%;
+    box-shadow:0 -2px 5px rgba(0,0,0,0.05);
+}
+
+.bottom-nav div{
+    font-size:14px;
+    text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Header -->
+<div class="header">
+    <div class="logo">MingleJoys</div>
+    <div class="icons">
+        <span>🔍</span>
+        <span>➕</span>
+        <span>☰</span>
+    </div>
+</div>
+
+<!-- Story Section -->
+<div class="story-section">
+    <div class="story">
+        <img src="https://via.placeholder.com/65">
+        <p>Your</p>
+    </div>
+    <div class="story">
+        <img src="https://via.placeholder.com/65">
+        <p>Rafi</p>
+    </div>
+    <div class="story">
+        <img src="https://via.placeholder.com/65">
+        <p>Nila</p>
+    </div>
+</div>
+
+<!-- Create Post -->
+<div class="create-post">
+    <input type="text" placeholder="What's on your mind?">
+</div>
+
+<!-- Feed Post -->
+<div class="post">
+    <div class="post-header">Rafi • 2h ago</div>
+    <img src="https://via.placeholder.com/400x250">
+    <div class="post-actions">
+        <span>❤️ Like</span>
+        <span>💬 Comment</span>
+    </div>
+</div>
+
+<!-- Bottom Navigation -->
+<div class="bottom-nav">
+    <div>🏠<br>Home</div>
+    <div>🎬<br>Reels</div>
+    <div>🛒<br>Market</div>
+    <div>👥<br>Friends</div>
+    <div>👤<br>Profile</div>
+</div>
+
+</body>
+</html>
