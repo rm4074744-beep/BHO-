@@ -10,6 +10,7 @@ body{
     margin:0;
     font-family:Arial, sans-serif;
     background:#f2f2f2;
+    padding-bottom:60px; /* bottom nav space */
 }
 
 /* HEADER */
@@ -36,7 +37,7 @@ body{
     cursor:pointer;
 }
 
-/* STORY SECTION (SQUARE) */
+/* STORY SECTION */
 .story-section{
     display:flex;
     overflow-x:auto;
@@ -122,6 +123,7 @@ body{
 .bottom-nav div{
     font-size:13px;
     text-align:center;
+    cursor:pointer;
 }
 </style>
 </head>
@@ -163,7 +165,7 @@ body{
     <input type="text" placeholder="What's on your mind?">
 </div>
 
-<!-- POST -->
+<!-- POSTS -->
 <div class="post">
     <div class="post-header">Rafi • 2h ago</div>
     <img src="https://via.placeholder.com/400x250">
@@ -184,12 +186,11 @@ body{
 
 <!-- BOTTOM NAV -->
 <div class="bottom-nav">
-    <div>🏠<br>Home</div>
+    <div onclick="location.href='index.html'">🏠<br>Home</div>
     <div>🎬<br>Reels</div>
     <div>🛒<br>Market</div>
     <div>👥<br>Friends</div>
-    div onclick="location.href='profile.html'">👤<br>Profile</div>
-</div>
+    <div onclick="location.href='profile.html'">👤<br>Profile</div>
 </div>
 
 </body>
