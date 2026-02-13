@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Marketplace - From Ajj</title>
+  <style>
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+    }
+
+    header {
+      background: #1877f2;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+    }
+
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .card-body {
+      padding: 10px;
+    }
+
+    .price {
+      color: green;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 10px;
+      border: none;
+      background: #1877f2;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #145dbf;
+    }
+
+  </style>
+</head>
+<body>
+
+<header>
+  🛒 Marketplace - From Ajj
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <img src="https://via.placeholder.com/300">
+    <div class="card-body">
+      <div>Mobile Phone</div>
+      <div class="price">₹15,000</div>
+      <button>Buy Now</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="https://via.placeholder.com/300">
+    <div class="card-body">
+      <div>Laptop</div>
+      <div class="price">₹45,000</div>
+      <button>Buy Now</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="https://via.placeholder.com/300">
+    <div class="card-body">
+      <div>Headphone</div>
+      <div class="price">₹2,000</div>
+      <button>Buy Now</button>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
