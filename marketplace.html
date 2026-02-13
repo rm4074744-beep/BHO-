@@ -35,6 +35,7 @@ body{
   padding:10px;
   border:none;
   outline:none;
+  border-radius:4px 0 0 4px;
 }
 
 .search-box button{
@@ -42,6 +43,7 @@ body{
   border:none;
   background:#ff9f00;
   cursor:pointer;
+  border-radius:0 4px 4px 0;
 }
 
 /* Upload Section */
@@ -51,6 +53,12 @@ body{
   margin:15px;
   border-radius:8px;
   box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.upload-section input{
+  margin:5px 0;
+  padding:8px;
+  width:100%;
 }
 
 /* Product Grid */
@@ -94,7 +102,7 @@ body{
 
 <!-- Header -->
 <div class="header">
-  <img src="1770938375308.png">
+  <img src="1770938375308.png" alt="Logo">
   <div class="search-box">
     <input type="text" id="search" placeholder="Search products...">
     <button onclick="searchProduct()">🔍</button>
@@ -104,8 +112,8 @@ body{
 <!-- Upload Product -->
 <div class="upload-section">
   <h3>Add Product</h3>
-  <input type="text" id="pname" placeholder="Product Name"><br><br>
-  <input type="text" id="pprice" placeholder="Price"><br><br>
+  <input type="text" id="pname" placeholder="Product Name"><br>
+  <input type="text" id="pprice" placeholder="Price"><br>
   <input type="file" id="pimage"><br><br>
   <button onclick="addProduct()">Add Product</button>
 </div>
@@ -113,76 +121,105 @@ body{
 <!-- Products -->
 <div class="products" id="productList"></div>
 
-<script>
+<!-- ================= Script Section ================= -->
+<script type="module">
 
-let products = [
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, push, onValue } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-  {
-    name: "iPhone 13",
-    price: "52,999",
-    image: "https://images.unsplash.com/photo-1632661674596-df8be070a5c5"
-  },
-  {
-    name: "Samsung Galaxy S23",
-    price: "49,999",
-    image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf"
-  },
-  {
-    name: "HP Laptop",
-    price: "39,999",
-    image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8"
-  },
-  {
-    name: "Boat Headphone",
-    price: "1,999",
-    image: "https://images.unsplash.com/photo-1518449033365-0f2cd09b77d5"
-  }
+// Firebase Config
+const firebaseConfig = {
+  apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
+  authDomain: "my-website-a0545.firebaseapp.com",
+  databaseURL: "https://my-website-a0545-default-rtdb.firebaseio.com",
+  projectId: "my-website-a0545",
+  storageBucket: "my-website-a0545.firebasestorage.app",
+  messagingSenderId: "103602694974",
+  appId: "1:103602694974:web:12f890844e6ad6a513da6f"
+};
 
-];
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const productRef = ref(db, "products");
 
-function displayProducts(items){
+// Load products realtime
+onValue(productRef, (snapshot) => {
+  const data = snapshot.val();
   const list = document.getElementById("productList");
-  list.innerHTML="";
+  list.innerHTML = "";
 
-  items.forEach(product=>{
-    list.innerHTML += `
-      <div class="card">
-        <img src="${product.image}">
-        <div class="card-body">
-          <div>${product.name}</div>
-          <div class="price">₹ ${product.price}</div>
+  if(data){
+    Object.values(data).reverse().forEach(product => {
+      list.innerHTML += `
+        <div class="card">
+          <img src="${product.image}">
+          <div class="card-body">
+            <div>${product.name}</div>
+            <div class="price">₹ ${product.price}</div>
+          </div>
         </div>
-      </div>
-    `;
-  });
-}
+      `;
+    });
+  }
+});
 
-displayProducts(products);
+// Add Product
+window.addProduct = async function() {
 
-function addProduct(){
   const name = document.getElementById("pname").value;
   const price = document.getElementById("pprice").value;
-  const imageInput = document.getElementById("pimage");
-  const file = imageInput.files[0];
+  const file = document.getElementById("pimage").files[0];
 
   if(!file){
     alert("Select Image");
     return;
   }
 
-  const reader = new FileReader();
-  reader.onload = function(){
-    const imageURL = reader.result;
-    products.unshift({name, price, image:imageURL});
-    displayProducts(products);
-  }
-  reader.readAsDataURL(file);
-}
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", "Mingle"); // Cloudinary preset
 
+  const response = await fetch(
+    "https://api.cloudinary.com/v1_1/dxksdswlu/image/upload",
+    { method: "POST", body: formData }
+  );
+
+  const data = await response.json();
+  const imageURL = data.secure_url;
+
+  push(productRef, {
+    name: name,
+    price: price,
+    image: imageURL
+  });
+
+  alert("Product Added Successfully 🔥");
+};
+
+// Search Function
 function searchProduct(){
   const keyword = document.getElementById("search").value.toLowerCase();
-  const filtered = products.filter(p=>p.name.toLowerCase().includes(keyword));
-  displayProducts(filtered);
+  onValue(productRef, (snapshot) => {
+    const data = snapshot.val();
+    const list = document.getElementById("productList");
+    list.innerHTML = "";
+    if(data){
+      Object.values(data).reverse().forEach(product => {
+        if(product.name.toLowerCase().includes(keyword)){
+          list.innerHTML += `
+            <div class="card">
+              <img src="${product.image}">
+              <div class="card-body">
+                <div>${product.name}</div>
+                <div class="price">₹ ${product.price}</div>
+              </div>
+            </div>
+          `;
+        }
+      });
+    }
+  });
 }
 
 </script>
