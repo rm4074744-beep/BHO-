@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reels</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+    }
+
+    .reel {
+      height: 100vh;
+      width: 100%;
+      scroll-snap-align: start;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="reelsContainer"></div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
+  authDomain: "my-website-a0545.firebaseapp.com",
+  databaseURL: "https://my-website-a0545-default-rtdb.firebaseio.com",
+  projectId: "my-website-a0545",
+  storageBucket: "my-website-a0545.firebasestorage.app",
+  messagingSenderId: "103602694974",
+  appId: "1:103602694974:web:12f890844e6ad6a513da6f"
+};
+
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
+const reelsRef = ref(database, "reels");
+
+onValue(reelsRef, (snapshot) => {
+
+  const container = document.getElementById("reelsContainer");
+  container.innerHTML = "";
+
+  snapshot.forEach(childSnapshot => {
+
+    const data = childSnapshot.val();
+
+    const reelDiv = document.createElement("div");
+    reelDiv.className = "reel";
+
+    reelDiv.innerHTML = `
+      <iframe 
+        src="https://www.youtube.com/embed/${data.videoId}?autoplay=1&mute=1&loop=1&playlist=${data.videoId}"
+        allow="autoplay"
+        allowfullscreen>
+      </iframe>
+    `;
+
+    container.appendChild(reelDiv);
+
+  });
+
+});
+
+</script>
+
+</body>
+</html>
