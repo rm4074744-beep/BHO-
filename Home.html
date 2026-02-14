@@ -5,11 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MingleJoys Home</title>
 
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 <style>
 body {
   margin:0;
   font-family: Arial, sans-serif;
-  background:#f0f2f5;
+  background:#ffffff; /* white background */
+  color:#333;
 }
 
 /* Top Header */
@@ -19,35 +23,39 @@ body {
   left:0;
   width:100%;
   height:55px;
-  background:#000;
+  background:#ffffff; /* white header */
   display:flex;
   justify-content:space-between;
   align-items:center;
   padding:0 15px;
-  color:white;
+  box-shadow:0 2px 5px rgba(0,0,0,0.05); /* subtle shadow */
   z-index:1000;
 }
 
 .top-header .logo{
   font-size:20px;
   font-weight:bold;
+  color:#000; /* black text */
 }
 
 .top-header button{
   background:none;
   border:none;
-  margin-left:12px;
   cursor:pointer;
-  color:white;
+  color:#333; /* dark icons */
+  font-size:24px;
+  margin-left:12px;
 }
 
 /* Content Area */
 .content{
   padding:20px;
   padding-top:65px; /* space for header */
-  padding-bottom:80px; /* space for bottom nav + upload */
+  padding-bottom:100px; /* space for bottom nav + upload */
   max-width:500px;
   margin:auto;
+  min-height:100vh;
+  background:white;
 }
 
 /* Bottom Navigation */
@@ -56,11 +64,13 @@ body {
   bottom:0;
   left:0;
   width:100%;
-  background:white;
+  background:#ffffff;
   display:flex;
   justify-content:space-around;
   padding:8px 0;
-  box-shadow:0 -2px 5px rgba(0,0,0,0.1);
+  box-shadow:0 -2px 8px rgba(0,0,0,0.08); /* subtle shadow */
+  border-top:1px solid #eee;
+  z-index:1000;
 }
 
 .bottom-nav button{
@@ -70,29 +80,30 @@ body {
   flex-direction:column;
   align-items:center;
   font-size:12px;
-  color:gray;
+  color:#777; /* soft gray text */
   cursor:pointer;
+  transition: color 0.2s;
+}
+
+.bottom-nav button .material-icons{
+  font-size:26px;
+  margin-bottom:2px;
 }
 
 .bottom-nav button.active{
-  color:#1877f2;
-}
-
-.bottom-nav button svg{
-  width:24px;
-  height:24px;
-  margin-bottom:2px;
+  color:#1877f2; /* blue accent */
+  font-weight:600;
 }
 
 /* Upload Button */
 .upload-btn{
   position:fixed;
-  bottom:60px;
+  bottom:70px;
   right:15px;
   width:50px;
   height:50px;
   border-radius:50%;
-  background:#1877f2;
+  background:#1877f2; /* blue */
   color:white;
   border:none;
   font-size:28px;
@@ -105,18 +116,19 @@ body {
 }
 </style>
 </head>
-
 <body>
 
 <!-- Top Header -->
 <div class="top-header">
   <div class="logo">MingleJoys</div>
   <div>
-    <button onclick="alert('Search Clicked')">
-      🔍
+    <!-- Real Search Icon -->
+    <button title="Search">
+      <span class="material-icons">search</span>
     </button>
-    <button onclick="alert('Menu Clicked')">
-      ☰
+    <!-- Menu -->
+    <button title="Menu">
+      <span class="material-icons">menu</span>
     </button>
   </div>
 </div>
@@ -124,28 +136,33 @@ body {
 <!-- Content -->
 <div class="content" id="content">
   <h2>Home Page</h2>
+  <p>Welcome to your clean MingleJoys interface!</p>
 </div>
 
 <!-- Bottom Navigation -->
 <div class="bottom-nav">
   <button onclick="changePage(event,'Home')" class="active">
-    <svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9v9H3v-9z"/></svg>
+    <span class="material-icons">home</span>
     Home
   </button>
+
   <button onclick="changePage(event,'Reels')">
-    <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/></svg>
+    <span class="material-icons">smart_display</span>
     Reels
   </button>
+
   <button onclick="changePage(event,'Gift')">
-    <svg viewBox="0 0 24 24"><path d="M2 12h20"/></svg>
+    <span class="material-icons">card_giftcard</span>
     Gift
   </button>
+
   <button onclick="changePage(event,'Friend')">
-    <svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5z"/></svg>
+    <span class="material-icons">group</span>
     Friend
   </button>
+
   <button onclick="changePage(event,'Profile')">
-    <svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5z"/></svg>
+    <span class="material-icons">person</span>
     Profile
   </button>
 </div>
@@ -155,9 +172,11 @@ body {
 
 <script>
 function changePage(e,page){
-  document.getElementById("content").innerHTML = "<h2>"+page+" Page</h2>";
+  document.getElementById("content").innerHTML = "<h2>"+page+" Page</h2><p>Welcome to the "+page+" section.</p>";
+
   document.querySelectorAll(".bottom-nav button")
-    .forEach(btn => btn.classList.remove("active"));
+  .forEach(btn => btn.classList.remove("active"));
+
   e.currentTarget.classList.add("active");
 }
 </script>
