@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join Mingle Joys</title>
+
+<style>
+
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#f0f2f5;
+  display:flex;
+  justify-content:center;
+}
+
+.container{
+  max-width:400px;
+  width:100%;
+  padding:20px;
+}
+
+.back{
+  font-size:22px;
+  cursor:pointer;
+  margin-bottom:10px;
+}
+
+h1{
+  font-size:28px;
+  margin-bottom:20px;
+}
+
+.image-box{
+  background:#f7d7d7;
+  border-radius:15px;
+  padding:10px;
+  text-align:center;
+}
+
+.image-box img{
+  width:100%;
+  border-radius:10px;
+}
+
+.text{
+  margin:20px 0;
+  font-size:16px;
+  color:#333;
+}
+
+.btn-primary{
+  width:100%;
+  padding:15px;
+  background:#1877f2;
+  color:white;
+  border:none;
+  border-radius:25px;
+  font-size:16px;
+  cursor:pointer;
+  margin-bottom:15px;
+}
+
+.btn-secondary{
+  width:100%;
+  padding:15px;
+  background:white;
+  color:#333;
+  border:1px solid #ccc;
+  border-radius:25px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.btn-primary:hover{
+  background:#166fe5;
+}
+
+.btn-secondary:hover{
+  background:#f2f2f2;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="back">←</div>
+
+<h1>Join Mingle Joys</h1>
+
+<div class="image-box">
+  <img src= <img src="image.jpg" alt="Join Image">alt="join image">
+</div>
+
+<div class="text">
+Create an account to connect with friends, family and communities who share your interests.
+</div>
+
+<button class="btn-primary" onclick="goSignup()">Create new account</button>
+
+<button class="btn-secondary">Find my account</button>
+
+</div>
+
+<script>
+function goSignup(){
+  window.location.href = "signup.html";
+}
+</script>
+
+</body>
+</html>
