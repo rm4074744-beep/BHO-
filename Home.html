@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MingleJoys Home</title>
+<title>MingleJoys</title>
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -14,7 +14,7 @@ body{
   background:#f0f2f5;
 }
 
-/* Header */
+/* HEADER */
 .top-header{
   position:fixed;
   top:0;
@@ -29,12 +29,34 @@ body{
   z-index:1000;
 }
 
-.logo{
+.left-header{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.logo-img{
+  width:30px;
+  height:30px;
+  border-radius:6px;
+  object-fit:cover;
+}
+
+.logo-text{
   font-size:20px;
   font-weight:bold;
 }
 
-/* Content */
+.right-header button{
+  background:none;
+  border:none;
+  cursor:pointer;
+  font-size:26px;
+  margin-left:8px;
+  color:#333;
+}
+
+/* CONTENT */
 .content{
   padding:15px;
   padding-top:70px;
@@ -43,7 +65,7 @@ body{
   margin:auto;
 }
 
-/* Post Card */
+/* POST CARD */
 .post{
   background:white;
   padding:10px;
@@ -71,7 +93,7 @@ body{
   margin-top:8px;
 }
 
-/* Upload Button */
+/* UPLOAD BUTTON */
 .upload-btn{
   position:fixed;
   bottom:70px;
@@ -91,7 +113,7 @@ body{
   z-index:1001;
 }
 
-/* Bottom Navigation */
+/* BOTTOM NAV */
 .bottom-nav{
   position:fixed;
   bottom:0;
@@ -129,16 +151,32 @@ body{
 
 <body>
 
+<!-- HEADER -->
 <div class="top-header">
-  <div class="logo">MingleJoys</div>
+  <div class="left-header">
+    <img src="logo.png" class="logo-img">
+    <div class="logo-text">MingleJoys</div>
+  </div>
+
+  <div class="right-header">
+    <button title="Search">
+      <span class="material-icons">search</span>
+    </button>
+
+    <button title="Menu" onclick="alert('Menu page coming soon')">
+      <span class="material-icons">menu</span>
+    </button>
+  </div>
 </div>
 
+<!-- CONTENT -->
 <div class="content" id="content"></div>
 
+<!-- UPLOAD BUTTON -->
 <button class="upload-btn" onclick="openGallery()">+</button>
 <input type="file" id="fileInput" accept="image/*" style="display:none">
 
-<!-- Bottom Navigation -->
+<!-- BOTTOM NAVIGATION -->
 <div class="bottom-nav">
   <button class="active" onclick="changePage(event,'Home')">
     <span class="material-icons">home</span>
@@ -171,7 +209,7 @@ body{
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-/* Firebase Config */
+/* FIREBASE */
 const firebaseConfig = {
   apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
   authDomain: "my-website-a0545.firebaseapp.com",
@@ -179,44 +217,32 @@ const firebaseConfig = {
   projectId: "my-website-a0545",
   storageBucket: "my-website-a0545.firebasestorage.app",
   messagingSenderId: "103602694974",
-  appId: "1:103602694974:web:12f890844e6ad6a513da6f",
-  measurementId: "G-CL6V2T77JL"
+  appId: "1:103602694974:web:12f890844e6ad6a513da6f"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-/* Load Posts */
-function loadPosts(){
-  onValue(ref(db,"posts"), snapshot=>{
-    const content = document.getElementById("content");
-    content.innerHTML="";
-
-    let posts = [];
-    snapshot.forEach(child=>{
-      posts.push(child.val());
-    });
-
-    posts.reverse();
-
-    posts.forEach(post=>{
-      content.innerHTML += `
-        <div class="post">
-          <div class="post-header">
-            <img src="${post.profilePic}">
-            <b>${post.userName}</b>
-          </div>
-          <p>${post.caption}</p>
-          <img src="${post.image}">
+/* LOAD POSTS */
+onValue(ref(db,"posts"), snapshot=>{
+  const content = document.getElementById("content");
+  content.innerHTML="";
+  snapshot.forEach(child=>{
+    const post = child.val();
+    content.innerHTML += `
+      <div class="post">
+        <div class="post-header">
+          <img src="${post.profilePic}">
+          <b>${post.userName}</b>
         </div>
-      `;
-    });
+        <p>${post.caption}</p>
+        <img src="${post.image}">
+      </div>
+    `;
   });
-}
+});
 
-loadPosts();
-
-/* Upload */
+/* UPLOAD */
 window.openGallery = function(){
   document.getElementById("fileInput").click();
 };
@@ -244,13 +270,12 @@ document.getElementById("fileInput").addEventListener("change", async function(e
     image:data.secure_url,
     caption:caption,
     userName:"Mingle User",
-    profilePic:"https://i.pravatar.cc/150?img=5",
-    createdAt:Date.now()
+    profilePic:"https://i.pravatar.cc/150?img=5"
   });
 
 });
 
-/* Bottom Navigation */
+/* NAVIGATION */
 window.changePage = function(e,page){
 
   document.querySelectorAll(".bottom-nav button")
@@ -262,11 +287,10 @@ window.changePage = function(e,page){
 
   if(page === "Home"){
     uploadBtn.style.display = "flex";
-    loadPosts();
   } else {
     uploadBtn.style.display = "none";
     document.getElementById("content").innerHTML =
-      "<h2>"+page+" Page</h2><p>This section is under development.</p>";
+      "<h2>"+page+" Page</h2><p>Coming soon...</p>";
   }
 }
 
