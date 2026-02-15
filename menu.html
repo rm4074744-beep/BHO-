@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MingleJoys Menu</title>
 
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 <style>
 body {
   margin:0;
@@ -23,9 +26,23 @@ body {
   background:white;
   display:flex;
   align-items:center;
-  padding:0 15px;
+  padding:0 10px;
   box-shadow:0 2px 5px rgba(0,0,0,0.05);
   z-index:1000;
+}
+
+.back-btn {
+  background:none;
+  border:none;
+  cursor:pointer;
+  margin-right:10px;
+  display:flex;
+  align-items:center;
+}
+
+.back-btn .material-icons {
+  font-size:24px;
+  color:#000;
 }
 
 .header h2{
@@ -38,13 +55,13 @@ body {
 /* Content */
 .content {
   padding:20px;
-  padding-top:70px; /* space for header */
+  padding-top:70px;
   display:grid;
-  grid-template-columns: 1fr 1fr; /* two columns */
+  grid-template-columns: 1fr 1fr;
   gap:15px;
 }
 
-/* Menu Items as small boxes */
+/* Menu Items */
 .menu-item {
   display:flex;
   flex-direction:column;
@@ -80,6 +97,9 @@ body {
 
 <!-- Header -->
 <div class="header">
+  <button class="back-btn" onclick="window.history.back()">
+    <span class="material-icons">arrow_back</span>
+  </button>
   <h2>Menu</h2>
 </div>
 
