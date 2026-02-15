@@ -88,6 +88,41 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
+  z-index:1001;
+}
+
+/* Bottom Navigation */
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:white;
+  display:flex;
+  justify-content:space-around;
+  padding:8px 0;
+  box-shadow:0 -2px 8px rgba(0,0,0,0.08);
+  border-top:1px solid #eee;
+}
+
+.bottom-nav button{
+  background:none;
+  border:none;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-size:12px;
+  color:#777;
+  cursor:pointer;
+}
+
+.bottom-nav button .material-icons{
+  font-size:24px;
+}
+
+.bottom-nav button.active{
+  color:#2563eb;
+  font-weight:600;
 }
 </style>
 </head>
@@ -103,12 +138,40 @@ body{
 <button class="upload-btn" onclick="openGallery()">+</button>
 <input type="file" id="fileInput" accept="image/*" style="display:none">
 
+<!-- Bottom Navigation -->
+<div class="bottom-nav">
+  <button class="active" onclick="changePage(event,'Home')">
+    <span class="material-icons">home</span>
+    Home
+  </button>
+
+  <button onclick="changePage(event,'Reels')">
+    <span class="material-icons">smart_display</span>
+    Reels
+  </button>
+
+  <button onclick="changePage(event,'Gift')">
+    <span class="material-icons">card_giftcard</span>
+    Gift
+  </button>
+
+  <button onclick="changePage(event,'Friend')">
+    <span class="material-icons">group</span>
+    Friend
+  </button>
+
+  <button onclick="changePage(event,'Profile')">
+    <span class="material-icons">person</span>
+    Profile
+  </button>
+</div>
+
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// Firebase Config
+/* Firebase Config */
 const firebaseConfig = {
   apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
   authDomain: "my-website-a0545.firebaseapp.com",
@@ -123,12 +186,41 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Open Gallery
+/* Load Posts */
+function loadPosts(){
+  onValue(ref(db,"posts"), snapshot=>{
+    const content = document.getElementById("content");
+    content.innerHTML="";
+
+    let posts = [];
+    snapshot.forEach(child=>{
+      posts.push(child.val());
+    });
+
+    posts.reverse();
+
+    posts.forEach(post=>{
+      content.innerHTML += `
+        <div class="post">
+          <div class="post-header">
+            <img src="${post.profilePic}">
+            <b>${post.userName}</b>
+          </div>
+          <p>${post.caption}</p>
+          <img src="${post.image}">
+        </div>
+      `;
+    });
+  });
+}
+
+loadPosts();
+
+/* Upload */
 window.openGallery = function(){
   document.getElementById("fileInput").click();
 };
 
-// Upload Image to Cloudinary
 document.getElementById("fileInput").addEventListener("change", async function(e){
 
   const file = e.target.files[0];
@@ -148,7 +240,6 @@ document.getElementById("fileInput").addEventListener("change", async function(e
 
   const data = await response.json();
 
-  // Save post to Firebase
   push(ref(db,"posts"),{
     image:data.secure_url,
     caption:caption,
@@ -159,34 +250,25 @@ document.getElementById("fileInput").addEventListener("change", async function(e
 
 });
 
-// Load Posts Realtime
-onValue(ref(db,"posts"), snapshot=>{
-  const content = document.getElementById("content");
-  content.innerHTML="";
+/* Bottom Navigation */
+window.changePage = function(e,page){
 
-  let posts = [];
+  document.querySelectorAll(".bottom-nav button")
+  .forEach(btn => btn.classList.remove("active"));
 
-  snapshot.forEach(child=>{
-    posts.push(child.val());
-  });
+  e.currentTarget.classList.add("active");
 
-  // Latest post first
-  posts.reverse();
+  const uploadBtn = document.querySelector(".upload-btn");
 
-  posts.forEach(post=>{
-    content.innerHTML += `
-      <div class="post">
-        <div class="post-header">
-          <img src="${post.profilePic}">
-          <b>${post.userName}</b>
-        </div>
-        <p>${post.caption}</p>
-        <img src="${post.image}">
-      </div>
-    `;
-  });
-
-});
+  if(page === "Home"){
+    uploadBtn.style.display = "flex";
+    loadPosts();
+  } else {
+    uploadBtn.style.display = "none";
+    document.getElementById("content").innerHTML =
+      "<h2>"+page+" Page</h2><p>This section is under development.</p>";
+  }
+}
 
 </script>
 
