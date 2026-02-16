@@ -19,7 +19,7 @@ body{
   position:fixed;
   top:0;
   width:100%;
-  height:55px;
+  height:60px;
   background:white;
   display:flex;
   justify-content:space-between;
@@ -27,18 +27,6 @@ body{
   padding:0 15px;
   box-shadow:0 2px 5px rgba(0,0,0,0.05);
   z-index:1000;
-}
-
-.left-header{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-.logo-img{
-  width:30px;
-  height:30px;
-  border-radius:6px;
 }
 
 .logo-text{
@@ -49,18 +37,19 @@ body{
 .right-header button{
   background:none;
   border:none;
-  cursor:pointer;
   font-size:26px;
-  margin-left:8px;
+  cursor:pointer;
 }
 
 /* STORY BAR */
 .story-bar{
+  margin-top:60px;
   display:flex;
   gap:12px;
   overflow-x:auto;
   padding:10px;
-  margin-top:60px;
+  background:white;
+  border-bottom:1px solid #eee;
 }
 
 .story-box{
@@ -68,6 +57,7 @@ body{
   width:75px;
   height:75px;
   flex-shrink:0;
+  cursor:pointer;
 }
 
 .story-image{
@@ -90,7 +80,7 @@ body{
   border:2px solid white;
 }
 
-/* FULL SCREEN STORY */
+/* FULL STORY VIEW */
 .story-view{
   position:fixed;
   top:0;
@@ -113,7 +103,7 @@ body{
 .story-progress{
   position:absolute;
   top:15px;
-  left:10px;
+  left:5%;
   width:90%;
   height:4px;
   background:rgba(255,255,255,0.3);
@@ -128,7 +118,7 @@ body{
 /* POSTS */
 .content{
   padding:15px;
-  padding-bottom:100px;
+  padding-bottom:120px;
   max-width:500px;
   margin:auto;
 }
@@ -159,38 +149,53 @@ body{
   border-radius:10px;
 }
 
-/* UPLOAD */
+/* FLOAT UPLOAD */
 .upload-btn{
   position:fixed;
-  bottom:70px;
+  bottom:75px;
   right:15px;
-  width:65px;
-  height:65px;
+  width:60px;
+  height:60px;
   border-radius:50%;
   background:#2563eb;
   color:white;
   border:none;
-  font-size:32px;
+  font-size:30px;
   display:flex;
   justify-content:center;
   align-items:center;
+  cursor:pointer;
+  z-index:1500;
 }
 
-/* NAV */
+/* BOTTOM NAV */
 .bottom-nav{
   position:fixed;
   bottom:0;
+  left:0;
   width:100%;
+  height:65px;
   background:white;
   display:flex;
   justify-content:space-around;
-  padding:8px 0;
+  align-items:center;
   border-top:1px solid #eee;
+  z-index:1500;
 }
+
 .bottom-nav button{
   background:none;
   border:none;
-  font-size:12px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-size:11px;
+  color:#555;
+  cursor:pointer;
+}
+
+.bottom-nav .material-icons{
+  font-size:24px;
 }
 </style>
 </head>
@@ -198,10 +203,7 @@ body{
 <body>
 
 <div class="top-header">
-  <div class="left-header">
-    <img src="1771118960151.png" class="logo-img">
-    <div class="logo-text">MingleJoys</div>
-  </div>
+  <div class="logo-text">MingleJoys</div>
   <div class="right-header">
     <button><span class="material-icons">search</span></button>
     <button><span class="material-icons">notifications</span></button>
@@ -224,11 +226,11 @@ body{
 <input type="file" id="fileInput" accept="image/*" style="display:none">
 
 <div class="bottom-nav">
-  <button>Home</button>
-  <button>Reels</button>
-  <button>Gift</button>
-  <button>Friend</button>
-  <button>Profile</button>
+  <button><span class="material-icons">home</span>Home</button>
+  <button><span class="material-icons">smart_display</span>Reels</button>
+  <button><span class="material-icons">card_giftcard</span>Gift</button>
+  <button><span class="material-icons">group</span>Friend</button>
+  <button><span class="material-icons">person</span>Profile</button>
 </div>
 
 <script type="module">
@@ -237,24 +239,23 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-/* FIREBASE */
+/* Firebase */
 const firebaseConfig = {
-  apiKey:"YOUR_FIREBASE_KEY",
-  authDomain:"YOUR_DOMAIN",
-  databaseURL:"YOUR_DB_URL",
-  projectId:"YOUR_PROJECT_ID"
+  apiKey:"AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
+  authDomain:"my-website-a0545.firebaseapp.com",
+  databaseURL:"https://my-website-a0545-default-rtdb.firebaseio.com",
+  projectId:"my-website-a0545",
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-/* SUPABASE */
+/* Supabase */
 const supabase = createClient(
-  "YOUR_SUPABASE_URL",
-  "YOUR_SUPABASE_KEY"
+ " https://jzagzyagwlvfsptovslq.supabase.co"
+  "sb_publishable_iivVSw4eROHHn_KtBLIx_w_lbHp07nx"
 );
 
-/* LOAD POSTS */
+/* Load Posts */
 onValue(ref(db,"posts"), snapshot=>{
   const content = document.getElementById("content");
   content.innerHTML="";
@@ -273,13 +274,9 @@ onValue(ref(db,"posts"), snapshot=>{
   });
 });
 
-/* STORY LOAD (24h filter) */
+/* Load Stories */
 async function loadStories(){
-  const { data } = await supabase
-    .from("stories")
-    .select("*")
-    .order("created_at",{ascending:false});
-
+  const { data } = await supabase.from("stories").select("*").order("created_at",{ascending:false});
   const storyBar = document.getElementById("storyBar");
   storyBar.innerHTML="";
   const now = new Date().getTime();
@@ -299,11 +296,11 @@ async function loadStories(){
 }
 loadStories();
 
-/* STORY VIEW */
+/* Story Viewer */
 window.openStory = function(imageUrl){
-  const view = document.getElementById("storyView");
-  const img = document.getElementById("storyFullImage");
-  const progress = document.getElementById("progressBar");
+  const view=document.getElementById("storyView");
+  const img=document.getElementById("storyFullImage");
+  const progress=document.getElementById("progressBar");
 
   img.src=imageUrl;
   view.style.display="flex";
