@@ -3,15 +3,16 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MingleJoys - Home</title>
-
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <style>
 body{
   margin:0;
-  font-family:Arial;
+  font-family:Arial, sans-serif;
   background:#f2f2f2;
 }
+
+/* TOP BAR */
 .top-bar{
   display:flex;
   justify-content:space-between;
@@ -23,25 +24,117 @@ body{
 .logo{font-size:22px;font-weight:bold;}
 .top-icons{display:flex;gap:15px;}
 .top-icons span{cursor:pointer;font-size:26px;}
-.content{padding:20px;margin-bottom:100px;}
-.story-bar{display:flex;gap:12px;overflow-x:auto;padding:10px 15px;background:white;border-bottom:1px solid #eee;}
-.story-box{position:relative;width:70px;height:90px;flex-shrink:0;cursor:pointer;}
-.story-image{width:100%;height:100%;object-fit:cover;clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);border:3px solid #2563eb;}
-.story-name{text-align:center;font-size:12px;margin-top:4px;}
-.upload-btn{position:fixed;bottom:70px;right:25px;width:60px;height:60px;border-radius:50%;background:#1877f2;display:flex;justify-content:center;align-items:center;color:white;font-size:30px;box-shadow:0 4px 10px rgba(0,0,0,0.3);cursor:pointer;z-index:1500;}
-.bottom-nav{position:fixed;bottom:0;width:100%;height:65px;background:white;display:flex;justify-content:space-around;align-items:center;box-shadow:0 -2px 5px rgba(0,0,0,0.1);}
-.bottom-nav a{text-decoration:none;color:#555;text-align:center;font-size:12px;position:relative;}
-.bottom-nav .material-icons{display:block;font-size:28px;}
+
+/* STORY BAR */
+.story-bar{
+  display:flex;
+  gap:12px;
+  overflow-x:auto;
+  padding:10px 15px;
+  background:white;
+  border-bottom:1px solid #eee;
+}
+.story-box{
+  position:relative;
+  width:70px;
+  height:90px;
+  flex-shrink:0;
+  cursor:pointer;
+}
+.story-image{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  border:3px solid #2563eb;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:28px;
+  color:white;
+}
+.story-name{
+  text-align:center;
+  font-size:12px;
+  margin-top:4px;
+}
+
+/* CONTENT / FEED */
+.content{
+  padding:20px;
+  margin-bottom:100px;
+}
+.post{
+  background:white;
+  padding:10px;
+  border-radius:12px;
+  margin-bottom:15px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+.post-header{
+  display:flex;
+  align-items:center;
+  margin-bottom:8px;
+}
+.post-header img{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  margin-right:10px;
+}
+.post img{
+  width:100%;
+  border-radius:10px;
+}
+
+/* FLOAT UPLOAD BUTTON (PROFILE উপরে) */
+.upload-btn{
+  position:fixed;
+  bottom:70px;
+  right:25px;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  background:#1877f2;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  font-size:30px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.3);
+  cursor:pointer;
+  z-index:1500;
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  height:65px;
+  background:white;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  box-shadow:0 -2px 5px rgba(0,0,0,0.1);
+}
+.bottom-nav a{
+  text-decoration:none;
+  color:#555;
+  text-align:center;
+  font-size:12px;
+}
+.bottom-nav .material-icons{
+  display:block;
+  font-size:28px;
+}
 .active{color:#0b3d91 !important;}
-.post{background:white;padding:10px;border-radius:12px;margin-bottom:15px;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
-.post-header{display:flex;align-items:center;margin-bottom:8px;}
-.post-header img{width:40px;height:40px;border-radius:50%;margin-right:10px;}
-.post img{width:100%;border-radius:10px;}
 </style>
 </head>
 
 <body>
 
+<!-- TOP BAR -->
 <div class="top-bar">
   <div class="logo">MingleJoys</div>
   <div class="top-icons">
@@ -51,13 +144,25 @@ body{
   </div>
 </div>
 
-<div class="story-bar" id="storyBar"></div>
+<!-- STORY BAR -->
+<div class="story-bar" id="storyBar">
+  <!-- Upload Story Hexagon -->
+  <div class="story-box" onclick="document.getElementById('fileInput').click()">
+    <div class="story-image" style="background:#1877f2;">+</div>
+    <div class="story-name">Upload Story</div>
+  </div>
+</div>
 
+<!-- CONTENT / FEED -->
 <div class="content" id="content"></div>
 
-<div class="upload-btn" onclick="document.getElementById('fileInput').click()">+</div>
+<!-- HIDDEN FILE INPUT -->
 <input type="file" id="fileInput" accept="image/*" style="display:none">
 
+<!-- FLOAT UPLOAD BUTTON (PROFILE উপর) -->
+<div class="upload-btn" onclick="document.getElementById('fileInput').click()">+</div>
+
+<!-- BOTTOM NAV -->
 <div class="bottom-nav">
   <a href="home.html" class="active"><span class="material-icons">home</span>Home</a>
   <a href="reels.html"><span class="material-icons">smart_display</span>Reels</a>
@@ -72,7 +177,8 @@ import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebas
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
 // Firebase Config
-const firebaseConfig = {apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
+const firebaseConfig = {
+  apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
   authDomain: "my-website-a0545.firebaseapp.com",
   databaseURL: "https://my-website-a0545-default-rtdb.firebaseio.com",
   projectId: "my-website-a0545",
@@ -86,7 +192,7 @@ const db = getDatabase(app);
 
 // Supabase Config
 const supabase = createClient(
-    "https://jzagzyagwlvfsptovslq.supabase.co",
+  "https://jzagzyagwlvfsptovslq.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6YWd6eWFnd2x2ZnNwdG92c2xxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExNzcwMTQsImV4cCI6MjA4Njc1MzAxNH0.PheZD_DF11ATHW3jwsxsrBgywtir1YkGUAslSis2Kfo"
 );
 
@@ -94,7 +200,6 @@ const supabase = createClient(
 async function loadStories(){
   const { data } = await supabase.from("stories").select("*").order("created_at",{ascending:false});
   const storyBar = document.getElementById("storyBar");
-  storyBar.innerHTML="";
   const now = new Date().getTime();
   data.forEach(story=>{
     const storyTime = new Date(story.created_at).getTime();
@@ -139,7 +244,7 @@ fileInput.addEventListener('change', async (e)=>{
   // Cloudinary Upload
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("upload_preset", dxksdswlu");
+  formData.append("upload_preset", "dxksdswlu"); // আপনার Cloudinary preset
 
   const cloudRes = await fetch("https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload",{
     method:"POST",
@@ -153,7 +258,7 @@ fileInput.addEventListener('change', async (e)=>{
 
   // Save to Firebase
   push(ref(db,"posts"),{
-    profilePic:"https://via.placeholder.com/40", // replace with actual
+    profilePic:"https://via.placeholder.com/40",
     userName:"Your Name",
     caption: caption,
     image: imageUrl
