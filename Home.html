@@ -3,16 +3,17 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MingleJoys - Home</title>
+
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <style>
 body{
   margin:0;
-  font-family:Arial, sans-serif;
+  font-family:Arial;
   background:#f2f2f2;
 }
 
-/* TOP BAR */
+/* ===== TOP BAR ===== */
 .top-bar{
   display:flex;
   justify-content:space-between;
@@ -21,11 +22,12 @@ body{
   background:white;
   box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
+
 .logo{font-size:22px;font-weight:bold;}
 .top-icons{display:flex;gap:15px;}
 .top-icons span{cursor:pointer;font-size:26px;}
 
-/* STORY BAR */
+/* ===== STORY BAR ===== */
 .story-bar{
   display:flex;
   gap:12px;
@@ -34,6 +36,7 @@ body{
   background:white;
   border-bottom:1px solid #eee;
 }
+
 .story-box{
   position:relative;
   width:70px;
@@ -41,53 +44,21 @@ body{
   flex-shrink:0;
   cursor:pointer;
 }
+
 .story-image{
   width:100%;
   height:100%;
   object-fit:cover;
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   border:3px solid #2563eb;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:28px;
-  color:white;
-}
-.story-name{
-  text-align:center;
-  font-size:12px;
-  margin-top:4px;
 }
 
-/* CONTENT / FEED */
-.content{
-  padding:20px;
-  margin-bottom:100px;
-}
-.post{
-  background:white;
-  padding:10px;
-  border-radius:12px;
-  margin-bottom:15px;
-  box-shadow:0 2px 5px rgba(0,0,0,0.1);
-}
-.post-header{
-  display:flex;
-  align-items:center;
-  margin-bottom:8px;
-}
-.post-header img{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  margin-right:10px;
-}
-.post img{
-  width:100%;
-  border-radius:10px;
-}
+.story-name{text-align:center;font-size:12px;margin-top:4px;}
 
-/* FLOAT UPLOAD BUTTON (PROFILE উপরে) */
+/* ===== CONTENT ===== */
+.content{padding:20px;margin-bottom:100px;}
+
+/* ===== FLOAT UPLOAD BUTTON ===== */
 .upload-btn{
   position:fixed;
   bottom:70px;
@@ -102,11 +73,11 @@ body{
   color:white;
   font-size:30px;
   box-shadow:0 4px 10px rgba(0,0,0,0.3);
-  cursor:pointer;
   z-index:1500;
+  cursor:pointer;
 }
 
-/* BOTTOM NAV */
+/* ===== BOTTOM NAV ===== */
 .bottom-nav{
   position:fixed;
   bottom:0;
@@ -118,23 +89,51 @@ body{
   align-items:center;
   box-shadow:0 -2px 5px rgba(0,0,0,0.1);
 }
+
 .bottom-nav a{
   text-decoration:none;
   color:#555;
   text-align:center;
   font-size:12px;
 }
-.bottom-nav .material-icons{
-  display:block;
-  font-size:28px;
-}
+
+.bottom-nav .material-icons{display:block;font-size:28px;}
+
+/* Active Deep Blue */
 .active{color:#0b3d91 !important;}
+
+/* POSTS */
+.post{
+  background:white;
+  padding:10px;
+  border-radius:12px;
+  margin-bottom:15px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.post-header{
+  display:flex;
+  align-items:center;
+  margin-bottom:8px;
+}
+
+.post-header img{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  margin-right:10px;
+}
+
+.post img{
+  width:100%;
+  border-radius:10px;
+}
 </style>
 </head>
 
 <body>
 
-<!-- TOP BAR -->
+<!-- ===== TOP BAR ===== -->
 <div class="top-bar">
   <div class="logo">MingleJoys</div>
   <div class="top-icons">
@@ -144,31 +143,38 @@ body{
   </div>
 </div>
 
-<!-- STORY BAR -->
-<div class="story-bar" id="storyBar">
-  <!-- Upload Story Hexagon -->
-  <div class="story-box" onclick="document.getElementById('fileInput').click()">
-    <div class="story-image" style="background:#1877f2;">+</div>
-    <div class="story-name">Upload Story</div>
-  </div>
-</div>
+<!-- ===== STORY BAR ===== -->
+<div class="story-bar" id="storyBar"></div>
 
-<!-- CONTENT / FEED -->
+<!-- ===== CONTENT ===== -->
 <div class="content" id="content"></div>
 
-<!-- HIDDEN FILE INPUT -->
+<!-- ===== FLOAT UPLOAD BUTTON ===== -->
+<div class="upload-btn" onclick="document.getElementById('fileInput').click()">+</div>
 <input type="file" id="fileInput" accept="image/*" style="display:none">
 
-<!-- FLOAT UPLOAD BUTTON (PROFILE উপর) -->
-<div class="upload-btn" onclick="document.getElementById('fileInput').click()">+</div>
-
-<!-- BOTTOM NAV -->
+<!-- ===== BOTTOM NAV ===== -->
 <div class="bottom-nav">
-  <a href="home.html" class="active"><span class="material-icons">home</span>Home</a>
-  <a href="reels.html"><span class="material-icons">smart_display</span>Reels</a>
-  <a href="gift.html"><span class="material-icons">card_giftcard</span>Gift</a>
-  <a href="friend.html"><span class="material-icons">group</span>Friend</a>
-  <a href="profile.html"><span class="material-icons">person</span>Profile</a>
+  <div class="active">
+    <span class="material-icons">home</span>
+    Home
+  </div>
+  <a href="reels.html">
+    <span class="material-icons">smart_display</span>
+    Reels
+  </a>
+  <a href="gift.html">
+    <span class="material-icons">card_giftcard</span>
+    Gift
+  </a>
+  <a href="friend.html">
+    <span class="material-icons">group</span>
+    Friend
+  </a>
+  <a href="profile.html">
+    <span class="material-icons">person</span>
+    Profile
+  </a>
 </div>
 
 <script type="module">
@@ -200,6 +206,7 @@ const supabase = createClient(
 async function loadStories(){
   const { data } = await supabase.from("stories").select("*").order("created_at",{ascending:false});
   const storyBar = document.getElementById("storyBar");
+  storyBar.innerHTML="";
   const now = new Date().getTime();
   data.forEach(story=>{
     const storyTime = new Date(story.created_at).getTime();
@@ -241,10 +248,9 @@ fileInput.addEventListener('change', async (e)=>{
   const file = e.target.files[0];
   if(!file) return;
 
-  // Cloudinary Upload
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("upload_preset", "dxksdswlu"); // আপনার Cloudinary preset
+  formData.append("upload_preset", "YOUR_CLOUDINARY_PRESET");
 
   const cloudRes = await fetch("https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload",{
     method:"POST",
@@ -253,10 +259,8 @@ fileInput.addEventListener('change', async (e)=>{
   const cloudData = await cloudRes.json();
   const imageUrl = cloudData.secure_url;
 
-  // Ask Caption
   const caption = prompt("Add a caption for your post:","");
 
-  // Save to Firebase
   push(ref(db,"posts"),{
     profilePic:"https://via.placeholder.com/40",
     userName:"Your Name",
