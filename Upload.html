@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MingleJoys - Upload Story</title>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+body, html{
+  margin:0;
+  padding:0;
+  font-family:Arial, sans-serif;
+  height:100%;
+  background:#f2f2f2;
+  overflow:hidden;
+}
+
+/* ===== TOP BAR ===== */
+.top-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 15px;
+  background:white;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+  z-index:1000;
+}
+
+.logo{font-size:22px;font-weight:bold;}
+.top-icons span{cursor:pointer;font-size:26px;}
+
+/* ===== FULL SCREEN PREVIEW ===== */
+.preview-container{
+  position:relative;
+  width:100%;
+  height:calc(100% - 60px);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#000;
+}
+
+.preview-box{
+  width:90%;
+  max-height:90%;
+  border-radius:12px;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#222;
+}
+
+.preview-box img, .preview-box video{
+  max-width:100%;
+  max-height:100%;
+}
+
+/* ===== RIGHT VERTICAL OPTIONS ===== */
+.vertical-options{
+  position:absolute;
+  top:80px;
+  right:10px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  z-index:2000;
+}
+
+.option{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-size:12px;
+  color:white;
+  cursor:pointer;
+  background:rgba(0,0,0,0.4);
+  padding:8px 6px;
+  border-radius:12px;
+}
+
+.option span.material-icons{
+  font-size:28px;
+  margin-bottom:4px;
+}
+
+/* ===== BOTTOM SELECT & UPLOAD ===== */
+.bottom-bar{
+  position:absolute;
+  bottom:15px;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  z-index:1000;
+}
+
+.select-btn, .upload-story-btn{
+  padding:12px 20px;
+  font-size:16px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+.select-btn{background:#1877f2;color:white;}
+.upload-story-btn{background:#0b3d91;color:white;}
+
+input[type="file"]{
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top-bar">
+  <div class="logo">MingleJoys</div>
+  <span class="material-icons" onclick="history.back()">arrow_back</span>
+</div>
+
+<div class="preview-container">
+  <div class="preview-box" id="previewBox">
+    <span style="color:white;">No file selected</span>
+  </div>
+
+  <!-- Right Vertical Options -->
+  <div class="vertical-options">
+    <div class="option" id="stickerBtn"><span class="material-icons">emoji_emotions</span>Sticker</div>
+    <div class="option" id="tagBtn"><span class="material-icons">person_add</span>Tag</div>
+    <div class="option" id="musicBtn"><span class="material-icons">music_note</span>Music</div>
+    <div class="option" id="effectBtn"><span class="material-icons">auto_awesome</span>Effect</div>
+    <div class="option" id="createImageBtn"><span class="material-icons">image</span>Create</div>
+  </div>
+</div>
+
+<div class="bottom-bar">
+  <button class="select-btn" id="selectFileBtn">Select Story</button>
+  <button class="upload-story-btn" id="uploadStoryBtn">Upload Story</button>
+</div>
+
+<input type="file" id="storyFileInput" accept="image/*,video/*">
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const supabase = createClient(
+  "https://jzagzyagwlvfsptovslq.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6YWd6eWFnd2x2ZnNwdG92c2xxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExNzcwMTQsImV4cCI6MjA4Njc1MzAxNH0.PheZD_DF11ATHW3jwsxsrBgywtir1YkGUAslSis2Kfo"
+);
+
+const selectFileBtn = document.getElementById('selectFileBtn');
+const storyFileInput = document.getElementById('storyFileInput');
+const previewBox = document.getElementById('previewBox');
+let selectedFile = null;
+
+selectFileBtn.addEventListener('click', ()=> storyFileInput.click());
+
+storyFileInput.addEventListener('change', e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  selectedFile = file;
+
+  previewBox.innerHTML = "";
+  if(file.type.startsWith("image/")){
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(file);
+    previewBox.appendChild(img);
+  } else if(file.type.startsWith("video/")){
+    const video = document.createElement('video');
+    video.src = URL.createObjectURL(file);
+    video.controls = true;
+    previewBox.appendChild(video);
+  }
+});
+
+// Upload Story to Supabase
+document.getElementById('uploadStoryBtn').addEventListener('click', async ()=>{
+  if(!selectedFile){
+    alert("Please select a file first!");
+    return;
+  }
+
+  const fileName = `${Date.now()}_${selectedFile.name}`;
+  const { data, error } = await supabase.storage.from('stories').upload(fileName, selectedFile);
+
+  if(error){
+    alert("Upload failed: "+error.message);
+    return;
+  }
+
+  const publicUrl = supabase.storage.from('stories').getPublicUrl(fileName).data.publicUrl;
+
+  await supabase.from('stories').insert([{
+    user_name: "Your Name",
+    image_url: publicUrl,
+    created_at: new Date().toISOString()
+  }]);
+
+  alert("Story uploaded successfully!");
+  location.href = "home.html";
+});
+
+// Vertical Options placeholders
+['stickerBtn','tagBtn','musicBtn','effectBtn','createImageBtn'].forEach(id=>{
+  document.getElementById(id).addEventListener('click', ()=> alert(id+" feature coming soon!"));
+});
+</script>
+
+</body>
+</html>
