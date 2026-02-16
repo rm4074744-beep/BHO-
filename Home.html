@@ -40,26 +40,8 @@ body{
 
 /* ===== CONTENT ===== */
 .content{
-  height:500px;
+  height:600px;
   padding:20px;
-}
-
-/* ===== FLOAT UPLOAD BUTTON ===== */
-.upload-btn{
-  position:fixed;
-  bottom:80px;
-  right:20px;
-  width:60px;
-  height:60px;
-  border-radius:50%;
-  background:#1877f2;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:white;
-  font-size:30px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.3);
-  cursor:pointer;
 }
 
 /* ===== BOTTOM NAV ===== */
@@ -67,7 +49,7 @@ body{
   position:fixed;
   bottom:0;
   width:100%;
-  height:65px;
+  height:75px;
   background:white;
   display:flex;
   justify-content:space-around;
@@ -75,21 +57,41 @@ body{
   box-shadow:0 -2px 5px rgba(0,0,0,0.1);
 }
 
-.bottom-nav a{
+.nav-item{
   text-decoration:none;
   color:#555;
   text-align:center;
   font-size:12px;
+  position:relative;
 }
 
-.bottom-nav .material-icons{
+.nav-item .material-icons{
   display:block;
   font-size:28px;
 }
 
-/* Active Deep Blue */
+/* Active Home */
 .active{
   color:#0b3d91 !important;
+}
+
+/* ===== Upload Button Above Profile ===== */
+.upload-profile{
+  position:absolute;
+  top:-28px;
+  left:50%;
+  transform:translateX(-50%);
+  width:45px;
+  height:45px;
+  background:#1877f2;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  font-size:26px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.3);
+  cursor:pointer;
 }
 </style>
 </head>
@@ -112,38 +114,43 @@ body{
   <h2>Welcome to Home Page</h2>
 </div>
 
-<!-- ===== FLOAT UPLOAD BUTTON ===== -->
-<div class="upload-btn" onclick="location.href='upload.html'">
-  +
-</div>
-
 <!-- ===== BOTTOM NAV ===== -->
 <div class="bottom-nav">
 
-  <a href="home.html" class="active">
+  <a href="home.html" class="nav-item active">
     <span class="material-icons">home</span>
     Home
   </a>
 
-  <a href="reels.html">
+  <a href="reels.html" class="nav-item">
     <span class="material-icons">smart_display</span>
     Reels
   </a>
 
-  <a href="gift.html">
+  <a href="gift.html" class="nav-item">
     <span class="material-icons">card_giftcard</span>
     Gift
   </a>
 
-  <a href="friend.html">
+  <a href="friend.html" class="nav-item">
     <span class="material-icons">group</span>
     Friend
   </a>
 
-  <a href="profile.html">
-    <span class="material-icons">person</span>
-    Profile
-  </a>
+  <!-- Profile with Upload Above -->
+  <div class="nav-item" style="position:relative;">
+    
+    <!-- Upload Button -->
+    <div class="upload-profile" onclick="location.href='upload.html'">
+      +
+    </div>
+
+    <a href="profile.html" style="text-decoration:none; color:#555;">
+      <span class="material-icons">person</span>
+      Profile
+    </a>
+
+  </div>
 
 </div>
 
