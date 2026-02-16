@@ -45,7 +45,7 @@ body{
 .side-menu{
   position:fixed;
   top:0;
-  right:-250px;
+  right:-260px;
   width:250px;
   height:100%;
   background:white;
@@ -54,25 +54,8 @@ body{
   z-index:3000;
   padding:20px;
 }
-
 .side-menu.open{
   right:0;
-}
-
-.side-menu h3{
-  margin-top:0;
-}
-
-.side-menu button{
-  display:block;
-  width:100%;
-  margin:10px 0;
-  padding:10px;
-  border:none;
-  background:#2563eb;
-  color:white;
-  border-radius:8px;
-  cursor:pointer;
 }
 
 /* STORY BAR */
@@ -83,9 +66,25 @@ body{
   overflow-x:auto;
   padding:10px;
   background:white;
+  border-bottom:1px solid #eee;
+}
+
+.create-story{
+  width:75px;
+  height:75px;
+  flex-shrink:0;
+  background:#e4e6eb;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:30px;
+  color:#1877f2;
 }
 
 .story-box{
+  position:relative;
   width:75px;
   height:75px;
   flex-shrink:0;
@@ -98,6 +97,51 @@ body{
   object-fit:cover;
   border-radius:50%;
   border:3px solid #2563eb;
+}
+
+.story-profile{
+  position:absolute;
+  bottom:-4px;
+  right:-4px;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  border:2px solid white;
+}
+
+/* STORY VIEW */
+.story-view{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:black;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:2000;
+  flex-direction:column;
+}
+
+.story-view img{
+  max-width:100%;
+  max-height:100%;
+}
+
+.story-progress{
+  position:absolute;
+  top:15px;
+  left:5%;
+  width:90%;
+  height:4px;
+  background:rgba(255,255,255,0.3);
+}
+
+.progress-bar{
+  width:0%;
+  height:100%;
+  background:white;
 }
 
 /* POSTS */
@@ -113,6 +157,25 @@ body{
   padding:10px;
   border-radius:12px;
   margin-bottom:15px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.post-header{
+  display:flex;
+  align-items:center;
+  margin-bottom:8px;
+}
+
+.post-header img{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  margin-right:10px;
+}
+
+.post img{
+  width:100%;
+  border-radius:10px;
 }
 
 /* FLOAT BUTTON */
@@ -127,7 +190,11 @@ body{
   color:white;
   border:none;
   font-size:30px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
   cursor:pointer;
+  z-index:1500;
 }
 
 /* BOTTOM NAV */
@@ -140,13 +207,23 @@ body{
   display:flex;
   justify-content:space-around;
   align-items:center;
+  border-top:1px solid #eee;
+  z-index:1500;
 }
 
 .bottom-nav button{
   background:none;
   border:none;
-  font-size:12px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-size:11px;
+  color:#555;
   cursor:pointer;
+}
+
+.bottom-nav .material-icons{
+  font-size:24px;
 }
 </style>
 </head>
@@ -162,75 +239,131 @@ body{
   </div>
 </div>
 
-<!-- SIDE MENU -->
 <div class="side-menu" id="sideMenu">
   <h3>Menu</h3>
-  <button onclick="alert('Settings page')">Settings</button>
-  <button onclick="alert('Logout')">Logout</button>
+  <p>Settings</p>
+  <p>Logout</p>
 </div>
 
 <div class="story-bar" id="storyBar"></div>
+
+<div class="story-view" id="storyView">
+  <div class="story-progress">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+  <img id="storyFullImage">
+</div>
+
 <div class="content" id="content"></div>
 
 <button class="upload-btn" onclick="alert('Upload Page')">+</button>
 
 <div class="bottom-nav">
-  <button onclick="alert('Home Page')">Home</button>
-  <button onclick="alert('Reels Page')">Reels</button>
-  <button onclick="alert('Gift Page')">Gift</button>
-  <button onclick="alert('Friend Page')">Friend</button>
-  <button onclick="alert('Profile Page')">Profile</button>
+  <button onclick="alert('Home')"><span class="material-icons">home</span>Home</button>
+  <button onclick="alert('Reels')"><span class="material-icons">smart_display</span>Reels</button>
+  <button onclick="alert('Gift')"><span class="material-icons">card_giftcard</span>Gift</button>
+  <button onclick="alert('Friend')"><span class="material-icons">group</span>Friend</button>
+  <button onclick="alert('Profile')"><span class="material-icons">person</span>Profile</button>
 </div>
 
 <script type="module">
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-/* SUPABASE FIXED */
+/* Firebase Config */
+const firebaseConfig = {
+  apiKey:"YOUR_FIREBASE_KEY",
+  authDomain:"YOUR_DOMAIN",
+  databaseURL:"YOUR_DB_URL",
+  projectId:"YOUR_PROJECT_ID"
+};
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+/* Supabase */
 const supabase = createClient(
-  "https://jzagzyagwlvfsptovslq.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6YWd6eWFnd2x2ZnNwdG92c2xxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExNzcwMTQsImV4cCI6MjA4Njc1MzAxNH0.PheZD_DF11ATHW3jwsxsrBgywtir1YkGUAslSis2Kfo"
+  "YOUR_SUPABASE_URL",
+  "YOUR_SUPABASE_KEY"
 );
 
-/* LOAD STORIES */
-async function loadStories(){
-  const { data } = await supabase.from("stories").select("*");
-  const storyBar = document.getElementById("storyBar");
-  storyBar.innerHTML="";
-
-  data.forEach(story=>{
-    storyBar.innerHTML += `
-      <div class="story-box" onclick="openStory('${story.image_url}')">
-        <img src="${story.image_url}" class="story-image">
+/* Load Posts */
+onValue(ref(db,"posts"), snapshot=>{
+  const content=document.getElementById("content");
+  content.innerHTML="";
+  snapshot.forEach(child=>{
+    const post=child.val();
+    content.innerHTML += `
+      <div class="post">
+        <div class="post-header">
+          <img src="${post.profilePic}">
+          <b>${post.userName}</b>
+        </div>
+        <p>${post.caption}</p>
+        <img src="${post.image}">
       </div>
     `;
+  });
+});
+
+/* Load Stories */
+async function loadStories(){
+  const { data } = await supabase.from("stories").select("*").order("created_at",{ascending:false});
+  const storyBar=document.getElementById("storyBar");
+  storyBar.innerHTML=`
+    <div class="create-story" onclick="alert('Create Story')">
+      <span class="material-icons">add</span>
+    </div>
+  `;
+  const now=new Date().getTime();
+
+  data.forEach(story=>{
+    const storyTime=new Date(story.created_at).getTime();
+    const hours=(now-storyTime)/(1000*60*60);
+    if(hours<24){
+      storyBar.innerHTML+=`
+        <div class="story-box" onclick="openStory('${story.image_url}')">
+          <img src="${story.image_url}" class="story-image">
+          <img src="${story.profile_pic}" class="story-profile">
+        </div>
+      `;
+    }
   });
 }
 loadStories();
 
-/* STORY VIEW */
-window.openStory = function(url){
-  window.open(url,"_blank");
+/* Story Viewer */
+window.openStory=function(url){
+  const view=document.getElementById("storyView");
+  const img=document.getElementById("storyFullImage");
+  const progress=document.getElementById("progressBar");
+
+  img.src=url;
+  view.style.display="flex";
+  progress.style.width="0%";
+
+  let width=0;
+  const interval=setInterval(()=>{
+    width++;
+    progress.style.width=width+"%";
+    if(width>=100){
+      clearInterval(interval);
+      view.style.display="none";
+    }
+  },50);
+};
+
+document.getElementById("storyView").onclick=function(){
+  this.style.display="none";
 };
 
 </script>
 
 <script>
-
-/* MENU FUNCTION */
 function toggleMenu(){
-  const menu=document.getElementById("sideMenu");
-  menu.classList.toggle("open");
+  document.getElementById("sideMenu").classList.toggle("open");
 }
-
-/* CLOSE MENU WHEN CLICK OUTSIDE */
-document.addEventListener("click", function(e){
-  const menu=document.getElementById("sideMenu");
-  if(!menu.contains(e.target) && !e.target.closest(".right-header")){
-    menu.classList.remove("open");
-  }
-});
-
 </script>
 
 </body>
