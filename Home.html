@@ -9,7 +9,7 @@
 <style>
 body{
   margin:0;
-  font-family:Arial;
+  font-family:Arial, sans-serif;
   background:#f2f2f2;
 }
 
@@ -38,10 +38,75 @@ body{
   font-size:26px;
 }
 
+/* ===== STORY BAR ===== */
+.story-bar{
+  display:flex;
+  gap:12px;
+  overflow-x:auto;
+  padding:12px 15px;
+  background:white;
+  border-bottom:1px solid #ddd;
+}
+
+.story-card{
+  width:70px;
+  flex-shrink:0;
+  text-align:center;
+  cursor:pointer;
+}
+
+.hexagon{
+  width:70px;
+  height:90px;
+  background:#eee;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  border: 3px solid transparent;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  background-clip: padding-box;
+  position:relative;
+}
+
+.hexagon img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  clip-path: inherit;
+}
+
+.hexagon::before{
+  content:"";
+  position:absolute;
+  top:-3px;
+  left:-3px;
+  right:-3px;
+  bottom:-3px;
+  background: linear-gradient(45deg,#f58529,#dd2a7b,#8134af,#515bd4);
+  clip-path: inherit;
+  z-index:0;
+}
+
+.hexagon img{
+  position:relative;
+  z-index:1;
+}
+
+.story-name{
+  margin-top:5px;
+  font-size:12px;
+  color:#000;
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
 /* ===== CONTENT ===== */
 .content{
-  height:600px;
-  padding:20px;
+  padding:15px;
+  padding-bottom:120px; /* for bottom nav */
 }
 
 /* ===== BOTTOM NAV ===== */
@@ -70,12 +135,11 @@ body{
   font-size:28px;
 }
 
-/* Active Home */
 .active{
   color:#0b3d91 !important;
 }
 
-/* ===== Upload Button Above Profile ===== */
+/* ===== Upload Above Profile ===== */
 .upload-profile{
   position:absolute;
   top:-28px;
@@ -95,19 +159,20 @@ body{
 }
 </style>
 </head>
-
 <body>
 
 <!-- ===== TOP BAR ===== -->
 <div class="top-bar">
   <div class="logo">MingleJoys</div>
-
   <div class="top-icons">
     <span class="material-icons" onclick="location.href='notification.html'">notifications</span>
     <span class="material-icons" onclick="location.href='search.html'">search</span>
     <span class="material-icons" onclick="location.href='menu.html'">menu</span>
   </div>
 </div>
+
+<!-- ===== STORY BAR ===== -->
+<div class="story-bar" id="storyBar"></div>
 
 <!-- ===== CONTENT ===== -->
 <div class="content">
@@ -137,22 +202,43 @@ body{
     Friend
   </a>
 
-  <!-- Profile with Upload Above -->
+  <!-- Profile with Upload -->
   <div class="nav-item" style="position:relative;">
-    
-    <!-- Upload Button -->
-    <div class="upload-profile" onclick="location.href='upload.html'">
-      +
-    </div>
-
+    <div class="upload-profile" onclick="location.href='upload.html'">+</div>
     <a href="profile.html" style="text-decoration:none; color:#555;">
       <span class="material-icons">person</span>
       Profile
     </a>
-
   </div>
 
 </div>
+
+<script type="module">
+// Supabase Init
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+const supabase = createClient("YOUR_SUPABASE_URL","YOUR_SUPABASE_KEY");
+
+async function loadStories(){
+  const { data } = await supabase.from("stories").select("*").order("created_at",{ascending:false});
+  const storyBar = document.getElementById("storyBar");
+  storyBar.innerHTML = "";
+
+  data.forEach(story => {
+    const storyCard = document.createElement("div");
+    storyCard.className = "story-card";
+    storyCard.innerHTML = `
+      <div class="hexagon">
+        <img src="${story.image_url}" alt="story">
+      </div>
+      <div class="story-name">${story.user_name}</div>
+    `;
+    storyCard.onclick = () => window.open(story.image_url, "_blank");
+    storyBar.appendChild(storyCard);
+  });
+}
+
+loadStories();
+</script>
 
 </body>
 </html>
