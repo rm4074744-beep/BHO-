@@ -9,11 +9,9 @@
 <style>
 body{
   margin:0;
-  font-family:Arial, sans-serif;
+  font-family:Arial;
   background:#f2f2f2;
 }
-
-/* ===== TOP BAR ===== */
 .top-bar{
   display:flex;
   justify-content:space-between;
@@ -22,146 +20,28 @@ body{
   background:white;
   box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
-
-.logo{
-  font-size:22px;
-  font-weight:bold;
-}
-
-.top-icons{
-  display:flex;
-  gap:15px;
-}
-
-.top-icons span{
-  cursor:pointer;
-  font-size:26px;
-}
-
-/* ===== STORY BAR ===== */
-.story-bar{
-  display:flex;
-  gap:12px;
-  overflow-x:auto;
-  padding:12px 15px;
-  background:white;
-  border-bottom:1px solid #ddd;
-}
-
-.story-card{
-  width:70px;
-  flex-shrink:0;
-  text-align:center;
-  cursor:pointer;
-}
-
-.hexagon{
-  width:70px;
-  height:90px;
-  background:#eee;
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  border: 3px solid transparent;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  overflow:hidden;
-  background-clip: padding-box;
-  position:relative;
-}
-
-.hexagon img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  clip-path: inherit;
-}
-
-.hexagon::before{
-  content:"";
-  position:absolute;
-  top:-3px;
-  left:-3px;
-  right:-3px;
-  bottom:-3px;
-  background: linear-gradient(45deg,#f58529,#dd2a7b,#8134af,#515bd4);
-  clip-path: inherit;
-  z-index:0;
-}
-
-.hexagon img{
-  position:relative;
-  z-index:1;
-}
-
-.story-name{
-  margin-top:5px;
-  font-size:12px;
-  color:#000;
-  text-align:center;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-/* ===== CONTENT ===== */
-.content{
-  padding:15px;
-  padding-bottom:120px; /* for bottom nav */
-}
-
-/* ===== BOTTOM NAV ===== */
-.bottom-nav{
-  position:fixed;
-  bottom:0;
-  width:100%;
-  height:75px;
-  background:white;
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-  box-shadow:0 -2px 5px rgba(0,0,0,0.1);
-}
-
-.nav-item{
-  text-decoration:none;
-  color:#555;
-  text-align:center;
-  font-size:12px;
-  position:relative;
-}
-
-.nav-item .material-icons{
-  display:block;
-  font-size:28px;
-}
-
-.active{
-  color:#0b3d91 !important;
-}
-
-/* ===== Upload Above Profile ===== */
-.upload-profile{
-  position:absolute;
-  top:-28px;
-  left:50%;
-  transform:translateX(-50%);
-  width:45px;
-  height:45px;
-  background:#1877f2;
-  border-radius:50%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:white;
-  font-size:26px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.3);
-  cursor:pointer;
-}
+.logo{font-size:22px;font-weight:bold;}
+.top-icons{display:flex;gap:15px;}
+.top-icons span{cursor:pointer;font-size:26px;}
+.content{padding:20px;margin-bottom:100px;}
+.story-bar{display:flex;gap:12px;overflow-x:auto;padding:10px 15px;background:white;border-bottom:1px solid #eee;}
+.story-box{position:relative;width:70px;height:90px;flex-shrink:0;cursor:pointer;}
+.story-image{width:100%;height:100%;object-fit:cover;clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);border:3px solid #2563eb;}
+.story-name{text-align:center;font-size:12px;margin-top:4px;}
+.upload-btn{position:fixed;bottom:70px;right:25px;width:60px;height:60px;border-radius:50%;background:#1877f2;display:flex;justify-content:center;align-items:center;color:white;font-size:30px;box-shadow:0 4px 10px rgba(0,0,0,0.3);cursor:pointer;z-index:1500;}
+.bottom-nav{position:fixed;bottom:0;width:100%;height:65px;background:white;display:flex;justify-content:space-around;align-items:center;box-shadow:0 -2px 5px rgba(0,0,0,0.1);}
+.bottom-nav a{text-decoration:none;color:#555;text-align:center;font-size:12px;position:relative;}
+.bottom-nav .material-icons{display:block;font-size:28px;}
+.active{color:#0b3d91 !important;}
+.post{background:white;padding:10px;border-radius:12px;margin-bottom:15px;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+.post-header{display:flex;align-items:center;margin-bottom:8px;}
+.post-header img{width:40px;height:40px;border-radius:50%;margin-right:10px;}
+.post img{width:100%;border-radius:10px;}
 </style>
 </head>
+
 <body>
 
-<!-- ===== TOP BAR ===== -->
 <div class="top-bar">
   <div class="logo">MingleJoys</div>
   <div class="top-icons">
@@ -171,73 +51,114 @@ body{
   </div>
 </div>
 
-<!-- ===== STORY BAR ===== -->
 <div class="story-bar" id="storyBar"></div>
 
-<!-- ===== CONTENT ===== -->
-<div class="content">
-  <h2>Welcome to Home Page</h2>
-</div>
+<div class="content" id="content"></div>
 
-<!-- ===== BOTTOM NAV ===== -->
+<div class="upload-btn" onclick="document.getElementById('fileInput').click()">+</div>
+<input type="file" id="fileInput" accept="image/*" style="display:none">
+
 <div class="bottom-nav">
-
-  <a href="home.html" class="nav-item active">
-    <span class="material-icons">home</span>
-    Home
-  </a>
-
-  <a href="reels.html" class="nav-item">
-    <span class="material-icons">smart_display</span>
-    Reels
-  </a>
-
-  <a href="gift.html" class="nav-item">
-    <span class="material-icons">card_giftcard</span>
-    Gift
-  </a>
-
-  <a href="friend.html" class="nav-item">
-    <span class="material-icons">group</span>
-    Friend
-  </a>
-
-  <!-- Profile with Upload -->
-  <div class="nav-item" style="position:relative;">
-    <div class="upload-profile" onclick="location.href='upload.html'">+</div>
-    <a href="profile.html" style="text-decoration:none; color:#555;">
-      <span class="material-icons">person</span>
-      Profile
-    </a>
-  </div>
-
+  <a href="home.html" class="active"><span class="material-icons">home</span>Home</a>
+  <a href="reels.html"><span class="material-icons">smart_display</span>Reels</a>
+  <a href="gift.html"><span class="material-icons">card_giftcard</span>Gift</a>
+  <a href="friend.html"><span class="material-icons">group</span>Friend</a>
+  <a href="profile.html"><span class="material-icons">person</span>Profile</a>
 </div>
 
 <script type="module">
-// Supabase Init
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-const supabase = createClient("YOUR_SUPABASE_URL","YOUR_SUPABASE_KEY");
 
+// Firebase Config
+const firebaseConfig = {apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
+  authDomain: "my-website-a0545.firebaseapp.com",
+  databaseURL: "https://my-website-a0545-default-rtdb.firebaseio.com",
+  projectId: "my-website-a0545",
+  storageBucket: "my-website-a0545.firebasestorage.app",
+  messagingSenderId: "103602694974",
+  appId: "1:103602694974:web:12f890844e6ad6a513da6f",
+  measurementId: "G-CL6V2T77JL"
+};
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// Supabase Config
+const supabase = createClient(
+    "https://jzagzyagwlvfsptovslq.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6YWd6eWFnd2x2ZnNwdG92c2xxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExNzcwMTQsImV4cCI6MjA4Njc1MzAxNH0.PheZD_DF11ATHW3jwsxsrBgywtir1YkGUAslSis2Kfo"
+);
+
+// Load Stories from Supabase
 async function loadStories(){
   const { data } = await supabase.from("stories").select("*").order("created_at",{ascending:false});
   const storyBar = document.getElementById("storyBar");
-  storyBar.innerHTML = "";
-
-  data.forEach(story => {
-    const storyCard = document.createElement("div");
-    storyCard.className = "story-card";
-    storyCard.innerHTML = `
-      <div class="hexagon">
-        <img src="${story.image_url}" alt="story">
-      </div>
-      <div class="story-name">${story.user_name}</div>
-    `;
-    storyCard.onclick = () => window.open(story.image_url, "_blank");
-    storyBar.appendChild(storyCard);
+  storyBar.innerHTML="";
+  const now = new Date().getTime();
+  data.forEach(story=>{
+    const storyTime = new Date(story.created_at).getTime();
+    const hours = (now - storyTime)/(1000*60*60);
+    if(hours<24){
+      storyBar.innerHTML += `
+        <div class="story-box">
+          <img src="${story.image_url}" class="story-image">
+          <div class="story-name">${story.user_name}</div>
+        </div>
+      `;
+    }
   });
 }
-
 loadStories();
+
+// Load Feed from Firebase
+onValue(ref(db,"posts"), snapshot=>{
+  const content = document.getElementById("content");
+  content.innerHTML="";
+  snapshot.forEach(child=>{
+    const post = child.val();
+    content.innerHTML += `
+      <div class="post">
+        <div class="post-header">
+          <img src="${post.profilePic}">
+          <b>${post.userName}</b>
+        </div>
+        <p>${post.caption}</p>
+        <img src="${post.image}">
+      </div>
+    `;
+  });
+});
+
+// Upload Image to Cloudinary & Save Caption to Firebase
+const fileInput = document.getElementById('fileInput');
+fileInput.addEventListener('change', async (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+
+  // Cloudinary Upload
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", dxksdswlu");
+
+  const cloudRes = await fetch("https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload",{
+    method:"POST",
+    body: formData
+  });
+  const cloudData = await cloudRes.json();
+  const imageUrl = cloudData.secure_url;
+
+  // Ask Caption
+  const caption = prompt("Add a caption for your post:","");
+
+  // Save to Firebase
+  push(ref(db,"posts"),{
+    profilePic:"https://via.placeholder.com/40", // replace with actual
+    userName:"Your Name",
+    caption: caption,
+    image: imageUrl
+  });
+});
 </script>
 
 </body>
