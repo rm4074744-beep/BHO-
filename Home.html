@@ -41,6 +41,40 @@ body{
   cursor:pointer;
 }
 
+/* SIDE MENU */
+.side-menu{
+  position:fixed;
+  top:0;
+  right:-250px;
+  width:250px;
+  height:100%;
+  background:white;
+  box-shadow:-2px 0 10px rgba(0,0,0,0.2);
+  transition:0.3s;
+  z-index:3000;
+  padding:20px;
+}
+
+.side-menu.open{
+  right:0;
+}
+
+.side-menu h3{
+  margin-top:0;
+}
+
+.side-menu button{
+  display:block;
+  width:100%;
+  margin:10px 0;
+  padding:10px;
+  border:none;
+  background:#2563eb;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+}
+
 /* STORY BAR */
 .story-bar{
   margin-top:60px;
@@ -49,11 +83,9 @@ body{
   overflow-x:auto;
   padding:10px;
   background:white;
-  border-bottom:1px solid #eee;
 }
 
 .story-box{
-  position:relative;
   width:75px;
   height:75px;
   flex-shrink:0;
@@ -64,55 +96,8 @@ body{
   width:100%;
   height:100%;
   object-fit:cover;
-  clip-path: polygon(
-    50% 0%,100% 38%,82% 100%,18% 100%,0% 38%
-  );
-  border:3px solid #2563eb;
-}
-
-.story-profile{
-  position:absolute;
-  top:-6px;
-  left:-6px;
-  width:28px;
-  height:28px;
   border-radius:50%;
-  border:2px solid white;
-}
-
-/* FULL STORY VIEW */
-.story-view{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:black;
-  display:none;
-  justify-content:center;
-  align-items:center;
-  z-index:2000;
-  flex-direction:column;
-}
-
-.story-view img{
-  max-width:100%;
-  max-height:100%;
-}
-
-.story-progress{
-  position:absolute;
-  top:15px;
-  left:5%;
-  width:90%;
-  height:4px;
-  background:rgba(255,255,255,0.3);
-}
-
-.progress-bar{
-  width:0%;
-  height:100%;
-  background:white;
+  border:3px solid #2563eb;
 }
 
 /* POSTS */
@@ -128,28 +113,9 @@ body{
   padding:10px;
   border-radius:12px;
   margin-bottom:15px;
-  box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
 
-.post-header{
-  display:flex;
-  align-items:center;
-  margin-bottom:8px;
-}
-
-.post-header img{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  margin-right:10px;
-}
-
-.post img{
-  width:100%;
-  border-radius:10px;
-}
-
-/* FLOAT UPLOAD */
+/* FLOAT BUTTON */
 .upload-btn{
   position:fixed;
   bottom:75px;
@@ -161,41 +127,26 @@ body{
   color:white;
   border:none;
   font-size:30px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
   cursor:pointer;
-  z-index:1500;
 }
 
 /* BOTTOM NAV */
 .bottom-nav{
   position:fixed;
   bottom:0;
-  left:0;
   width:100%;
   height:65px;
   background:white;
   display:flex;
   justify-content:space-around;
   align-items:center;
-  border-top:1px solid #eee;
-  z-index:1500;
 }
 
 .bottom-nav button{
   background:none;
   border:none;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  font-size:11px;
-  color:#555;
+  font-size:12px;
   cursor:pointer;
-}
-
-.bottom-nav .material-icons{
-  font-size:24px;
 }
 </style>
 </head>
@@ -207,119 +158,78 @@ body{
   <div class="right-header">
     <button><span class="material-icons">search</span></button>
     <button><span class="material-icons">notifications</span></button>
-    <button><span class="material-icons">menu</span></button>
+    <button onclick="toggleMenu()"><span class="material-icons">menu</span></button>
   </div>
+</div>
+
+<!-- SIDE MENU -->
+<div class="side-menu" id="sideMenu">
+  <h3>Menu</h3>
+  <button onclick="alert('Settings page')">Settings</button>
+  <button onclick="alert('Logout')">Logout</button>
 </div>
 
 <div class="story-bar" id="storyBar"></div>
-
-<div class="story-view" id="storyView">
-  <div class="story-progress">
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
-  <img id="storyFullImage">
-</div>
-
 <div class="content" id="content"></div>
 
-<button class="upload-btn" onclick="openGallery()">+</button>
-<input type="file" id="fileInput" accept="image/*" style="display:none">
+<button class="upload-btn" onclick="alert('Upload Page')">+</button>
 
 <div class="bottom-nav">
-  <button><span class="material-icons">home</span>Home</button>
-  <button><span class="material-icons">smart_display</span>Reels</button>
-  <button><span class="material-icons">card_giftcard</span>Gift</button>
-  <button><span class="material-icons">group</span>Friend</button>
-  <button><span class="material-icons">person</span>Profile</button>
+  <button onclick="alert('Home Page')">Home</button>
+  <button onclick="alert('Reels Page')">Reels</button>
+  <button onclick="alert('Gift Page')">Gift</button>
+  <button onclick="alert('Friend Page')">Friend</button>
+  <button onclick="alert('Profile Page')">Profile</button>
 </div>
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-/* Firebase */
-const firebaseConfig = {
-  apiKey:"AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
-  authDomain:"my-website-a0545.firebaseapp.com",
-  databaseURL:"https://my-website-a0545-default-rtdb.firebaseio.com",
-  projectId:"my-website-a0545",
-};
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-/* Supabase */
+/* SUPABASE FIXED */
 const supabase = createClient(
- " https://jzagzyagwlvfsptovslq.supabase.co"
-  "sb_publishable_iivVSw4eROHHn_KtBLIx_w_lbHp07nx"
+  "https://jzagzyagwlvfsptovslq.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6YWd6eWFnd2x2ZnNwdG92c2xxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExNzcwMTQsImV4cCI6MjA4Njc1MzAxNH0.PheZD_DF11ATHW3jwsxsrBgywtir1YkGUAslSis2Kfo"
 );
 
-/* Load Posts */
-onValue(ref(db,"posts"), snapshot=>{
-  const content = document.getElementById("content");
-  content.innerHTML="";
-  snapshot.forEach(child=>{
-    const post = child.val();
-    content.innerHTML += `
-      <div class="post">
-        <div class="post-header">
-          <img src="${post.profilePic}">
-          <b>${post.userName}</b>
-        </div>
-        <p>${post.caption}</p>
-        <img src="${post.image}">
-      </div>
-    `;
-  });
-});
-
-/* Load Stories */
+/* LOAD STORIES */
 async function loadStories(){
-  const { data } = await supabase.from("stories").select("*").order("created_at",{ascending:false});
+  const { data } = await supabase.from("stories").select("*");
   const storyBar = document.getElementById("storyBar");
   storyBar.innerHTML="";
-  const now = new Date().getTime();
 
   data.forEach(story=>{
-    const storyTime = new Date(story.created_at).getTime();
-    const hours = (now - storyTime)/(1000*60*60);
-    if(hours < 24){
-      storyBar.innerHTML += `
-        <div class="story-box" onclick="openStory('${story.image_url}')">
-          <img src="${story.image_url}" class="story-image">
-          <img src="${story.profile_pic}" class="story-profile">
-        </div>
-      `;
-    }
+    storyBar.innerHTML += `
+      <div class="story-box" onclick="openStory('${story.image_url}')">
+        <img src="${story.image_url}" class="story-image">
+      </div>
+    `;
   });
 }
 loadStories();
 
-/* Story Viewer */
-window.openStory = function(imageUrl){
-  const view=document.getElementById("storyView");
-  const img=document.getElementById("storyFullImage");
-  const progress=document.getElementById("progressBar");
-
-  img.src=imageUrl;
-  view.style.display="flex";
-  progress.style.width="0%";
-
-  let width=0;
-  const interval=setInterval(()=>{
-    width++;
-    progress.style.width=width+"%";
-    if(width>=100){
-      clearInterval(interval);
-      view.style.display="none";
-    }
-  },50);
+/* STORY VIEW */
+window.openStory = function(url){
+  window.open(url,"_blank");
 };
 
-document.getElementById("storyView").onclick=function(){
-  this.style.display="none";
-};
+</script>
+
+<script>
+
+/* MENU FUNCTION */
+function toggleMenu(){
+  const menu=document.getElementById("sideMenu");
+  menu.classList.toggle("open");
+}
+
+/* CLOSE MENU WHEN CLICK OUTSIDE */
+document.addEventListener("click", function(e){
+  const menu=document.getElementById("sideMenu");
+  if(!menu.contains(e.target) && !e.target.closest(".right-header")){
+    menu.classList.remove("open");
+  }
+});
 
 </script>
 
