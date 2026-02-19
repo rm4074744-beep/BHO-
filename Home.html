@@ -30,30 +30,50 @@ body{
 /* ===== STORY BAR ===== */
 .story-bar{
   display:flex;
-  gap:12px;
+  gap:18px;
   overflow-x:auto;
-  padding:10px 15px;
+  padding:15px;
   background:white;
   border-bottom:1px solid #eee;
 }
 
 .story-box{
-  position:relative;
-  width:70px;
-  height:90px;
+  width:85px;
+  text-align:center;
   flex-shrink:0;
+  position:relative;
   cursor:pointer;
 }
 
-.story-image{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  border:3px solid #2563eb;
+.story-svg{
+  width:80px;
+  height:80px;
+  display:block;
+  margin:auto;
 }
 
-.story-name{text-align:center;font-size:12px;margin-top:4px;}
+.story-name{
+  font-size:12px;
+  margin-top:6px;
+}
+
+/* Plus Button */
+.plus-btn{
+  position:absolute;
+  bottom:30px;
+  right:5px;
+  width:28px;
+  height:28px;
+  background:#000;
+  color:#fff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  border:3px solid #fff;
+  cursor:pointer;
+}
 
 /* ===== CONTENT ===== */
 .content{padding:20px;margin-bottom:100px;}
@@ -98,8 +118,6 @@ body{
 }
 
 .bottom-nav .material-icons{display:block;font-size:28px;}
-
-/* Active Deep Blue */
 .active{color:#0b3d91 !important;}
 
 /* POSTS */
@@ -137,138 +155,78 @@ body{
 <div class="top-bar">
   <div class="logo">MingleJoys</div>
   <div class="top-icons">
-    <span class="material-icons" onclick="location.href='notification.html'">notifications</span>
-    <span class="material-icons" onclick="location.href='search.html'">search</span>
-    <span class="material-icons" onclick="location.href='menu.html'">menu</span>
+    <span class="material-icons">notifications</span>
+    <span class="material-icons">search</span>
+    <span class="material-icons">menu</span>
   </div>
 </div>
 
 <!-- ===== STORY BAR ===== -->
-<div class="story-bar" id="storyBar"></div>
+<div class="story-bar">
+
+  <!-- YOUR STORY -->
+  <div class="story-box">
+    <svg viewBox="0 0 200 200" class="story-svg">
+
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#00f2ff"/>
+          <stop offset="50%" stop-color="#6a5acd"/>
+          <stop offset="100%" stop-color="#ff6ec7"/>
+        </linearGradient>
+
+        <clipPath id="clipHex">
+          <polygon points="100,30 165,65 165,135 100,170 35,135 35,65"
+                   style="stroke-linejoin:round; stroke-width:20"/>
+        </clipPath>
+      </defs>
+
+      <polygon
+        points="100,20 180,60 180,140 100,180 20,140 20,60"
+        fill="none"
+        stroke="url(#grad1)"
+        stroke-width="16"
+        stroke-linejoin="round"/>
+
+      <polygon
+        points="100,30 165,65 165,135 100,170 35,135 35,65"
+        fill="white"
+        stroke="white"
+        stroke-width="8"
+        stroke-linejoin="round"/>
+
+      <image
+        href="https://via.placeholder.com/300"
+        x="35" y="30"
+        width="130" height="140"
+        clip-path="url(#clipHex)"
+        preserveAspectRatio="xMidYMid slice"/>
+
+    </svg>
+
+    <div class="plus-btn">+</div>
+    <div class="story-name">Your story</div>
+  </div>
+
+</div>
 
 <!-- ===== CONTENT ===== -->
 <div class="content" id="content"></div>
 
-<!-- ===== FLOAT UPLOAD BUTTON ===== -->
-<div class="upload-btn" onclick="document.getElementById('fileInput').click()">+</div>
-<input type="file" id="fileInput" accept="image/*" style="display:none">
+<!-- FLOAT BUTTON -->
+<div class="upload-btn">+</div>
 
-<!-- ===== BOTTOM NAV ===== -->
+<!-- BOTTOM NAV -->
 <div class="bottom-nav">
   <div class="active">
     <span class="material-icons">home</span>
     Home
   </div>
-  <a href="reels.html">
-    <span class="material-icons">smart_display</span>
-    Reels
-  </a>
-  <a href="gift.html">
-    <span class="material-icons">card_giftcard</span>
-    Gift
-  </a>
-  <a href="friend.html">
-    <span class="material-icons">group</span>
-    Friend
-  </a>
-  <a href="profile.html">
-    <span class="material-icons">person</span>
-    Profile
-  </a>
+  <a href="#"><span class="material-icons">smart_display</span>Reels</a>
+  <a href="#"><span class="material-icons">card_giftcard</span>Gift</a>
+  <a href="#"><span class="material-icons">group</span>Friend</a>
+  <a href="#"><span class="material-icons">person</span>Profile</a>
 </div>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-
-// Firebase Config
-const firebaseConfig = {
-  apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
-  authDomain: "my-website-a0545.firebaseapp.com",
-  databaseURL: "https://my-website-a0545-default-rtdb.firebaseio.com",
-  projectId: "my-website-a0545",
-  storageBucket: "my-website-a0545.firebasestorage.app",
-  messagingSenderId: "103602694974",
-  appId: "1:103602694974:web:12f890844e6ad6a513da6f",
-  measurementId: "G-CL6V2T77JL"
-};
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-// Supabase Config
-const supabase = createClient(
-  "https://jzagzyagwlvfsptovslq.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp6YWd6eWFnd2x2ZnNwdG92c2xxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExNzcwMTQsImV4cCI6MjA4Njc1MzAxNH0.PheZD_DF11ATHW3jwsxsrBgywtir1YkGUAslSis2Kfo"
-);
-
-// Load Stories from Supabase
-async function loadStories(){
-  const { data } = await supabase.from("stories").select("*").order("created_at",{ascending:false});
-  const storyBar = document.getElementById("storyBar");
-  storyBar.innerHTML="";
-  const now = new Date().getTime();
-  data.forEach(story=>{
-    const storyTime = new Date(story.created_at).getTime();
-    const hours = (now - storyTime)/(1000*60*60);
-    if(hours<24){
-      storyBar.innerHTML += `
-        <div class="story-box">
-          <img src="${story.image_url}" class="story-image">
-          <div class="story-name">${story.user_name}</div>
-        </div>
-      `;
-    }
-  });
-}
-loadStories();
-
-// Load Feed from Firebase
-onValue(ref(db,"posts"), snapshot=>{
-  const content = document.getElementById("content");
-  content.innerHTML="";
-  snapshot.forEach(child=>{
-    const post = child.val();
-    content.innerHTML += `
-      <div class="post">
-        <div class="post-header">
-          <img src="${post.profilePic}">
-          <b>${post.userName}</b>
-        </div>
-        <p>${post.caption}</p>
-        <img src="${post.image}">
-      </div>
-    `;
-  });
-});
-
-// Upload Image to Cloudinary & Save Caption to Firebase
-const fileInput = document.getElementById('fileInput');
-fileInput.addEventListener('change', async (e)=>{
-  const file = e.target.files[0];
-  if(!file) return;
-
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("upload_preset", "YOUR_CLOUDINARY_PRESET");
-
-  const cloudRes = await fetch("https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload",{
-    method:"POST",
-    body: formData
-  });
-  const cloudData = await cloudRes.json();
-  const imageUrl = cloudData.secure_url;
-
-  const caption = prompt("Add a caption for your post:","");
-
-  push(ref(db,"posts"),{
-    profilePic:"https://via.placeholder.com/40",
-    userName:"Your Name",
-    caption: caption,
-    image: imageUrl
-  });
-});
-</script>
 
 </body>
 </html>
