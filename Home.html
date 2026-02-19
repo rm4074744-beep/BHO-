@@ -81,7 +81,7 @@ body{
 /* ===== FLOAT UPLOAD BUTTON ===== */
 .upload-btn{
   position:fixed;
-  bottom:70px;
+  bottom:80px;
   right:25px;
   width:60px;
   height:60px;
@@ -117,34 +117,13 @@ body{
   font-size:12px;
 }
 
-.bottom-nav .material-icons{display:block;font-size:28px;}
-.active{color:#0b3d91 !important;}
-
-/* POSTS */
-.post{
-  background:white;
-  padding:10px;
-  border-radius:12px;
-  margin-bottom:15px;
-  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+.bottom-nav .material-icons{
+  display:block;
+  font-size:28px;
 }
 
-.post-header{
-  display:flex;
-  align-items:center;
-  margin-bottom:8px;
-}
-
-.post-header img{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  margin-right:10px;
-}
-
-.post img{
-  width:100%;
-  border-radius:10px;
+.active{
+  color:#0b3d91 !important;
 }
 </style>
 </head>
@@ -155,9 +134,9 @@ body{
 <div class="top-bar">
   <div class="logo">MingleJoys</div>
   <div class="top-icons">
-    <span class="material-icons">notifications</span>
-    <span class="material-icons">search</span>
-    <span class="material-icons">menu</span>
+    <span class="material-icons" onclick="go('notification.html')">notifications</span>
+    <span class="material-icons" onclick="go('search.html')">search</span>
+    <span class="material-icons" onclick="go('menu.html')">menu</span>
   </div>
 </div>
 
@@ -165,7 +144,7 @@ body{
 <div class="story-bar">
 
   <!-- YOUR STORY -->
-  <div class="story-box">
+  <div class="story-box" onclick="go('story-upload.html')">
     <svg viewBox="0 0 200 200" class="story-svg">
 
       <defs>
@@ -176,8 +155,7 @@ body{
         </linearGradient>
 
         <clipPath id="clipHex">
-          <polygon points="100,30 165,65 165,135 100,170 35,135 35,65"
-                   style="stroke-linejoin:round; stroke-width:20"/>
+          <polygon points="100,30 165,65 165,135 100,170 35,135 35,65"/>
         </clipPath>
       </defs>
 
@@ -190,10 +168,7 @@ body{
 
       <polygon
         points="100,30 165,65 165,135 100,170 35,135 35,65"
-        fill="white"
-        stroke="white"
-        stroke-width="8"
-        stroke-linejoin="round"/>
+        fill="white"/>
 
       <image
         href="https://via.placeholder.com/300"
@@ -211,22 +186,62 @@ body{
 </div>
 
 <!-- ===== CONTENT ===== -->
-<div class="content" id="content"></div>
+<div class="content">
+  <h3>Welcome to MingleJoys</h3>
+  <p>This is your home feed.</p>
+</div>
 
 <!-- FLOAT BUTTON -->
-<div class="upload-btn">+</div>
+<div class="upload-btn" onclick="go('story-upload.html')">+</div>
 
 <!-- BOTTOM NAV -->
 <div class="bottom-nav">
-  <div class="active">
+  <a href="index.html" id="nav-home">
     <span class="material-icons">home</span>
     Home
-  </div>
-  <a href="#"><span class="material-icons">smart_display</span>Reels</a>
-  <a href="#"><span class="material-icons">card_giftcard</span>Gift</a>
-  <a href="#"><span class="material-icons">group</span>Friend</a>
-  <a href="#"><span class="material-icons">person</span>Profile</a>
+  </a>
+  <a href="reels.html" id="nav-reels">
+    <span class="material-icons">smart_display</span>
+    Reels
+  </a>
+  <a href="gift.html" id="nav-gift">
+    <span class="material-icons">card_giftcard</span>
+    Gift
+  </a>
+  <a href="friend.html" id="nav-friend">
+    <span class="material-icons">group</span>
+    Friend
+  </a>
+  <a href="profile.html" id="nav-profile">
+    <span class="material-icons">person</span>
+    Profile
+  </a>
 </div>
+
+<script>
+function go(page){
+  location.href = page;
+}
+
+// Active highlight auto detect
+const current = location.pathname.split("/").pop();
+
+if(current === "index.html"){
+  document.getElementById("nav-home").classList.add("active");
+}
+if(current === "reels.html"){
+  document.getElementById("nav-reels").classList.add("active");
+}
+if(current === "gift.html"){
+  document.getElementById("nav-gift").classList.add("active");
+}
+if(current === "friend.html"){
+  document.getElementById("nav-friend").classList.add("active");
+}
+if(current === "profile.html"){
+  document.getElementById("nav-profile").classList.add("active");
+}
+</script>
 
 </body>
 </html>
