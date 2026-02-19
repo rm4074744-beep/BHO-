@@ -3,61 +3,77 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Snapchat Style Story Editor</title>
+<title>Premium Story Editor</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <style>
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  body { margin: 0; background: #000; color: white; font-family: sans-serif; overflow: hidden; height: 100vh; }
+  body { margin: 0; background: #000; color: white; font-family: 'Segoe UI', sans-serif; overflow: hidden; height: 100vh; }
 
   .editor-container { position: relative; width: 100%; height: 100vh; }
   
+  /* সাইড মেনু */
   .side-tools {
-    position: absolute; right: 15px; top: 80px; z-index: 50;
-    display: flex; flex-direction: column; gap: 20px;
+    position: absolute; right: 15px; top: 60px; z-index: 50;
+    display: flex; flex-direction: column; gap: 15px;
   }
-  .tool-btn {
-    display: flex; align-items: center; gap: 10px; justify-content: flex-end; cursor: pointer;
-  }
+  .tool-btn { display: flex; align-items: center; gap: 8px; justify-content: flex-end; cursor: pointer; }
   .icon-bg {
-    width: 45px; height: 45px; background: rgba(255,255,255,0.2);
-    backdrop-filter: blur(10px); border-radius: 50%;
+    width: 44px; height: 44px; background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(15px); border-radius: 50%;
     display: flex; justify-content: center; align-items: center;
-    border: 1px solid rgba(255,255,255,0.3);
+    border: 1px solid rgba(255,255,255,0.2);
   }
 
-  /* ইফেক্ট প্যানেল */
+  /* Snapchat Style ইফেক্ট প্যানেল (শেয়ার বাটনের উপরে) */
   #effect-panel {
-    position: absolute; bottom: -200px; width: 100%; height: 180px;
-    background: linear-gradient(transparent, rgba(0,0,0,0.9));
-    z-index: 100; transition: bottom 0.4s ease;
-    display: flex; flex-direction: column; align-items: center;
+    position: absolute; 
+    bottom: -220px; 
+    width: 100%; 
+    z-index: 100; 
+    transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
   }
-  #effect-panel.active { bottom: 0; }
+  
+  #effect-panel.active { bottom: 110px; }
 
-  .done-bar { width: 100%; display: flex; justify-content: flex-end; padding-right: 20px; }
-  .done-text { font-weight: bold; padding: 10px; cursor: pointer; color: white; font-size: 18px; }
+  .done-bar { width: 100%; display: flex; justify-content: center; margin-bottom: 15px; }
+  .done-btn { 
+    background: #fff; color: #000; padding: 6px 24px; 
+    border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
 
   .effect-scroll {
-    display: flex; gap: 15px; overflow-x: auto; width: 100%;
-    padding: 10px 20px 30px; scrollbar-width: none;
+    display: flex; gap: 12px; overflow-x: auto; width: 100%;
+    padding: 0 20px 10px; scrollbar-width: none;
   }
   .effect-scroll::-webkit-scrollbar { display: none; }
 
-  .effect-circle {
-    min-width: 70px; height: 70px; border-radius: 50%;
-    border: 3px solid rgba(255,255,255,0.5); overflow: hidden;
-    flex-shrink: 0; transition: 0.3s;
-  }
-  .effect-circle.selected { border-color: #fff; transform: scale(1.1); box-shadow: 0 0 15px #fff; }
-  .effect-circle img { width: 100%; height: 100%; object-fit: cover; }
+  .effect-item-wrapper { display: flex; flex-direction: column; align-items: center; gap: 5px; }
 
-  .footer { position: absolute; bottom: 30px; width: 100%; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+  .effect-circle {
+    min-width: 72px; height: 72px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.4); overflow: hidden;
+    flex-shrink: 0; transition: 0.3s; background: #111;
+  }
+  .effect-circle.selected { 
+    border-color: #fff; border-width: 3px; transform: scale(1.1); 
+    box-shadow: 0 0 15px rgba(255,255,255,0.3); 
+  }
+  .effect-circle img { width: 100%; height: 100%; object-fit: cover; }
+  .eff-name { font-size: 10px; color: #ccc; }
+
+  /* ফুটার সেকশন */
+  .footer { 
+    position: absolute; bottom: 30px; width: 100%; 
+    padding: 0 20px; display: flex; justify-content: space-between; 
+    align-items: center; z-index: 50;
+  }
   .share-now {
     background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-    color: white; border: none; padding: 12px 30px; border-radius: 50px;
-    font-weight: bold; display: flex; align-items: center; gap: 8px;
+    color: white; border: none; padding: 12px 28px; border-radius: 50px;
+    font-weight: bold; display: flex; align-items: center; gap: 8px; font-size: 15px;
   }
 </style>
 </head>
@@ -73,12 +89,12 @@
   </div>
 
   <div id="effect-panel">
-    <div class="done-bar"><span class="done-text" onclick="closeEffects()">Done</span></div>
+    <div class="done-bar"><div class="done-btn" onclick="closeEffects()">Done</div></div>
     <div class="effect-scroll" id="effectContainer"></div>
   </div>
 
   <div class="footer" id="mainFooter">
-    <span class="material-icons">settings</span>
+    <div class="icon-bg"><span class="material-icons">settings</span></div>
     <button class="share-now">Share now <span class="material-icons">send</span></button>
   </div>
 </div>
@@ -102,37 +118,61 @@
     generateEffects();
   };
 
-  // এখানে আপনার ২০টি ইফেক্টের নাম এবং ইমেজের লিঙ্ক দিন
+  // --- GitHub ইমেজের লিঙ্ক এখানে বসাবেন ---
   const myEffects = [
-    { name: "Original", thumb: "https://via.placeholder.com/100?text=Original" },
-    { name: "Sad", thumb: "https://via.placeholder.com/100/555/fff?text=Sad" },
-    { name: "Happy", thumb: "https://via.placeholder.com/100/f39c12/fff?text=Happy" },
-    { name: "Vintage", thumb: "IMG_20260220_033004.jpg/100/e67e22/fff?text=Vintage" },
-    { name: "B&W", thumb: "https://via.placeholder.com/100/000/fff?text=B&W" },
-    { name: "Night", thumb: "https://via.placeholder.com/100/2c3e50/fff?text=Night" },
-    { name: "Retro", thumb: "https://via.placeholder.com/100/8e44ad/fff?text=Retro" },
-    // এভাবে ২০ পর্যন্ত ইমেজ লিঙ্ক যোগ করুন...
+    { name: "Original", thumb: "https://via.placeholder.com/100?text=Org" },
+    { name: "Sad", thumb: "আপনার_লিঙ্ক_১" },
+    { name: "Happy", thumb: "আপনার_লিঙ্ক_২" },
+    { name: "Vintage", thumb: "IMG_20260220_033004.jpg" },
+    { name: "B&W", thumb: "আপনার_লিঙ্ক_৪" },
+    { name: "Night", thumb: "আপনার_লিঙ্ক_৫" },
+    { name: "Gold", thumb: "আপনার_লিঙ্ক_৬" },
+    { name: "Neon", thumb: "আপনার_লিঙ্ক_৭" },
+    { name: "Retro", thumb: "আপনার_লিঙ্ক_৮" },
+    { name: "Soft", thumb: "আপনার_লিঙ্ক_৯" },
+    { name: "Cool", thumb: "আপনার_লিঙ্ক_১০" },
+    { name: "Warm", thumb: "আপনার_লিঙ্ক_১১" },
+    { name: "Dreamy", thumb: "আপনার_লিঙ্ক_১২" },
+    { name: "Fade", thumb: "আপনার_লিঙ্ক_১৩" },
+    { name: "Bold", thumb: "আপনার_লিঙ্ক_১৪" },
+    { name: "Mist", thumb: "আপনার_লিঙ্ক_১৫" },
+    { name: "Ocean", thumb: "আপনার_লিঙ্ক_১৬" },
+    { name: "Forest", thumb: "আপনার_লিঙ্ক_১৭" },
+    { name: "Sunset", thumb: "আপনার_লিঙ্ক_১৮" },
+    { name: "Cyber", thumb: "আপনার_লিঙ্ক_১৯" },
+    { name: "Glitch", thumb: "আপনার_লিঙ্ক_২০" }
   ];
 
   function generateEffects() {
     const container = document.getElementById('effectContainer');
     myEffects.forEach((eff, index) => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'effect-item-wrapper';
+      
       const div = document.createElement('div');
       div.className = `effect-circle ${index === 0 ? 'selected' : ''}`;
-      // এখানে eff.thumb ব্যবহার করে ইমেজটি গোল বাটনের ভেতর বসানো হচ্ছে
       div.innerHTML = `<img src="${eff.thumb}" onclick="applyFilter('${eff.name}', this)">`;
-      container.appendChild(div);
+      
+      const label = document.createElement('div');
+      label.className = 'eff-name';
+      label.innerText = eff.name;
+
+      wrapper.appendChild(div);
+      wrapper.appendChild(label);
+      container.appendChild(wrapper);
     });
   }
 
   function openEffects() {
     document.getElementById('effect-panel').classList.add('active');
-    document.getElementById('mainFooter').style.display = 'none';
+    document.getElementById('mainFooter').style.opacity = "0.3";
+    document.getElementById('mainFooter').style.pointerEvents = "none";
   }
 
   function closeEffects() {
     document.getElementById('effect-panel').classList.remove('active');
-    document.getElementById('mainFooter').style.display = 'flex';
+    document.getElementById('mainFooter').style.opacity = "1";
+    document.getElementById('mainFooter').style.pointerEvents = "auto";
   }
 
   function applyFilter(type, el) {
@@ -143,13 +183,12 @@
     if (!img) return;
 
     img.filters = []; 
-    
+    // স্যাম্পল ফিল্টার লজিক (আপনার চাহিদা মতো ২০টি আলাদা লজিক দেওয়া যাবে)
     if (type === 'Sad') img.filters.push(new fabric.Image.filters.Grayscale());
-    if (type === 'Happy') img.filters.push(new fabric.Image.filters.Contrast({ contrast: 0.3 }));
     if (type === 'Vintage') img.filters.push(new fabric.Image.filters.Sepia());
     if (type === 'B&W') img.filters.push(new fabric.Image.filters.BlackWhite());
-    if (type === 'Night') img.filters.push(new fabric.Image.filters.Brightness({ brightness: -0.3 }));
-    // আপনার অন্য ফিল্টার লজিকগুলো এখানে লিখুন
+    if (type === 'Night') img.filters.push(new fabric.Image.filters.Brightness({ brightness: -0.2 }));
+    if (type === 'Gold') img.filters.push(new fabric.Image.filters.ColorMatrix({ matrix: [1, 0, 0, 0, 0.1, 0, 1, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 1, 0] }));
 
     img.applyFilters();
     canvas.renderAll();
@@ -157,10 +196,8 @@
 
   function addText() {
     const text = new fabric.IText('টাইপ করুন', { 
-        left: canvas.width/2, 
-        top: canvas.height/2, 
-        fill: '#fff',
-        originX: 'center'
+        left: canvas.width/2, top: canvas.height/2, 
+        fill: '#fff', originX: 'center', fontFamily: 'sans-serif' 
     });
     canvas.add(text);
     canvas.setActiveObject(text);
