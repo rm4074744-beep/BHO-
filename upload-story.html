@@ -3,116 +3,157 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premium Story Upload</title>
+<title>Snapchat Style Story Editor</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <style>
-  :root { 
-    /* এখানে আপনার পছন্দের কালার কোড দিতে পারেন */
-    --share-btn-bg: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); 
-    --glass: rgba(255, 255, 255, 0.2); 
-  }
-  
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #000; color: white; height: 100vh; overflow: hidden; }
+  body { margin: 0; background: #000; color: white; font-family: sans-serif; overflow: hidden; height: 100vh; }
 
-  .story-wrapper { position: relative; width: 100%; height: 100dvh; display: flex; flex-direction: column; }
-
-  /* প্রিভিউ ইমেজ */
-  #story-preview { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1; }
-
-  /* টুলবারসমূহ */
-  .header {
-    position: relative; z-index: 10; display: flex; justify-content: space-between;
-    padding: 20px; background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
-  }
-
+  /* ক্যানভাস এলাকা */
+  .editor-container { position: relative; width: 100%; height: 100vh; }
+  
+  /* সাইড টুলস */
   .side-tools {
-    position: absolute; right: 15px; top: 80px; z-index: 10;
-    display: flex; flex-direction: column; gap: 20px; align-items: flex-end;
+    position: absolute; right: 15px; top: 80px; z-index: 50;
+    display: flex; flex-direction: column; gap: 20px;
   }
-  .tool-item { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-  .tool-icon {
-    width: 40px; height: 40px; background: var(--glass);
+  .tool-btn {
+    display: flex; align-items: center; gap: 10px; justify-content: flex-end; cursor: pointer;
+  }
+  .icon-bg {
+    width: 45px; height: 45px; background: rgba(255,255,255,0.2);
     backdrop-filter: blur(10px); border-radius: 50%;
     display: flex; justify-content: center; align-items: center;
     border: 1px solid rgba(255,255,255,0.3);
   }
 
-  /* বটম সেকশন */
-  .footer {
-    position: absolute; bottom: 0; width: 100%; z-index: 10;
-    padding: 25px 20px 40px;
-    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  /* ইফেক্ট প্যানেল (Snapchat Style) */
+  #effect-panel {
+    position: absolute; bottom: -200px; width: 100%; height: 180px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.9));
+    z-index: 100; transition: bottom 0.4s ease;
+    display: flex; flex-direction: column; align-items: center;
   }
+  #effect-panel.active { bottom: 0; }
 
-  .music-scroll {
-    display: flex; gap: 12px; margin-bottom: 25px; overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .music-sticker {
-    background: white; color: black; padding: 10px 15px; border-radius: 12px;
-    display: flex; align-items: center; gap: 12px; min-width: 240px;
-  }
+  .done-bar { width: 100%; display: flex; justify-content: flex-end; padding-right: 20px; }
+  .done-text { font-weight: bold; padding: 10px; cursor: pointer; color: white; font-size: 18px; }
 
-  /* নতুন শেয়ার বাটন কালার ও ডিজাইন */
-  .bottom-actions { display: flex; justify-content: space-between; align-items: center; }
-  
-  .share-now-btn {
-    background: var(--share-btn-bg); /* স্টোরি বর্ডারের মতো কালারফুল বাটন */
-    color: white; border: none;
-    padding: 14px 40px; border-radius: 50px; font-size: 16px;
-    font-weight: 700; display: flex; align-items: center; gap: 12px;
-    box-shadow: 0 4px 15px rgba(220, 39, 67, 0.4);
-    transition: 0.3s;
-    cursor: pointer;
+  .effect-scroll {
+    display: flex; gap: 15px; overflow-x: auto; width: 100%;
+    padding: 10px 20px 30px; scrollbar-width: none;
   }
-  
-  .share-now-btn:active { transform: scale(0.95); opacity: 0.9; }
+  .effect-scroll::-webkit-scrollbar { display: none; }
+
+  .effect-circle {
+    min-width: 70px; height: 70px; border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.5); overflow: hidden;
+    flex-shrink: 0; transition: 0.3s;
+  }
+  .effect-circle.selected { border-color: #fff; transform: scale(1.1); box-shadow: 0 0 15px #fff; }
+  .effect-circle img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* শেয়ার বাটন */
+  .footer { position: absolute; bottom: 30px; width: 100%; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+  .share-now {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    color: white; border: none; padding: 12px 30px; border-radius: 50px;
+    font-weight: bold; display: flex; align-items: center; gap: 8px;
+  }
 </style>
 </head>
 <body>
 
-<div class="story-wrapper">
-  <img id="story-preview" src="" alt="Preview">
-
-  <div class="header">
-    <span class="material-icons" onclick="history.back()" style="cursor:pointer">close</span>
-  </div>
+<div class="editor-container">
+  <canvas id="mainCanvas"></canvas>
 
   <div class="side-tools">
-    <div class="tool-item"><span style="text-shadow: 0 1px 3px #000;">Stickers</span><div class="tool-icon"><span class="material-icons">sentiment_satisfied</span></div></div>
-    <div class="tool-item"><span style="text-shadow: 0 1px 3px #000;">Text</span><div class="tool-icon"><span class="material-icons">title</span></div></div>
-    <div class="tool-item"><span style="text-shadow: 0 1px 3px #000;">Music</span><div class="tool-icon"><span class="material-icons">music_note</span></div></div>
-    <div class="tool-item"><span style="text-shadow: 0 1px 3px #000;">Effects</span><div class="tool-icon"><span class="material-icons">auto_fix_high</span></div></div>
+    <div class="tool-btn" onclick="addText()"><small>Text</small><div class="icon-bg"><span class="material-icons">title</span></div></div>
+    <div class="tool-btn" onclick="openEffects()"><small>Effects</small><div class="icon-bg"><span class="material-icons">auto_fix_high</span></div></div>
+    <div class="tool-btn"><small>Music</small><div class="icon-bg"><span class="material-icons">music_note</span></div></div>
   </div>
 
-  <div class="footer">
-    <div class="music-scroll">
-      <div class="music-sticker">
-        <img src="https://via.placeholder.com/40" style="border-radius:4px">
-        <div style="font-size:12px"><b>Lutt Le Gaya (Unplugged)</b><br>Jibon Krishna Das</div>
+  <div id="effect-panel">
+    <div class="done-bar"><span class="done-text" onclick="closeEffects()">Done</span></div>
+    <div class="effect-scroll" id="effectContainer">
       </div>
-    </div>
+  </div>
 
-    <div class="bottom-actions">
-      <span class="material-icons">settings</span>
-      <button class="share-now-btn" onclick="shareNow()">
-        Share now <span class="material-icons">send</span>
-      </button>
-    </div>
+  <div class="footer" id="mainFooter">
+    <span class="material-icons">settings</span>
+    <button class="share-now">Share now <span class="material-icons">send</span></button>
   </div>
 </div>
 
 <script>
-  window.onload = function() {
+  const canvas = new fabric.Canvas('mainCanvas', {
+    width: window.innerWidth,
+    height: window.innerHeight,
+    selection: false
+  });
+
+  // ছবি লোড
+  window.onload = () => {
     const data = localStorage.getItem("tempStory");
-    if (data) document.getElementById('story-preview').src = data;
+    if (data) {
+      fabric.Image.fromURL(data, (img) => {
+        const scale = Math.max(canvas.width / img.width, canvas.height / img.height);
+        img.set({ originX: 'center', originY: 'center', left: canvas.width/2, top: canvas.height/2, scaleX: scale, scaleY: scale, selectable: false });
+        canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
+      });
+    }
+    generateEffects();
   };
 
-  function shareNow() {
-    alert("আপনার স্টোরি শেয়ার করা হচ্ছে...");
-    window.location.href = "index.html";
+  // ২০টি ইফেক্ট জেনারেট করা
+  const effectNames = ["Original", "Sad", "Happy", "Vintage", "B&W", "Night", "Cool", "Warm", "Bright", "Dark", "Pinky", "Gold", "Neon", "Retro", "Soft", "Hard", "Saturate", "Hue", "Blur", "Sharp"];
+  
+  function generateEffects() {
+    const container = document.getElementById('effectContainer');
+    effectNames.forEach((name, index) => {
+      const div = document.createElement('div');
+      div.className = `effect-circle ${index === 0 ? 'selected' : ''}`;
+      // এখানে আপনার ২০টি ইফেক্ট ইমেজের লিঙ্ক দিতে হবে
+      div.innerHTML = `<img src="https://via.placeholder.com/100?text=${name}" onclick="applyFilter('${name}', this)">`;
+      container.appendChild(div);
+    });
+  }
+
+  function openEffects() {
+    document.getElementById('effect-panel').classList.add('active');
+    document.getElementById('mainFooter').style.display = 'none';
+  }
+
+  function closeEffects() {
+    document.getElementById('effect-panel').classList.remove('active');
+    document.getElementById('mainFooter').style.display = 'flex';
+  }
+
+  function applyFilter(type, el) {
+    document.querySelectorAll('.effect-circle').forEach(c => c.classList.remove('selected'));
+    el.parentElement.classList.add('selected');
+    
+    const img = canvas.backgroundImage;
+    if (!img) return;
+
+    img.filters = []; // রিসেট
+    
+    // কিছু স্যাম্পল ফিল্টার লজিক
+    if (type === 'Sad') img.filters.push(new fabric.Image.filters.Grayscale());
+    if (type === 'Happy') img.filters.push(new fabric.Image.filters.Contrast({ contrast: 0.3 }));
+    if (type === 'Vintage') img.filters.push(new fabric.Image.filters.Sepia());
+    if (type === 'B&W') img.filters.push(new fabric.Image.filters.BlackWhite());
+    if (type === 'Night') img.filters.push(new fabric.Image.filters.Brightness({ brightness: -0.3 }));
+
+    img.applyFilters();
+    canvas.renderAll();
+  }
+
+  function addText() {
+    const text = new fabric.IText('টাইপ করুন', { left: 100, top: 100, fill: '#fff' });
+    canvas.add(text);
   }
 </script>
 
