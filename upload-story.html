@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Story Upload</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+  :root { 
+    /* এখানে আপনার পছন্দের কালার কোড দিতে পারেন */
+    --share-btn-bg: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); 
+    --glass: rgba(255, 255, 255, 0.2); 
+  }
+  
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #000; color: white; height: 100vh; overflow: hidden; }
+
+  .story-wrapper { position: relative; width: 100%; height: 100dvh; display: flex; flex-direction: column; }
+
+  /* প্রিভিউ ইমেজ */
+  #story-preview { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1; }
+
+  /* টুলবারসমূহ */
+  .header {
+    position: relative; z-index: 10; display: flex; justify-content: space-between;
+    padding: 20px; background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
+  }
+
+  .side-tools {
+    position: absolute; right: 15px; top: 80px; z-index: 10;
+    display: flex; flex-direction: column; gap: 20px; align-items: flex-end;
+  }
+  .tool-item { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+  .tool-icon {
+    width: 40px; height: 40px; background: var(--glass);
+    backdrop-filter: blur(10px); border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+
+  /* বটম সেকশন */
+  .footer {
+    position: absolute; bottom: 0; width: 100%; z-index: 10;
+    padding: 25px 20px 40px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  }
+
+  .music-scroll {
+    display: flex; gap: 12px; margin-bottom: 25px; overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .music-sticker {
+    background: white; color: black; padding: 10px 15px; border-radius: 12px;
+    display: flex; align-items: center; gap: 12px; min-width: 240px;
+  }
+
+  /* নতুন শেয়ার বাটন কালার ও ডিজাইন */
+  .bottom-actions { display: flex; justify-content: space-between; align-items: center; }
+  
+  .share-now-btn {
+    background: var(--share-btn-bg); /* স্টোরি বর্ডারের মতো কালারফুল বাটন */
+    color: white; border: none;
+    padding: 14px 40px; border-radius: 50px; font-size: 16px;
+    font-weight: 700; display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 4px 15px rgba(220, 39, 67, 0.4);
+    transition: 0.3s;
+    cursor: pointer;
+  }
+  
+  .share-now-btn:active { transform: scale(0.95); opacity: 0.9; }
+</style>
+</head>
+<body>
+
+<div class="story-wrapper">
+  <img id="story-preview" src="" alt="Preview">
+
+  <div class="header">
+    <span class="material-icons" onclick="history.back()" style="cursor:pointer">close</span>
+  </div>
+
+  <div class="side-tools">
+    <div class="tool-item"><span style="text-shadow: 0 1px 3px #000;">Stickers</span><div class="tool-icon"><span class="material-icons">sentiment_satisfied</span></div></div>
+    <div class="tool-item"><span style="text-shadow: 0 1px 3px #000;">Text</span><div class="tool-icon"><span class="material-icons">title</span></div></div>
+    <div class="tool-item"><span style="text-shadow: 0 1px 3px #000;">Music</span><div class="tool-icon"><span class="material-icons">music_note</span></div></div>
+    <div class="tool-item"><span style="text-shadow: 0 1px 3px #000;">Effects</span><div class="tool-icon"><span class="material-icons">auto_fix_high</span></div></div>
+  </div>
+
+  <div class="footer">
+    <div class="music-scroll">
+      <div class="music-sticker">
+        <img src="https://via.placeholder.com/40" style="border-radius:4px">
+        <div style="font-size:12px"><b>Lutt Le Gaya (Unplugged)</b><br>Jibon Krishna Das</div>
+      </div>
+    </div>
+
+    <div class="bottom-actions">
+      <span class="material-icons">settings</span>
+      <button class="share-now-btn" onclick="shareNow()">
+        Share now <span class="material-icons">send</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.onload = function() {
+    const data = localStorage.getItem("tempStory");
+    if (data) document.getElementById('story-preview').src = data;
+  };
+
+  function shareNow() {
+    alert("আপনার স্টোরি শেয়ার করা হচ্ছে...");
+    window.location.href = "index.html";
+  }
+</script>
+
+</body>
+</html>
