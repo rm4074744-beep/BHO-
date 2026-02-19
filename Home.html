@@ -30,26 +30,55 @@ body{
 /* ===== STORY BAR ===== */
 .story-bar{
   display:flex;
-  gap:18px;
+  gap:15px;
   overflow-x:auto;
-  padding:15px;
+  padding:12px 15px;
   background:white;
   border-bottom:1px solid #eee;
 }
 
 .story-box{
   width:85px;
-  text-align:center;
   flex-shrink:0;
-  position:relative;
+  text-align:center;
   cursor:pointer;
 }
 
-.story-svg{
+/* HEXAGON DESIGN */
+.story-hex{
+  position:relative;
   width:80px;
-  height:80px;
-  display:block;
+  height:90px;
   margin:auto;
+}
+
+.story-hex::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(45deg,#00f2ff,#6a5acd,#ff6ec7);
+  clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+}
+
+.story-hex::after{
+  content:"";
+  position:absolute;
+  inset:4px;
+  background:white;
+  clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+}
+
+.story-hex img{
+  position:absolute;
+  inset:8px;
+  width:calc(100% - 16px);
+  height:calc(100% - 16px);
+  object-fit:cover;
+  clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+}
+
+.story-hex.seen::before{
+  background:grey;
 }
 
 .story-name{
@@ -57,31 +86,78 @@ body{
   margin-top:6px;
 }
 
-/* Plus Button */
-.plus-btn{
-  position:absolute;
-  bottom:30px;
-  right:5px;
-  width:28px;
-  height:28px;
-  background:#000;
-  color:#fff;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
+/* ===== STORY VIEWER ===== */
+.story-viewer{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:black;
+  display:none;
+  flex-direction:column;
   justify-content:center;
-  font-size:18px;
-  border:3px solid #fff;
-  cursor:pointer;
+  align-items:center;
+  z-index:5000;
+}
+
+.story-viewer img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.progress-bar{
+  position:absolute;
+  top:10px;
+  left:10px;
+  right:10px;
+  height:4px;
+  background:rgba(255,255,255,0.3);
+}
+
+.progress{
+  height:100%;
+  width:0%;
+  background:white;
 }
 
 /* ===== CONTENT ===== */
-.content{padding:20px;margin-bottom:100px;}
+.content{
+  padding:20px;
+  margin-bottom:100px;
+}
 
-/* ===== FLOAT UPLOAD BUTTON ===== */
+.post{
+  background:white;
+  padding:10px;
+  border-radius:12px;
+  margin-bottom:15px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.post-header{
+  display:flex;
+  align-items:center;
+  margin-bottom:8px;
+}
+
+.post-header img{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  margin-right:10px;
+}
+
+.post img{
+  width:100%;
+  border-radius:10px;
+}
+
+/* FLOAT BUTTON */
 .upload-btn{
   position:fixed;
-  bottom:80px;
+  bottom:70px;
   right:25px;
   width:60px;
   height:60px;
@@ -97,7 +173,7 @@ body{
   cursor:pointer;
 }
 
-/* ===== BOTTOM NAV ===== */
+/* BOTTOM NAV */
 .bottom-nav{
   position:fixed;
   bottom:0;
@@ -122,125 +198,132 @@ body{
   font-size:28px;
 }
 
-.active{
-  color:#0b3d91 !important;
-}
+.active{color:#0b3d91 !important;}
 </style>
 </head>
 
 <body>
 
-<!-- ===== TOP BAR ===== -->
+<!-- TOP BAR -->
 <div class="top-bar">
   <div class="logo">MingleJoys</div>
   <div class="top-icons">
-    <span class="material-icons" onclick="go('notification.html')">notifications</span>
-    <span class="material-icons" onclick="go('search.html')">search</span>
-    <span class="material-icons" onclick="go('menu.html')">menu</span>
+    <span class="material-icons">notifications</span>
+    <span class="material-icons">search</span>
+    <span class="material-icons">menu</span>
   </div>
 </div>
 
-<!-- ===== STORY BAR ===== -->
-<div class="story-bar">
+<!-- STORY BAR -->
+<div class="story-bar" id="storyBar"></div>
 
-  <!-- YOUR STORY -->
-  <div class="story-box" onclick="go('story-upload.html')">
-    <svg viewBox="0 0 200 200" class="story-svg">
-
-      <defs>
-        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#00f2ff"/>
-          <stop offset="50%" stop-color="#6a5acd"/>
-          <stop offset="100%" stop-color="#ff6ec7"/>
-        </linearGradient>
-
-        <clipPath id="clipHex">
-          <polygon points="100,30 165,65 165,135 100,170 35,135 35,65"/>
-        </clipPath>
-      </defs>
-
-      <polygon
-        points="100,20 180,60 180,140 100,180 20,140 20,60"
-        fill="none"
-        stroke="url(#grad1)"
-        stroke-width="16"
-        stroke-linejoin="round"/>
-
-      <polygon
-        points="100,30 165,65 165,135 100,170 35,135 35,65"
-        fill="white"/>
-
-      <image
-        href="https://via.placeholder.com/300"
-        x="35" y="30"
-        width="130" height="140"
-        clip-path="url(#clipHex)"
-        preserveAspectRatio="xMidYMid slice"/>
-
-    </svg>
-
-    <div class="plus-btn">+</div>
-    <div class="story-name">Your story</div>
+<!-- STORY VIEWER -->
+<div class="story-viewer" id="viewer">
+  <div class="progress-bar">
+    <div class="progress" id="progress"></div>
   </div>
-
+  <img id="storyImage">
 </div>
 
-<!-- ===== CONTENT ===== -->
-<div class="content">
-  <h3>Welcome to MingleJoys</h3>
-  <p>This is your home feed.</p>
-</div>
+<!-- CONTENT -->
+<div class="content" id="content"></div>
 
 <!-- FLOAT BUTTON -->
-<div class="upload-btn" onclick="go('story-upload.html')">+</div>
+<div class="upload-btn" onclick="document.getElementById('fileInput').click()">+</div>
+<input type="file" id="fileInput" accept="image/*" style="display:none">
 
 <!-- BOTTOM NAV -->
 <div class="bottom-nav">
-  <a href="index.html" id="nav-home">
+  <div class="active">
     <span class="material-icons">home</span>
     Home
-  </a>
-  <a href="reels.html" id="nav-reels">
+  </div>
+  <a href="reels.html">
     <span class="material-icons">smart_display</span>
     Reels
   </a>
-  <a href="gift.html" id="nav-gift">
+  <a href="gift.html">
     <span class="material-icons">card_giftcard</span>
     Gift
   </a>
-  <a href="friend.html" id="nav-friend">
+  <a href="friend.html">
     <span class="material-icons">group</span>
     Friend
   </a>
-  <a href="profile.html" id="nav-profile">
+  <a href="profile.html">
     <span class="material-icons">person</span>
     Profile
   </a>
 </div>
 
-<script>
-function go(page){
-  location.href = page;
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const supabase = createClient("YOUR_SUPABASE_URL","YOUR_SUPABASE_KEY");
+
+/* LOAD STORIES */
+async function loadStories(){
+  const storyBar = document.getElementById("storyBar");
+  storyBar.innerHTML="";
+
+  // CREATE STORY FIRST
+  storyBar.innerHTML += `
+    <div class="story-box" onclick="window.location.href='upload.story.html'">
+      <div class="story-hex seen">
+        <img src="https://via.placeholder.com/150">
+      </div>
+      <div class="story-name">Create</div>
+    </div>
+  `;
+
+  const { data } = await supabase.from("stories").select("*").order("created_at",{ascending:false});
+  const now = new Date().getTime();
+
+  data?.forEach(story=>{
+    const storyTime = new Date(story.created_at).getTime();
+    const hours = (now - storyTime)/(1000*60*60);
+
+    if(hours<24){
+      storyBar.innerHTML += `
+        <div class="story-box" onclick="openStory('${story.image_url}', this)">
+          <div class="story-hex">
+            <img src="${story.image_url}">
+          </div>
+          <div class="story-name">${story.user_name}</div>
+        </div>
+      `;
+    }
+  });
 }
 
-// Active highlight auto detect
-const current = location.pathname.split("/").pop();
+loadStories();
 
-if(current === "index.html"){
-  document.getElementById("nav-home").classList.add("active");
+/* STORY VIEWER */
+let timer;
+
+window.openStory = function(img, el){
+  document.getElementById("viewer").style.display="flex";
+  document.getElementById("storyImage").src = img;
+  const progress = document.getElementById("progress");
+  progress.style.width="0%";
+
+  let width=0;
+  timer=setInterval(()=>{
+    width+=1;
+    progress.style.width=width+"%";
+    if(width>=100) closeStory();
+  },50);
+
+  el.querySelector(".story-hex").classList.add("seen");
 }
-if(current === "reels.html"){
-  document.getElementById("nav-reels").classList.add("active");
+
+function closeStory(){
+  document.getElementById("viewer").style.display="none";
+  clearInterval(timer);
 }
-if(current === "gift.html"){
-  document.getElementById("nav-gift").classList.add("active");
-}
-if(current === "friend.html"){
-  document.getElementById("nav-friend").classList.add("active");
-}
-if(current === "profile.html"){
-  document.getElementById("nav-profile").classList.add("active");
-}
+
+document.getElementById("viewer").addEventListener("click", closeStory);
+
 </script>
 
 </body>
