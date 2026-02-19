@@ -1,235 +1,174 @@
 <!DOCTYPE html>
-<html>
+<html lang="bn">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MingleJoys - Home</title>
-
+<title>MingleJoys - Official UI</title>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#f2f2f2;
-}
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Segoe UI', Arial, sans-serif; background: #fff; overflow-x: hidden; }
 
-/* ===== TOP BAR ===== */
-.top-bar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:12px 15px;
-  background:white;
-  box-shadow:0 2px 5px rgba(0,0,0,0.1);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+  /* ===== TOP BAR (সঠিক লোকেশন অনুযায়ী) ===== */
+  .top-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 15px; background: white; position: sticky; top: 0; z-index: 1000;
+    border-bottom: 1px solid #efefef;
+  }
+  .logo { font-size: 24px; font-weight: bold; color: #1877f2; font-family: 'Arial Black', sans-serif; }
+  .top-icons { display: flex; gap: 15px; }
+  .top-icons .material-icons { cursor: pointer; font-size: 28px; color: #262626; }
 
-.logo{font-size:22px;font-weight:bold;}
-.top-icons{display:flex;gap:15px;}
-.top-icons span{cursor:pointer;font-size:26px;}
+  /* ===== STORY BAR (Rounded Hexagon Style) ===== */
+  .story-bar {
+    display: flex; gap: 12px; overflow-x: auto; padding: 15px 10px;
+    background: white; border-bottom: 1px solid #efefef;
+    scrollbar-width: none;
+  }
+  .story-bar::-webkit-scrollbar { display: none; }
 
-/* ===== STORY BAR ===== */
-.story-bar{
-  display:flex;
-  gap:15px;
-  overflow-x:auto;
-  padding:15px;
-  background:white;
-  border-bottom:1px solid #eee;
-}
+  .story-item { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; cursor: pointer; position: relative; }
 
-.story-box{
-  width:85px;
-  text-align:center;
-  flex-shrink:0;
-  cursor:pointer;
-  position: relative;
-}
+  /* প্রোফাইলের ওপর নীল প্লাস বাটন (ছবি অনুযায়ী) */
+  .plus-badge {
+    position: absolute; bottom: 25px; right: 8px;
+    width: 22px; height: 22px;
+    background: #0095f6; border: 2px solid white;
+    border-radius: 50%; display: flex; justify-content: center; align-items: center;
+    color: white; font-size: 18px; font-weight: bold; z-index: 10;
+  }
 
-.story-hex{
-  width:80px;
-  height:90px;
-  clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
-  border:3px solid #2563eb;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  overflow:hidden;
-  background: linear-gradient(45deg,#00f2ff,#6a5acd,#ff6ec7);
-}
+  /* Hexagon Container */
+  .hexagon-container {
+    width: 85px; height: 85px;
+    position: relative;
+    display: flex; justify-content: center; align-items: center;
+  }
 
-.story-hex img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
+  .hexagon-svg { width: 100%; height: 100%; position: absolute; }
+  
+  .user-img {
+    width: 72px; height: 72px;
+    object-fit: cover;
+    clip-path: url(#hex-clip); /* হেক্সাগন শেপ */
+    z-index: 2;
+  }
 
-.story-name{
-  font-size:12px;
-  margin-top:6px;
-}
+  .story-name { font-size: 11px; margin-top: 5px; color: #262626; text-align: center; width: 85px; overflow: hidden; }
 
-/* ===== FLOAT UPLOAD BUTTON ===== */
-.upload-btn{
-  position:fixed;
-  bottom:80px;
-  right:25px;
-  width:60px;
-  height:60px;
-  border-radius:50%;
-  background:#1877f2;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:white;
-  font-size:30px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.3);
-  z-index:1500;
-  cursor:pointer;
-}
+  /* ===== BOTTOM NAV (সঠিক লোকেশন অনুযায়ী) ===== */
+  .bottom-nav {
+    position: fixed; bottom: 0; width: 100%; height: 65px;
+    background: white; display: flex; justify-content: space-around;
+    align-items: center; border-top: 1px solid #efefef; z-index: 1000;
+  }
+  .bottom-nav a { text-decoration: none; color: #262626; display: flex; flex-direction: column; align-items: center; flex: 1; transition: 0.2s; }
+  .bottom-nav .material-icons { font-size: 30px; margin-bottom: 2px; }
+  .active-nav { color: #1877f2 !important; }
 
-/* ===== CONTENT ===== */
-.content{
-  padding:20px;
-  margin-bottom:100px;
-}
-
-/* ===== BOTTOM NAV ===== */
-.bottom-nav{
-  position:fixed;
-  bottom:0;
-  width:100%;
-  height:65px;
-  background:white;
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-  box-shadow:0 -2px 5px rgba(0,0,0,0.1);
-}
-
-.bottom-nav a{
-  text-decoration:none;
-  color:#555;
-  text-align:center;
-  font-size:12px;
-}
-
-.bottom-nav .material-icons{
-  display:block;
-  font-size:28px;
-}
-
-.active{
-  color:#0b3d91 !important;
-}
-
-/* ===== POSTS ===== */
-.post{
-  background:white;
-  padding:10px;
-  border-radius:12px;
-  margin-bottom:15px;
-  box-shadow:0 2px 5px rgba(0,0,0,0.1);
-}
-
-.post-header{
-  display:flex;
-  align-items:center;
-  margin-bottom:8px;
-}
-
-.post-header img{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  margin-right:10px;
-}
-
-.post img{
-  width:100%;
-  border-radius:10px;
-}
+  /* Hidden Input */
+  #file-selector { display: none; }
+  
+  .feed-content { padding: 50px; text-align: center; color: #999; font-size: 14px; }
 </style>
 </head>
-
 <body>
 
-<!-- ===== TOP BAR ===== -->
+<svg width="0" height="0">
+  <defs>
+    <clipPath id="hex-clip" clipPathUnits="objectBoundingBox">
+      <path d="M0.5,0 L0.9,0.2 C0.98,0.25 1,0.35 1,0.45 L1,0.55 C1,0.65 0.98,0.75 0.9,0.8 L0.5,1 L0.1,0.8 C0.02,0.75 0,0.65 0,0.55 L0,0.45 C0,0.35 0.02,0.25 0.1,0.2 L0.5,0 Z"></path>
+    </clipPath>
+  </defs>
+</svg>
+
+<input type="file" id="file-selector" accept="image/*,video/*">
+
 <div class="top-bar">
   <div class="logo">MingleJoys</div>
   <div class="top-icons">
-    <span class="material-icons" onclick="go('notification.html')">notifications</span>
-    <span class="material-icons" onclick="go('search.html')">search</span>
-    <span class="material-icons" onclick="go('menu.html')">menu</span>
+    <span class="material-icons" onclick="location.href='search.html'">search</span>
+    <span class="material-icons" onclick="location.href='notification.html'">notifications_none</span>
+    <span class="material-icons" onclick="location.href='menu.html'">menu</span>
   </div>
 </div>
 
-<!-- ===== STORY BAR ===== -->
-<div class="story-bar" id="storyBar"></div>
-
-<!-- ===== CONTENT ===== -->
-<div class="content" id="content">
-  <h3>Welcome to MingleJoys</h3>
-  <p>This is your home feed.</p>
+<div class="story-bar" id="storyBar">
+  <div class="story-item" onclick="openGallery()">
+    <div class="hexagon-container">
+      <svg class="hexagon-svg" viewBox="0 0 100 100">
+        <path d="M50 5 L90 25 Q95 28 95 35 L95 65 Q95 72 90 75 L50 95 L10 75 Q5 72 5 65 L5 35 Q5 28 10 25 Z" 
+              fill="none" stroke="#ddd" stroke-width="3" />
+      </svg>
+      <img src="your-profile-pic.jpg" class="user-img" onerror="this.src='https://via.placeholder.com/150'">
+      <div class="plus-badge">+</div>
+    </div>
+    <div class="story-name">Your story</div>
+  </div>
 </div>
 
-<!-- FLOAT UPLOAD BUTTON -->
-<div class="upload-btn" onclick="go('upload-story.html')">+</div>
+<div class="feed-content">
+  <p>ফিড লোড হচ্ছে...</p>
+</div>
 
-<!-- BOTTOM NAV -->
 <div class="bottom-nav">
-  <a href="index.html" id="nav-home"><span class="material-icons">home</span>Home</a>
-  <a href="reels.html" id="nav-reels"><span class="material-icons">smart_display</span>Reels</a>
-  <a href="gift.html" id="nav-gift"><span class="material-icons">card_giftcard</span>Gift</a>
-  <a href="friend.html" id="nav-friend"><span class="material-icons">group</span>Friend</a>
-  <a href="profile.html" id="nav-profile"><span class="material-icons">person</span>Profile</a>
+  <a href="index.html" class="active-nav"><span class="material-icons">home</span></a>
+  <a href="reels.html"><span class="material-icons">smart_display</span></a>
+  <a href="gift.html"><span class="material-icons">card_giftcard</span></a>
+  <a href="friend.html"><span class="material-icons">group</span></a>
+  <a href="profile.html"><span class="material-icons">account_circle</span></a>
 </div>
 
 <script>
-// Navigation helper
-function go(page){
-  window.location.href = page;
-}
-
-// Active nav highlight
-const current = location.pathname.split("/").pop();
-if(current === "index.html") document.getElementById("nav-home").classList.add("active");
-if(current === "reels.html") document.getElementById("nav-reels").classList.add("active");
-if(current === "gift.html") document.getElementById("nav-gift").classList.add("active");
-if(current === "friend.html") document.getElementById("nav-friend").classList.add("active");
-if(current === "profile.html") document.getElementById("nav-profile").classList.add("active");
-
-// ===== STORY BAR CONTENT =====
-const storyBar = document.getElementById("storyBar");
-
-// প্রথমে Create Story
-storyBar.innerHTML = `
-  <div class="story-box" onclick="go('upload-story.html')">
-    <div class="story-hex">
-      <img src="https://via.placeholder.com/150" alt="Create Story">
-    </div>
-    <div class="story-name">Create</div>
-  </div>
-`;
-
-// উদাহরণ Story cards
-const stories = [
-  {name:"Alice", img:"https://via.placeholder.com/150/FF6EC7"},
-  {name:"Bob", img:"https://via.placeholder.com/150/6A5ACD"},
-  {name:"Charlie", img:"https://via.placeholder.com/150/00F2FF"},
+// ১. আপনার দেওয়া ছবি অনুযায়ী স্টোরি জেনারেট করা
+const userStories = [
+  {name: "sahice_w23", img: "https://randomuser.me/api/portraits/men/11.jpg", c1: "#40e0d0", c2: "#32cd32"},
+  {name: "sahiid_072", img: "https://randomuser.me/api/portraits/men/22.jpg", c1: "#8a2be2", c2: "#4b0082"},
+  {name: "glaxsy_r", img: "https://randomuser.me/api/portraits/women/33.jpg", c1: "#ff1493", c2: "#ffb6c1"},
+  {name: "si.dali656", img: "https://randomuser.me/api/portraits/men/44.jpg", c1: "#ffa500", c2: "#ffff00"}
 ];
 
-stories.forEach(s=>{
+const storyBar = document.getElementById("storyBar");
+
+userStories.forEach((s, index) => {
+  const gradId = `grad${index}`;
   storyBar.innerHTML += `
-    <div class="story-box">
-      <div class="story-hex">
-        <img src="${s.img}" alt="${s.name}">
+    <div class="story-item">
+      <div class="hexagon-container">
+        <svg class="hexagon-svg" viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="${gradId}" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:${s.c1}" />
+              <stop offset="100%" style="stop-color:${s.c2}" />
+            </linearGradient>
+          </defs>
+          <path d="M50 5 L90 25 Q95 28 95 35 L95 65 Q95 72 90 75 L50 95 L10 75 Q5 72 5 65 L5 35 Q5 28 10 25 Z" 
+                fill="none" stroke="url(#${gradId})" stroke-width="3" />
+        </svg>
+        <img src="${s.img}" class="user-img">
       </div>
       <div class="story-name">${s.name}</div>
     </div>
   `;
+});
+
+// ২. গ্যালারি ওপেন ফাংশন
+function openGallery() {
+  document.getElementById('file-selector').click();
+}
+
+// ৩. ফাইল সিলেক্ট করলে 'upload-story.html' পেজে নিয়ে যাওয়া
+document.getElementById('file-selector').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      localStorage.setItem("tempStory", event.target.result); // ডেটা স্টোর
+      window.location.href = "upload-story.html"; // লোকেশন পরিবর্তন
+    };
+    reader.readAsDataURL(file);
+  }
 });
 </script>
 
