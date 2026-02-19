@@ -11,10 +11,8 @@
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body { margin: 0; background: #000; color: white; font-family: sans-serif; overflow: hidden; height: 100vh; }
 
-  /* ক্যানভাস এলাকা */
   .editor-container { position: relative; width: 100%; height: 100vh; }
   
-  /* সাইড টুলস */
   .side-tools {
     position: absolute; right: 15px; top: 80px; z-index: 50;
     display: flex; flex-direction: column; gap: 20px;
@@ -29,7 +27,7 @@
     border: 1px solid rgba(255,255,255,0.3);
   }
 
-  /* ইফেক্ট প্যানেল (Snapchat Style) */
+  /* ইফেক্ট প্যানেল */
   #effect-panel {
     position: absolute; bottom: -200px; width: 100%; height: 180px;
     background: linear-gradient(transparent, rgba(0,0,0,0.9));
@@ -55,7 +53,6 @@
   .effect-circle.selected { border-color: #fff; transform: scale(1.1); box-shadow: 0 0 15px #fff; }
   .effect-circle img { width: 100%; height: 100%; object-fit: cover; }
 
-  /* শেয়ার বাটন */
   .footer { position: absolute; bottom: 30px; width: 100%; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
   .share-now {
     background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
@@ -77,8 +74,7 @@
 
   <div id="effect-panel">
     <div class="done-bar"><span class="done-text" onclick="closeEffects()">Done</span></div>
-    <div class="effect-scroll" id="effectContainer">
-      </div>
+    <div class="effect-scroll" id="effectContainer"></div>
   </div>
 
   <div class="footer" id="mainFooter">
@@ -94,7 +90,6 @@
     selection: false
   });
 
-  // ছবি লোড
   window.onload = () => {
     const data = localStorage.getItem("tempStory");
     if (data) {
@@ -107,16 +102,25 @@
     generateEffects();
   };
 
-  // ২০টি ইফেক্ট জেনারেট করা
-  const effectNames = ["Original", "Sad", "Happy", "Vintage", "B&W", "Night", "Cool", "Warm", "Bright", "Dark", "Pinky", "Gold", "Neon", "Retro", "Soft", "Hard", "Saturate", "Hue", "Blur", "Sharp"];
-  
+  // এখানে আপনার ২০টি ইফেক্টের নাম এবং ইমেজের লিঙ্ক দিন
+  const myEffects = [
+    { name: "Original", thumb: "https://via.placeholder.com/100?text=Original" },
+    { name: "Sad", thumb: "https://via.placeholder.com/100/555/fff?text=Sad" },
+    { name: "Happy", thumb: "https://via.placeholder.com/100/f39c12/fff?text=Happy" },
+    { name: "Vintage", thumb: "https://via.placeholder.com/100/e67e22/fff?text=Vintage" },
+    { name: "B&W", thumb: "https://via.placeholder.com/100/000/fff?text=B&W" },
+    { name: "Night", thumb: "https://via.placeholder.com/100/2c3e50/fff?text=Night" },
+    { name: "Retro", thumb: "https://via.placeholder.com/100/8e44ad/fff?text=Retro" },
+    // এভাবে ২০ পর্যন্ত ইমেজ লিঙ্ক যোগ করুন...
+  ];
+
   function generateEffects() {
     const container = document.getElementById('effectContainer');
-    effectNames.forEach((name, index) => {
+    myEffects.forEach((eff, index) => {
       const div = document.createElement('div');
       div.className = `effect-circle ${index === 0 ? 'selected' : ''}`;
-      // এখানে আপনার ২০টি ইফেক্ট ইমেজের লিঙ্ক দিতে হবে
-      div.innerHTML = `<img src="https://via.placeholder.com/100?text=${name}" onclick="applyFilter('${name}', this)">`;
+      // এখানে eff.thumb ব্যবহার করে ইমেজটি গোল বাটনের ভেতর বসানো হচ্ছে
+      div.innerHTML = `<img src="${eff.thumb}" onclick="applyFilter('${eff.name}', this)">`;
       container.appendChild(div);
     });
   }
@@ -138,22 +142,28 @@
     const img = canvas.backgroundImage;
     if (!img) return;
 
-    img.filters = []; // রিসেট
+    img.filters = []; 
     
-    // কিছু স্যাম্পল ফিল্টার লজিক
     if (type === 'Sad') img.filters.push(new fabric.Image.filters.Grayscale());
     if (type === 'Happy') img.filters.push(new fabric.Image.filters.Contrast({ contrast: 0.3 }));
     if (type === 'Vintage') img.filters.push(new fabric.Image.filters.Sepia());
     if (type === 'B&W') img.filters.push(new fabric.Image.filters.BlackWhite());
     if (type === 'Night') img.filters.push(new fabric.Image.filters.Brightness({ brightness: -0.3 }));
+    // আপনার অন্য ফিল্টার লজিকগুলো এখানে লিখুন
 
     img.applyFilters();
     canvas.renderAll();
   }
 
   function addText() {
-    const text = new fabric.IText('টাইপ করুন', { left: 100, top: 100, fill: '#fff' });
+    const text = new fabric.IText('টাইপ করুন', { 
+        left: canvas.width/2, 
+        top: canvas.height/2, 
+        fill: '#fff',
+        originX: 'center'
+    });
     canvas.add(text);
+    canvas.setActiveObject(text);
   }
 </script>
 
