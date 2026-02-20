@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premium Story Editor</title>
+<title>Premium Story Editor - 50+ Audio Support</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -13,6 +13,7 @@
 
   .editor-container { position: relative; width: 100%; height: 100vh; }
   
+  /* সাইড টুলস */
   .side-tools {
     position: absolute; right: 15px; top: 60px; z-index: 50;
     display: flex; flex-direction: column; gap: 15px;
@@ -25,43 +26,47 @@
     border: 1px solid rgba(255,255,255,0.2);
   }
 
-  #effect-panel {
+  /* প্যানেল স্টাইল */
+  #effect-panel, #audio-panel {
     position: absolute; 
-    bottom: -220px; 
+    bottom: -300px; 
     width: 100%; 
     z-index: 100; 
     transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(20px);
+    padding-top: 15px;
+    border-top: 1px solid rgba(255,255,255,0.1);
   }
   
-  #effect-panel.active { bottom: 110px; }
+  #effect-panel.active, #audio-panel.active { bottom: 110px; }
 
   .done-bar { width: 100%; display: flex; justify-content: center; margin-bottom: 15px; }
   .done-btn { 
     background: #fff; color: #000; padding: 6px 24px; 
     border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 14px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   }
 
   .effect-scroll {
-    display: flex; gap: 12px; overflow-x: auto; width: 100%;
-    padding: 0 20px 10px; scrollbar-width: none;
+    display: flex; gap: 15px; overflow-x: auto; width: 100%;
+    padding: 10px 20px 25px; scrollbar-width: none;
   }
   .effect-scroll::-webkit-scrollbar { display: none; }
 
-  .effect-item-wrapper { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .effect-item-wrapper { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 
   .effect-circle {
-    min-width: 72px; height: 72px; border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.4); overflow: hidden;
+    min-width: 70px; height: 70px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.3); overflow: hidden;
     flex-shrink: 0; transition: 0.3s; background: #111;
   }
   .effect-circle.selected { 
     border-color: #fff; border-width: 3px; transform: scale(1.1); 
-    box-shadow: 0 0 15px rgba(255,255,255,0.3); 
   }
   .effect-circle img { width: 100%; height: 100%; object-fit: cover; }
-  .eff-name { font-size: 10px; color: #ccc; }
+  .eff-name { font-size: 11px; color: #bbb; max-width: 70px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+  /* ফুটার */
   .footer { 
     position: absolute; bottom: 30px; width: 100%; 
     padding: 0 20px; display: flex; justify-content: space-between; 
@@ -70,7 +75,7 @@
   .share-now {
     background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
     color: white; border: none; padding: 12px 28px; border-radius: 50px;
-    font-weight: bold; display: flex; align-items: center; gap: 8px; font-size: 15px;
+    font-weight: bold; display: flex; align-items: center; gap: 8px;
   }
 </style>
 </head>
@@ -82,10 +87,13 @@
   <div class="side-tools">
     <div class="tool-btn" onclick="addText()"><small>Text</small><div class="icon-bg"><span class="material-icons">title</span></div></div>
     <div class="tool-btn" onclick="openEffects()"><small>Effects</small><div class="icon-bg"><span class="material-icons">auto_fix_high</span></div></div>
-    <div id="audio-panel" style="position: absolute; bottom: -220px; width: 100%; z-index: 100; transition: 0.4s;">
-  <div class="done-bar"><div class="done-btn" onclick="closeAudio()">Done</div></div>
-  <div class="effect-scroll" id="audioContainer"></div>
-    </div>
+    <div class="tool-btn" onclick="openAudio()"><small>Music</small><div class="icon-bg"><span class="material-icons">music_note</span></div></div>
+  </div>
+
+  <div id="audio-panel">
+    <div class="done-bar"><div class="done-btn" onclick="closeAudio()">Done</div></div>
+    <div class="effect-scroll" id="audioContainer"></div>
+  </div>
    
   <div id="effect-panel">
     <div class="done-bar"><div class="done-btn" onclick="closeEffects()">Done</div></div>
@@ -105,6 +113,18 @@
     selection: false
   });
 
+  // অডিও লাইব্রেরি (এখানে ৫০টি গান যোগ করার স্ট্রাকচার)
+  const myAudios = [
+    { name: "My Nasheed", url: "https://archive.org/download/gemini_generated_video_f360149b/gemini_generated_video_f360149b.mp3", icon: "music_note" },
+    { name: "Peaceful", url: "#", icon: "spa" },
+    { name: "Rain", url: "#", icon: "umbrella" },
+    { name: "Nature", url: "#", icon: "nature" },
+    { name: "Morning", url: "#", icon: "wb_sunny" },
+    // আপনি এভাবে ৫০টি পর্যন্ত কমা দিয়ে নিচে লাইন বাড়াতে পারেন
+  ];
+
+  let currentAudio = new Audio();
+
   window.onload = () => {
     const data = localStorage.getItem("tempStory");
     if (data) {
@@ -115,6 +135,7 @@
       });
     }
     generateEffects();
+    generateAudioLibrary();
   };
 
   const myEffects = [
@@ -158,16 +179,57 @@
     });
   }
 
+  function generateAudioLibrary() {
+    const container = document.getElementById('audioContainer');
+    container.innerHTML = ''; // রিফ্রেশ করার জন্য
+    myAudios.forEach(audio => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'effect-item-wrapper';
+      const div = document.createElement('div');
+      div.className = 'effect-circle';
+      div.style.display = 'flex';
+      div.style.justifyContent = 'center';
+      div.style.alignItems = 'center';
+      div.innerHTML = `<span class="material-icons" style="font-size:32px; color:white;">${audio.icon}</span>`;
+      div.onclick = () => playAudio(audio.url, div);
+      const label = document.createElement('div');
+      label.className = 'eff-name';
+      label.innerText = audio.name;
+      wrapper.appendChild(div);
+      wrapper.appendChild(label);
+      container.appendChild(wrapper);
+    });
+  }
+
   function openEffects() {
+    closeAudio();
     document.getElementById('effect-panel').classList.add('active');
     document.getElementById('mainFooter').style.opacity = "0.3";
-    document.getElementById('mainFooter').style.pointerEvents = "none";
   }
 
   function closeEffects() {
     document.getElementById('effect-panel').classList.remove('active');
     document.getElementById('mainFooter').style.opacity = "1";
-    document.getElementById('mainFooter').style.pointerEvents = "auto";
+  }
+
+  function openAudio() {
+    closeEffects();
+    document.getElementById('audio-panel').classList.add('active');
+    document.getElementById('mainFooter').style.opacity = "0.3";
+  }
+
+  function closeAudio() {
+    document.getElementById('audio-panel').classList.remove('active');
+    document.getElementById('mainFooter').style.opacity = "1";
+  }
+
+  function playAudio(url, el) {
+    document.querySelectorAll('#audioContainer .effect-circle').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    if(url !== "#") {
+        currentAudio.src = url;
+        currentAudio.play();
+    }
   }
 
   function applyFilter(type, el) {
@@ -177,7 +239,6 @@
     if (!img) return;
 
     img.filters = []; 
-
     switch(type) {
       case 'Sad': img.filters.push(new fabric.Image.filters.Grayscale()); break;
       case 'Vintage': img.filters.push(new fabric.Image.filters.Sepia()); break;
@@ -199,7 +260,6 @@
       case 'Cyber': img.filters.push(new fabric.Image.filters.HueRotation({ rotation: 0.5 })); break;
       case 'Glitch': img.filters.push(new fabric.Image.filters.Invert(), new fabric.Image.filters.Saturation({ saturation: -1 })); break;
     }
-
     img.applyFilters();
     canvas.renderAll();
   }
@@ -212,69 +272,6 @@
     canvas.add(text);
     canvas.setActiveObject(text);
   }
- // ১. আপনার অডিও লিস্ট (এখানে আপনার নাশিদ বা অডিওর লিঙ্ক দিন)
-const myAudios = [
-  { name: "Peaceful", url: "link_to_nasheed1.mp3", icon: "spa" },
-  { name: "Nature", url: "link_to_nature.mp3", icon: "nature_people" },
-  { name: "Love", url: "link_to_vocal.mp3", icon: "favorite" },
-  { name: "Rain", url: "link_to_rain.mp3", icon: "umbrella" }
-];
-
-let currentAudio = new Audio();
-
-// ২. অডিও লাইব্রেরি তৈরি করা
-function generateAudioLibrary() {
-  const container = document.getElementById('audioContainer');
-  myAudios.forEach(audio => {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'effect-item-wrapper';
-    
-    const div = document.createElement('div');
-    div.className = 'effect-circle';
-    div.style.display = 'flex';
-    div.style.justifyContent = 'center';
-    div.style.alignItems = 'center';
-    div.innerHTML = `<span class="material-icons" style="font-size:30px; color:white;">${audio.icon}</span>`;
-    div.onclick = () => playAudio(audio.url, div);
-    
-    const label = document.createElement('div');
-    label.className = 'eff-name';
-    label.innerText = audio.name;
-
-    wrapper.appendChild(div);
-    wrapper.appendChild(label);
-    container.appendChild(wrapper);
-  });
-}
-
-// ৩. অডিও কন্ট্রোল ফাংশন
-function playAudio(url, el) {
-  document.querySelectorAll('#audioContainer .effect-circle').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-
-  currentAudio.src = url;
-  currentAudio.play();
-}
-
-function openAudio() {
-  document.getElementById('audio-panel').style.bottom = "110px";
-  document.getElementById('mainFooter').style.opacity = "0.3";
-}
-
-function closeAudio() {
-  document.getElementById('audio-panel').style.bottom = "-220px";
-  document.getElementById('mainFooter').style.opacity = "1";
-}
-
-// ৪. মিউজিক বাটন কানেক্ট করা
-document.querySelector('.tool-btn[onclick=""]').setAttribute('onclick', "openAudio()");
-
-// উইন্ডো লোড হওয়ার সময় কল করুন
-window.onload = () => {
-  // ... আপনার আগের কোড ...
-  generateAudioLibrary();
-};
- 
 </script>
 
 </body>
