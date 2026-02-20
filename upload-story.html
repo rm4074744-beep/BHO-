@@ -82,7 +82,11 @@
   <div class="side-tools">
     <div class="tool-btn" onclick="addText()"><small>Text</small><div class="icon-bg"><span class="material-icons">title</span></div></div>
     <div class="tool-btn" onclick="openEffects()"><small>Effects</small><div class="icon-bg"><span class="material-icons">auto_fix_high</span></div></div>
-    <div class="tool-btn"><small>Music</small><div class="icon-bg"><span class="material-icons">music_note</span></div></div>
+    <div id="audio-panel" style="position: absolute; bottom: -220px; width: 100%; z-index: 100; transition: 0.4s;">
+  <div class="done-bar"><div class="done-btn" onclick="closeAudio()">Done</div></div>
+  <div class="effect-scroll" id="audioContainer"></div>
+    </div>
+   
   </div>
 
   <div id="effect-panel">
