@@ -214,6 +214,69 @@
     canvas.add(text);
     canvas.setActiveObject(text);
   }
+ // ১. আপনার অডিও লিস্ট (এখানে আপনার নাশিদ বা অডিওর লিঙ্ক দিন)
+const myAudios = [
+  { name: "Peaceful", url: "link_to_nasheed1.mp3", icon: "spa" },
+  { name: "Nature", url: "link_to_nature.mp3", icon: "nature_people" },
+  { name: "Love", url: "link_to_vocal.mp3", icon: "favorite" },
+  { name: "Rain", url: "link_to_rain.mp3", icon: "umbrella" }
+];
+
+let currentAudio = new Audio();
+
+// ২. অডিও লাইব্রেরি তৈরি করা
+function generateAudioLibrary() {
+  const container = document.getElementById('audioContainer');
+  myAudios.forEach(audio => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'effect-item-wrapper';
+    
+    const div = document.createElement('div');
+    div.className = 'effect-circle';
+    div.style.display = 'flex';
+    div.style.justifyContent = 'center';
+    div.style.alignItems = 'center';
+    div.innerHTML = `<span class="material-icons" style="font-size:30px; color:white;">${audio.icon}</span>`;
+    div.onclick = () => playAudio(audio.url, div);
+    
+    const label = document.createElement('div');
+    label.className = 'eff-name';
+    label.innerText = audio.name;
+
+    wrapper.appendChild(div);
+    wrapper.appendChild(label);
+    container.appendChild(wrapper);
+  });
+}
+
+// ৩. অডিও কন্ট্রোল ফাংশন
+function playAudio(url, el) {
+  document.querySelectorAll('#audioContainer .effect-circle').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+
+  currentAudio.src = url;
+  currentAudio.play();
+}
+
+function openAudio() {
+  document.getElementById('audio-panel').style.bottom = "110px";
+  document.getElementById('mainFooter').style.opacity = "0.3";
+}
+
+function closeAudio() {
+  document.getElementById('audio-panel').style.bottom = "-220px";
+  document.getElementById('mainFooter').style.opacity = "1";
+}
+
+// ৪. মিউজিক বাটন কানেক্ট করা
+document.querySelector('.tool-btn[onclick=""]').setAttribute('onclick', "openAudio()");
+
+// উইন্ডো লোড হওয়ার সময় কল করুন
+window.onload = () => {
+  // ... আপনার আগের কোড ...
+  generateAudioLibrary();
+};
+ 
 </script>
 
 </body>
