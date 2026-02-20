@@ -13,7 +13,6 @@
 
   .editor-container { position: relative; width: 100%; height: 100vh; }
   
-  /* সাইড মেনু */
   .side-tools {
     position: absolute; right: 15px; top: 60px; z-index: 50;
     display: flex; flex-direction: column; gap: 15px;
@@ -26,7 +25,6 @@
     border: 1px solid rgba(255,255,255,0.2);
   }
 
-  /* Snapchat Style ইফেক্ট প্যানেল (শেয়ার বাটনের উপরে) */
   #effect-panel {
     position: absolute; 
     bottom: -220px; 
@@ -64,7 +62,6 @@
   .effect-circle img { width: 100%; height: 100%; object-fit: cover; }
   .eff-name { font-size: 10px; color: #ccc; }
 
-  /* ফুটার সেকশন */
   .footer { 
     position: absolute; bottom: 30px; width: 100%; 
     padding: 0 20px; display: flex; justify-content: space-between; 
@@ -118,7 +115,6 @@
     generateEffects();
   };
 
-  // --- GitHub ইমেজের লিঙ্ক এখানে বসাবেন ---
   const myEffects = [
     { name: "Original", thumb: "https://via.placeholder.com/100?text=Org" },
     { name: "Sad", thumb: "1771620667264.png" },
@@ -128,19 +124,19 @@
     { name: "Night", thumb: "1771539431195.png" },
     { name: "Gold", thumb: "1771539675249.png" },
     { name: "Neon", thumb: "1771617818671.png" },
-    { name: "Retro", thumb: "আপনার_লিঙ্ক_৮" },
-    { name: "Soft", thumb: "আপনার_লিঙ্ক_৯" },
-    { name: "Cool", thumb: "আপনার_লিঙ্ক_১০" },
-    { name: "Warm", thumb: "আপনার_লিঙ্ক_১১" },
-    { name: "Dreamy", thumb: "আপনার_লিঙ্ক_১২" },
-    { name: "Fade", thumb: "আপনার_লিঙ্ক_১৩" },
-    { name: "Bold", thumb: "আপনার_লিঙ্ক_১৪" },
-    { name: "Mist", thumb: "আপনার_লিঙ্ক_১৫" },
-    { name: "Ocean", thumb: "আপনার_লিঙ্ক_১৬" },
-    { name: "Forest", thumb: "আপনার_লিঙ্ক_১৭" },
-    { name: "Sunset", thumb: "আপনার_লিঙ্ক_১৮" },
-    { name: "Cyber", thumb: "আপনার_লিঙ্ক_১৯" },
-    { name: "Glitch", thumb: "আপনার_লিঙ্ক_২০" }
+    { name: "Retro", thumb: "retro.png" },
+    { name: "Soft", thumb: "soft.png" },
+    { name: "Cool", thumb: "cool.png" },
+    { name: "Warm", thumb: "warm.png" },
+    { name: "Dreamy", thumb: "dreamy.png" },
+    { name: "Fade", thumb: "fade.png" },
+    { name: "Bold", thumb: "bold.png" },
+    { name: "Mist", thumb: "mist.png" },
+    { name: "Ocean", thumb: "ocean.png" },
+    { name: "Forest", thumb: "forest.png" },
+    { name: "Sunset", thumb: "sunset.png" },
+    { name: "Cyber", thumb: "cyber.png" },
+    { name: "Glitch", thumb: "glitch.png" }
   ];
 
   function generateEffects() {
@@ -148,15 +144,12 @@
     myEffects.forEach((eff, index) => {
       const wrapper = document.createElement('div');
       wrapper.className = 'effect-item-wrapper';
-      
       const div = document.createElement('div');
       div.className = `effect-circle ${index === 0 ? 'selected' : ''}`;
       div.innerHTML = `<img src="${eff.thumb}" onclick="applyFilter('${eff.name}', this)">`;
-      
       const label = document.createElement('div');
       label.className = 'eff-name';
       label.innerText = eff.name;
-
       wrapper.appendChild(div);
       wrapper.appendChild(label);
       container.appendChild(wrapper);
@@ -178,17 +171,32 @@
   function applyFilter(type, el) {
     document.querySelectorAll('.effect-circle').forEach(c => c.classList.remove('selected'));
     el.parentElement.classList.add('selected');
-    
     const img = canvas.backgroundImage;
     if (!img) return;
 
     img.filters = []; 
-    // স্যাম্পল ফিল্টার লজিক (আপনার চাহিদা মতো ২০টি আলাদা লজিক দেওয়া যাবে)
-    if (type === 'Sad') img.filters.push(new fabric.Image.filters.Grayscale());
-    if (type === 'Vintage') img.filters.push(new fabric.Image.filters.Sepia());
-    if (type === 'B&W') img.filters.push(new fabric.Image.filters.BlackWhite());
-    if (type === 'Night') img.filters.push(new fabric.Image.filters.Brightness({ brightness: -0.2 }));
-    if (type === 'Gold') img.filters.push(new fabric.Image.filters.ColorMatrix({ matrix: [1, 0, 0, 0, 0.1, 0, 1, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 1, 0] }));
+
+    switch(type) {
+      case 'Sad': img.filters.push(new fabric.Image.filters.Grayscale()); break;
+      case 'Vintage': img.filters.push(new fabric.Image.filters.Sepia()); break;
+      case 'B&W': img.filters.push(new fabric.Image.filters.BlackWhite()); break;
+      case 'Night': img.filters.push(new fabric.Image.filters.Brightness({ brightness: -0.3 })); break;
+      case 'Gold': img.filters.push(new fabric.Image.filters.ColorMatrix({ matrix: [1, 0, 0, 0, 0.1, 0, 1, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 1, 0] })); break;
+      case 'Neon': img.filters.push(new fabric.Image.filters.Contrast({ contrast: 0.5 }), new fabric.Image.filters.Saturation({ saturation: 0.7 })); break;
+      case 'Retro': img.filters.push(new fabric.Image.filters.Brownie()); break;
+      case 'Soft': img.filters.push(new fabric.Image.filters.Brightness({ brightness: 0.1 }), new fabric.Image.filters.Saturation({ saturation: -0.2 })); break;
+      case 'Cool': img.filters.push(new fabric.Image.filters.BlendColor({ color: '#00f', mode: 'screen', alpha: 0.2 })); break;
+      case 'Warm': img.filters.push(new fabric.Image.filters.BlendColor({ color: '#f90', mode: 'overlay', alpha: 0.3 })); break;
+      case 'Dreamy': img.filters.push(new fabric.Image.filters.Brightness({ brightness: 0.15 }), new fabric.Image.filters.Blur({ blur: 0.05 })); break;
+      case 'Fade': img.filters.push(new fabric.Image.filters.Contrast({ contrast: -0.2 }), new fabric.Image.filters.Brightness({ brightness: 0.1 })); break;
+      case 'Bold': img.filters.push(new fabric.Image.filters.Saturation({ saturation: 0.5 }), new fabric.Image.filters.Contrast({ contrast: 0.2 })); break;
+      case 'Mist': img.filters.push(new fabric.Image.filters.BlendColor({ color: '#fff', mode: 'overlay', alpha: 0.3 })); break;
+      case 'Ocean': img.filters.push(new fabric.Image.filters.BlendColor({ color: '#0077be', mode: 'overlay', alpha: 0.4 })); break;
+      case 'Forest': img.filters.push(new fabric.Image.filters.BlendColor({ color: '#228b22', mode: 'overlay', alpha: 0.3 })); break;
+      case 'Sunset': img.filters.push(new fabric.Image.filters.BlendColor({ color: '#ff4500', mode: 'overlay', alpha: 0.4 })); break;
+      case 'Cyber': img.filters.push(new fabric.Image.filters.HueRotation({ rotation: 0.5 })); break;
+      case 'Glitch': img.filters.push(new fabric.Image.filters.Invert(), new fabric.Image.filters.Saturation({ saturation: -1 })); break;
+    }
 
     img.applyFilters();
     canvas.renderAll();
