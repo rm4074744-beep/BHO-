@@ -4,298 +4,225 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Premium Story Editor</title>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <style>
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  body { margin: 0; background: #000; color: white; font-family: 'Segoe UI', sans-serif; overflow: hidden; height: 100vh; }
+*{box-sizing:border-box}
+body{margin:0;background:#000;color:#fff;font-family:sans-serif;overflow:hidden}
 
-  .editor-container { position: relative; width: 100%; height: 100vh; }
-  
-  .side-tools {
-    position: absolute; right: 15px; top: 60px; z-index: 50;
-    display: flex; flex-direction: column; gap: 15px;
-  }
-  .tool-btn { display: flex; align-items: center; gap: 8px; justify-content: flex-end; cursor: pointer; }
-  .icon-bg {
-    width: 44px; height: 44px; background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(15px); border-radius: 50%;
-    display: flex; justify-content: center; align-items: center;
-    border: 1px solid rgba(255,255,255,0.2);
-  }
+.editor-container{position:relative;width:100%;height:100vh}
 
-  /* মিউজিক লাইব্রেরি প্যানেল (ইন্সটাগ্রাম স্টাইল) */
-  #music-panel {
-    position: absolute; bottom: -100%; left: 0; width: 100%; height: 80vh;
-    background: #121212; border-radius: 20px 20px 0 0;
-    z-index: 200; transition: bottom 0.4s ease;
-    display: flex; flex-direction: column;
-  }
-  #music-panel.active { bottom: 0; }
+.side-tools{
+position:absolute;right:15px;top:60px;
+display:flex;flex-direction:column;gap:15px;z-index:50;
+}
 
-  .music-header {
-    padding: 20px; text-align: center; border-bottom: 1px solid #333;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .music-header h3 { margin: 0; font-size: 18px; }
+.icon-bg{
+width:44px;height:44px;
+background:rgba(255,255,255,0.15);
+border-radius:50%;
+display:flex;justify-content:center;align-items:center;
+cursor:pointer;
+}
 
-  .search-bar {
-    background: #252525; border-radius: 10px; padding: 10px; margin: 15px;
-    display: flex; align-items: center; gap: 10px; color: #888;
-  }
-  .search-bar input { background: transparent; border: none; color: white; outline: none; width: 100%; }
+#music-panel{
+position:absolute;bottom:-100%;left:0;
+width:100%;height:75vh;
+background:#121212;
+border-radius:20px 20px 0 0;
+transition:.4s;
+display:flex;flex-direction:column;
+z-index:200;
+}
 
-  .music-list { flex: 1; overflow-y: auto; padding: 0 15px 20px; }
-  .music-item {
-    display: flex; align-items: center; gap: 15px; padding: 12px 0;
-    border-bottom: 1px solid #222; cursor: pointer;
-  }
-  .music-thumb { width: 48px; height: 48px; border-radius: 5px; background: #333; overflow: hidden; }
-  .music-thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .music-info { flex: 1; }
-  .music-info h4 { margin: 0; font-size: 14px; color: #fff; }
-  .music-info p { margin: 2px 0 0; font-size: 12px; color: #aaa; }
+#music-panel.active{bottom:0}
 
-  #effect-panel {
-    position: absolute; bottom: -220px; width: 100%; z-index: 100; 
-    transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
-  }
-  #effect-panel.active { bottom: 110px; }
+.music-header{
+padding:20px;
+display:flex;justify-content:space-between;align-items:center;
+border-bottom:1px solid #333;
+}
 
-  .done-bar { width: 100%; display: flex; justify-content: center; margin-bottom: 15px; }
-  .done-btn { 
-    background: #fff; color: #000; padding: 6px 24px; 
-    border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 14px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  }
+.music-list{flex:1;overflow-y:auto;padding:15px}
 
-  .effect-scroll {
-    display: flex; gap: 12px; overflow-x: auto; width: 100%;
-    padding: 0 20px 10px; scrollbar-width: none;
-  }
-  .effect-scroll::-webkit-scrollbar { display: none; }
+.music-item{
+display:flex;align-items:center;gap:15px;
+padding:12px;border-radius:10px;
+cursor:pointer;
+transition:.2s;
+}
 
-  .effect-item-wrapper { display: flex; flex-direction: column; align-items: center; gap: 5px; }
-  .effect-circle {
-    min-width: 72px; height: 72px; border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.4); overflow: hidden;
-    flex-shrink: 0; transition: 0.3s; background: #111;
-  }
-  .effect-circle.selected { border-color: #fff; border-width: 3px; transform: scale(1.1); box-shadow: 0 0 15px rgba(255,255,255,0.3); }
-  .effect-circle img { width: 100%; height: 100%; object-fit: cover; }
-  .eff-name { font-size: 10px; color: #ccc; }
+.music-item:hover{background:#1e1e1e}
 
-  .footer { 
-    position: absolute; bottom: 30px; width: 100%; 
-    padding: 0 20px; display: flex; justify-content: space-between; 
-    align-items: center; z-index: 50;
-  }
-  .share-now {
-    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-    color: white; border: none; padding: 12px 28px; border-radius: 50px;
-    font-weight: bold; display: flex; align-items: center; gap: 8px; font-size: 15px;
-  }
+.music-item.active{background:#1db95433}
+
+.music-thumb img{
+width:50px;height:50px;border-radius:6px;object-fit:cover;
+}
+
+.footer{
+position:absolute;bottom:20px;width:100%;
+display:flex;justify-content:center;
+}
+
+.share-now{
+padding:12px 25px;
+border:none;border-radius:50px;
+background:#e91e63;color:#fff;font-weight:bold;
+}
+
+/* Mini Player */
+
+#miniPlayer{
+position:absolute;
+bottom:0;
+left:0;
+width:100%;
+background:#1db954;
+display:none;
+align-items:center;
+gap:12px;
+padding:10px 15px;
+}
+
+#miniPlayer img{
+width:40px;height:40px;border-radius:6px;
+}
+
+#miniPlayer .info{flex:1}
+
+.control-btn{
+background:none;border:none;color:#fff;
+font-size:22px;cursor:pointer;
+}
 </style>
 </head>
+
 <body>
 
 <div class="editor-container">
-  <canvas id="mainCanvas"></canvas>
 
-  <div class="side-tools">
-    <div class="tool-btn" onclick="addText()"><small>Text</small><div class="icon-bg"><span class="material-icons">title</span></div></div>
-    <div class="tool-btn" onclick="openEffects()"><small>Effects</small><div class="icon-bg"><span class="material-icons">auto_fix_high</span></div></div>
-    <div class="tool-btn" onclick="openMusic()"><small>Music</small><div class="icon-bg"><span class="material-icons">music_note</span></div></div>
-  </div>
+<canvas id="mainCanvas"></canvas>
 
-  <div id="music-panel">
-    <div class="music-header">
-      <span class="material-icons" style="opacity:0">close</span>
-      <h3>Music Search</h3>
-      <span class="material-icons" onclick="closeMusic()" style="cursor:pointer">expand_more</span>
-    </div>
-    <div class="search-bar">
-      <span class="material-icons">search</span>
-      <input type="text" placeholder="Search for music...">
-    </div>
-    <div class="music-list" id="musicListContainer">
-        </div>
-  </div>
+<div class="side-tools">
+<div class="icon-bg" onclick="openMusic()">
+<span class="material-icons">music_note</span>
+</div>
+</div>
 
-  <div id="effect-panel">
-    <div class="done-bar"><div class="done-btn" onclick="closeEffects()">Done</div></div>
-    <div class="effect-scroll" id="effectContainer"></div>
-  </div>
+<div id="music-panel">
+<div class="music-header">
+<h3>Music Library</h3>
+<span class="material-icons" onclick="closeMusic()">expand_more</span>
+</div>
+<div class="music-list" id="musicListContainer"></div>
+</div>
 
-  <div class="footer" id="mainFooter">
-    <div class="icon-bg"><span class="material-icons">settings</span></div>
-    <button class="share-now">Share now <span class="material-icons">send</span></button>
-  </div>
+<!-- Mini Player -->
+<div id="miniPlayer">
+<img id="miniThumb">
+<div class="info">
+<div id="miniTitle"></div>
+<div id="miniArtist" style="font-size:12px"></div>
+</div>
+<button class="control-btn" onclick="togglePlay()">
+<span class="material-icons" id="playIcon">pause</span>
+</button>
+</div>
+
+<div class="footer">
+<button class="share-now">Share Now</button>
+</div>
+
 </div>
 
 <script>
-  const canvas = new fabric.Canvas('mainCanvas', {
-    width: window.innerWidth,
-    height: window.innerHeight,
-    selection: false
-  });
 
-  let currentAudio = new Audio();
+const canvas=new fabric.Canvas('mainCanvas',{
+width:window.innerWidth,
+height:window.innerHeight
+});
 
-  // ৩০টি গানের ডাটাবেস
-  const musicData = [];
-  for(let i=1; i<=30; i++) {
-    musicData.push({
-        id: i,
-        title: `Song Title ${i}`,
-        artist: `Artist Name ${i}`,
-        url: "https://archive.org/download/gemini_generated_video_f360149b/gemini_generated_video_f360149b.mp3", // উদাহরণ হিসেবে একটি লিঙ্ক দেওয়া হলো
-        thumb: `https://picsum.photos/seed/${i+10}/50/50`
-    });
-  }
+let currentAudio=new Audio();
+let isPlaying=false;
+let activeElement=null;
 
-  window.onload = () => {
-    const data = localStorage.getItem("tempStory");
-    if (data) {
-      fabric.Image.fromURL(data, (img) => {
-        const scale = Math.max(canvas.width / img.width, canvas.height / img.height);
-        img.set({ originX: 'center', originY: 'center', left: canvas.width/2, top: canvas.height/2, scaleX: scale, scaleY: scale, selectable: false });
-        canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
-      }, { crossOrigin: 'anonymous' }); // CORS ফিক্স যাতে ফিল্টার কাজ করে
-    }
-    generateEffects();
-    generateMusicLibrary();
-  };
+const musicData=[
+{
+title:"I 💕 mapu",
+artist:"by Raihan",
+url:"https://hikfuhupljdyavztlhis.supabase.co/storage/v1/object/public/music-files/gemini_generated_video_1b6c0ba2.mp3",
+thumb:"https://picsum.photos/200?1"
+},
+{
+title:"❤️❤️❤️❤️Handi",
+artist:"by samon",
+url:"https://hikfuhupljdyavztlhis.supabase.co/storage/v1/object/public/music-files/gemini_generated_video_f360149b.mp3",
+thumb:"https://picsum.photos/200?2"
+}
+];
 
-  const myEffects = [
-    { name: "Original", thumb: "https://via.placeholder.com/100?text=Org" },
-    { name: "Sad", thumb: "1771620667264.png" },
-    { name: "Happy", thumb: "1771540274072.png" },
-    { name: "Vintage", thumb: "IMG_20260220_033004.jpg" },
-    { name: "B&W", thumb: "IMG_20260220_165544.png" },
-    { name: "Night", thumb: "1771539431195.png" },
-    { name: "Gold", thumb: "1771539675249.png" },
-    { name: "Neon", thumb: "1771617818671.png" },
-    { name: "Retro", thumb: "retro.png" },
-    { name: "Soft", thumb: "soft.png" },
-    { name: "Cool", thumb: "cool.png" },
-    { name: "Warm", thumb: "warm.png" },
-    { name: "Dreamy", thumb: "dreamy.png" },
-    { name: "Fade", thumb: "fade.png" },
-    { name: "Bold", thumb: "bold.png" },
-    { name: "Mist", thumb: "mist.png" },
-    { name: "Ocean", thumb: "ocean.png" },
-    { name: "Forest", thumb: "forest.png" },
-    { name: "Sunset", thumb: "sunset.png" },
-    { name: "Cyber", thumb: "cyber.png" },
-    { name: "Glitch", thumb: "glitch.png" }
-  ];
+function generateMusicLibrary(){
+const container=document.getElementById("musicListContainer");
+container.innerHTML="";
+musicData.forEach(song=>{
+const item=document.createElement("div");
+item.className="music-item";
+item.innerHTML=`
+<div class="music-thumb"><img src="${song.thumb}"></div>
+<div>
+<h4>${song.title}</h4>
+<p style="color:#aaa;font-size:12px">${song.artist}</p>
+</div>
+`;
+item.onclick=()=>playMusic(song,item);
+container.appendChild(item);
+});
+}
 
-  function generateEffects() {
-    const container = document.getElementById('effectContainer');
-    myEffects.forEach((eff, index) => {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'effect-item-wrapper';
-      const div = document.createElement('div');
-      div.className = `effect-circle ${index === 0 ? 'selected' : ''}`;
-      div.innerHTML = `<img src="${eff.thumb}" onclick="applyFilter('${eff.name}', this)">`;
-      const label = document.createElement('div');
-      label.className = 'eff-name';
-      label.innerText = eff.name;
-      wrapper.appendChild(div);
-      wrapper.appendChild(label);
-      container.appendChild(wrapper);
-    });
-  }
+function playMusic(song,element){
 
-  function generateMusicLibrary() {
-    const container = document.getElementById('musicListContainer');
-    musicData.forEach(song => {
-        const item = document.createElement('div');
-        item.className = 'music-item';
-        item.innerHTML = `
-            <div class="music-thumb"><img src="${song.thumb}"></div>
-            <div class="music-info">
-                <h4>${song.title}</h4>
-                <p>${song.artist}</p>
-            </div>
-            <span class="material-icons" style="color:#aaa;">play_circle</span>
-        `;
-        item.onclick = () => playMusic(song.url);
-        container.appendChild(item);
-    });
-  }
+if(activeElement) activeElement.classList.remove("active");
+element.classList.add("active");
+activeElement=element;
 
-  function playMusic(url) {
-    currentAudio.pause();
-    currentAudio = new Audio(url);
-    currentAudio.play();
-    closeMusic();
-  }
+currentAudio.pause();
+currentAudio=new Audio(song.url);
+currentAudio.play();
+isPlaying=true;
 
-  function openMusic() {
-    closeEffects();
-    document.getElementById('music-panel').classList.add('active');
-  }
+document.getElementById("miniPlayer").style.display="flex";
+document.getElementById("miniTitle").innerText=song.title;
+document.getElementById("miniArtist").innerText=song.artist;
+document.getElementById("miniThumb").src=song.thumb;
+document.getElementById("playIcon").innerText="pause";
 
-  function closeMusic() {
-    document.getElementById('music-panel').classList.remove('active');
-  }
+closeMusic();
+}
 
-  function openEffects() {
-    closeMusic();
-    document.getElementById('effect-panel').classList.add('active');
-    document.getElementById('mainFooter').style.opacity = "0.3";
-    document.getElementById('mainFooter').style.pointerEvents = "none";
-  }
+function togglePlay(){
+if(isPlaying){
+currentAudio.pause();
+document.getElementById("playIcon").innerText="play_arrow";
+}else{
+currentAudio.play();
+document.getElementById("playIcon").innerText="pause";
+}
+isPlaying=!isPlaying;
+}
 
-  function closeEffects() {
-    document.getElementById('effect-panel').classList.remove('active');
-    document.getElementById('mainFooter').style.opacity = "1";
-    document.getElementById('mainFooter').style.pointerEvents = "auto";
-  }
+function openMusic(){
+document.getElementById("music-panel").classList.add("active");
+}
 
-  function applyFilter(type, el) {
-    document.querySelectorAll('.effect-circle').forEach(c => c.classList.remove('selected'));
-    el.parentElement.classList.add('selected');
-    const img = canvas.backgroundImage;
-    if (!img) return;
+function closeMusic(){
+document.getElementById("music-panel").classList.remove("active");
+}
 
-    img.filters = []; 
-    switch(type) {
-      case 'Sad': img.filters.push(new fabric.Image.filters.Grayscale()); break;
-      case 'Vintage': img.filters.push(new fabric.Image.filters.Sepia()); break;
-      case 'B&W': img.filters.push(new fabric.Image.filters.BlackWhite()); break;
-      case 'Night': img.filters.push(new fabric.Image.filters.Brightness({ brightness: -0.3 })); break;
-      case 'Gold': img.filters.push(new fabric.Image.filters.ColorMatrix({ matrix: [1, 0, 0, 0, 0.1, 0, 1, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 1, 0] })); break;
-      case 'Neon': img.filters.push(new fabric.Image.filters.Contrast({ contrast: 0.5 }), new fabric.Image.filters.Saturation({ saturation: 0.7 })); break;
-      case 'Retro': img.filters.push(new fabric.Image.filters.Brownie()); break;
-      case 'Soft': img.filters.push(new fabric.Image.filters.Brightness({ brightness: 0.1 }), new fabric.Image.filters.Saturation({ saturation: -0.2 })); break;
-      case 'Cool': img.filters.push(new fabric.Image.filters.BlendColor({ color: '#00f', mode: 'screen', alpha: 0.2 })); break;
-      case 'Warm': img.filters.push(new fabric.Image.filters.BlendColor({ color: '#f90', mode: 'overlay', alpha: 0.3 })); break;
-      case 'Dreamy': img.filters.push(new fabric.Image.filters.Brightness({ brightness: 0.15 }), new fabric.Image.filters.Blur({ blur: 0.05 })); break;
-      case 'Fade': img.filters.push(new fabric.Image.filters.Contrast({ contrast: -0.2 }), new fabric.Image.filters.Brightness({ brightness: 0.1 })); break;
-      case 'Bold': img.filters.push(new fabric.Image.filters.Saturation({ saturation: 0.5 }), new fabric.Image.filters.Contrast({ contrast: 0.2 })); break;
-      case 'Mist': img.filters.push(new fabric.Image.filters.BlendColor({ color: '#fff', mode: 'overlay', alpha: 0.3 })); break;
-      case 'Ocean': img.filters.push(new fabric.Image.filters.BlendColor({ color: '#0077be', mode: 'overlay', alpha: 0.4 })); break;
-      case 'Forest': img.filters.push(new fabric.Image.filters.BlendColor({ color: '#228b22', mode: 'overlay', alpha: 0.3 })); break;
-      case 'Sunset': img.filters.push(new fabric.Image.filters.BlendColor({ color: '#ff4500', mode: 'overlay', alpha: 0.4 })); break;
-      case 'Cyber': img.filters.push(new fabric.Image.filters.HueRotation({ rotation: 0.5 })); break;
-      case 'Glitch': img.filters.push(new fabric.Image.filters.Invert(), new fabric.Image.filters.Saturation({ saturation: -1 })); break;
-    }
-    img.applyFilters();
-    canvas.renderAll();
-  }
+generateMusicLibrary();
 
-  function addText() {
-    const text = new fabric.IText('টাইপ করুন', { 
-        left: canvas.width/2, top: canvas.height/2, 
-        fill: '#fff', originX: 'center', fontFamily: 'sans-serif' 
-    });
-    canvas.add(text);
-    canvas.setActiveObject(text);
-  }
 </script>
 
 </body>
