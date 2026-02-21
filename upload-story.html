@@ -15,60 +15,92 @@ body{margin:0;background:#000;color:#fff;font-family:'Segoe UI',sans-serif;overf
 
 canvas{position:absolute;top:0;left:0;}
 
-.side-tools{
-position:absolute;right:15px;top:60px;z-index:50;
-display:flex;flex-direction:column;gap:15px;
+/* CLOSE BUTTON */
+.close-btn{
+position:absolute;
+top:20px;
+left:15px;
+z-index:200;
 }
-
-.tool-btn{display:flex;align-items:center;gap:8px;justify-content:flex-end;cursor:pointer;}
 
 .icon-bg{
 width:44px;height:44px;background:rgba(255,255,255,0.15);
 backdrop-filter:blur(15px);border-radius:50%;
 display:flex;justify-content:center;align-items:center;
 border:1px solid rgba(255,255,255,0.2);
+cursor:pointer;
 }
 
-/* MUSIC PANEL */
-#music-panel{
-position:absolute;bottom:-100%;left:0;width:100%;height:80vh;
-background:#121212;border-radius:20px 20px 0 0;
-z-index:200;transition:bottom .4s ease;
-display:flex;flex-direction:column;
-}
-#music-panel.active{bottom:0;}
-
-.music-header{
-padding:20px;text-align:center;border-bottom:1px solid #333;
-display:flex;justify-content:space-between;align-items:center;
+/* RIGHT TOOLS */
+.side-tools{
+position:absolute;
+right:15px;
+top:120px;
+z-index:100;
+display:flex;
+flex-direction:column;
+gap:25px;
 }
 
-.search-bar{
-background:#252525;border-radius:10px;padding:10px;margin:15px;
-display:flex;align-items:center;gap:10px;color:#888;
+.tool-btn{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:6px;
+cursor:pointer;
+font-size:11px;
+color:#ccc;
 }
 
-.search-bar input{
-background:transparent;border:none;color:white;outline:none;width:100%;
+/* SHARE BUTTON */
+.footer{
+position:absolute;
+bottom:70px;
+width:100%;
+display:flex;
+justify-content:center;
+z-index:100;
 }
 
-.music-list{flex:1;overflow-y:auto;padding:0 15px 20px;}
-
-.music-item{
-display:flex;align-items:center;gap:15px;padding:12px 0;
-border-bottom:1px solid #222;cursor:pointer;
+.share-now{
+background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+color:white;border:none;padding:12px 28px;border-radius:50px;
+font-weight:bold;display:flex;align-items:center;gap:8px;font-size:15px;
 }
 
-.music-thumb{width:48px;height:48px;border-radius:5px;background:#333;overflow:hidden;}
-.music-thumb img{width:100%;height:100%;object-fit:cover;}
+/* CONFIRM POPUP */
+#confirm-popup{
+position:absolute;
+top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,0.6);
+backdrop-filter:blur(6px);
+display:flex;justify-content:center;align-items:center;
+z-index:500;
+opacity:0;pointer-events:none;transition:.3s;
+}
+#confirm-popup.active{opacity:1;pointer-events:auto;}
 
-.music-info{flex:1;}
-.music-info h4{margin:0;font-size:14px;}
-.music-info p{margin:2px 0 0;font-size:12px;color:#aaa;}
+.popup-box{
+background:#1c1c1c;
+padding:25px;border-radius:15px;
+width:85%;max-width:320px;text-align:center;
+}
+
+.popup-buttons{
+margin-top:20px;display:flex;gap:10px;
+}
+
+.popup-buttons button{
+flex:1;padding:10px;border-radius:8px;
+border:none;font-weight:bold;cursor:pointer;
+}
+
+.keep-btn{background:#333;color:#fff;}
+.discard-btn{background:#ff3b30;color:#fff;}
 
 /* EFFECT PANEL */
 #effect-panel{
-position:absolute;bottom:-250px;width:100%;z-index:100;
+position:absolute;bottom:-250px;width:100%;z-index:200;
 transition:.4s;
 }
 #effect-panel.active{bottom:110px;}
@@ -85,31 +117,14 @@ display:flex;gap:12px;overflow-x:auto;padding:0 20px 10px;
 }
 .effect-scroll::-webkit-scrollbar{display:none;}
 
-.effect-item-wrapper{display:flex;flex-direction:column;align-items:center;gap:5px;}
-
 .effect-circle{
 min-width:72px;height:72px;border-radius:50%;
-border:2px solid rgba(255,255,255,0.4);overflow:hidden;
-transition:.3s;background:#111;
+border:2px solid rgba(255,255,255,0.4);
+overflow:hidden;transition:.3s;background:#111;
 }
 
 .effect-circle.selected{
 border-color:#fff;border-width:3px;transform:scale(1.1);
-}
-
-.effect-circle img{width:100%;height:100%;object-fit:cover;}
-.eff-name{font-size:10px;color:#ccc;}
-
-.footer{
-position:absolute;bottom:30px;width:100%;
-padding:0 20px;display:flex;justify-content:space-between;
-align-items:center;z-index:50;
-}
-
-.share-now{
-background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
-color:white;border:none;padding:12px 28px;border-radius:50px;
-font-weight:bold;display:flex;align-items:center;gap:8px;font-size:15px;
 }
 </style>
 </head>
@@ -117,37 +132,53 @@ font-weight:bold;display:flex;align-items:center;gap:8px;font-size:15px;
 <body>
 
 <div class="editor-container">
+
 <canvas id="mainCanvas"></canvas>
 
+<div class="close-btn">
+<div class="icon-bg" onclick="openConfirm()">
+<span class="material-icons">close</span>
+</div>
+</div>
+
 <div class="side-tools">
-<div class="tool-btn" onclick="addText()"><small>Text</small><div class="icon-bg"><span class="material-icons">title</span></div></div>
-<div class="tool-btn" onclick="openEffects()"><small>Effects</small><div class="icon-bg"><span class="material-icons">auto_fix_high</span></div></div>
-<div class="tool-btn" onclick="openMusic()"><small>Music</small><div class="icon-bg"><span class="material-icons">music_note</span></div></div>
+
+<div class="tool-btn" onclick="addText()">
+<div class="icon-bg"><span class="material-icons">title</span></div>
+<small>Text</small>
 </div>
 
-<div id="music-panel">
-<div class="music-header">
-<span></span>
-<h3>Music Search</h3>
-<span class="material-icons" onclick="closeMusic()">expand_more</span>
+<div class="tool-btn" onclick="openEffects()">
+<div class="icon-bg"><span class="material-icons">auto_fix_high</span></div>
+<small>Effect</small>
 </div>
 
-<div class="search-bar">
-<span class="material-icons">search</span>
-<input type="text" placeholder="Search for music...">
+<div class="tool-btn">
+<div class="icon-bg"><span class="material-icons">settings</span></div>
+<small>Setting</small>
 </div>
 
-<div class="music-list" id="musicListContainer"></div>
+</div>
+
+<div class="footer">
+<button class="share-now">Share now <span class="material-icons">send</span></button>
+</div>
+
+<div id="confirm-popup">
+<div class="popup-box">
+<h3>Discard changes?</h3>
+<div class="popup-buttons">
+<button class="keep-btn" onclick="closeConfirm()">Keep Editing</button>
+<button class="discard-btn" onclick="discardStory()">Discard</button>
+</div>
+</div>
 </div>
 
 <div id="effect-panel">
-<div class="done-bar"><div class="done-btn" onclick="closeEffects()">Done</div></div>
-<div class="effect-scroll" id="effectContainer"></div>
+<div class="done-bar">
+<div class="done-btn" onclick="closeEffects()">Done</div>
 </div>
-
-<div class="footer" id="mainFooter">
-<div class="icon-bg"><span class="material-icons">settings</span></div>
-<button class="share-now">Share now <span class="material-icons">send</span></button>
+<div class="effect-scroll" id="effectContainer"></div>
 </div>
 
 </div>
@@ -160,57 +191,54 @@ height:window.innerHeight,
 selection:false
 });
 
-let currentAudio=new Audio();
+/* LOAD IMAGE FROM HOME */
+const savedImage = localStorage.getItem("storyImage");
 
-/* MUSIC */
-const musicData=[];
-for(let i=1;i<=30;i++){
-musicData.push({
-title:`Song Title ${i}`,
-artist:`Artist Name ${i}`,
-url:"https://archive.org/download/testmp3testfile/mpthreetest.mp3",
-thumb:`https://picsum.photos/seed/music${i}/50`
+if(savedImage){
+fabric.Image.fromURL(savedImage, function(img){
+
+img.scaleToWidth(canvas.width);
+img.scaleToHeight(canvas.height);
+
+img.set({
+left: canvas.width/2,
+top: canvas.height/2,
+originX: "center",
+originY: "center"
+});
+
+canvas.add(img);
+canvas.sendToBack(img);
+canvas.renderAll();
+
 });
 }
 
-function generateMusic(){
-const container=document.getElementById("musicListContainer");
-musicData.forEach(song=>{
-const item=document.createElement("div");
-item.className="music-item";
-item.innerHTML=`
-<div class="music-thumb"><img src="${song.thumb}"></div>
-<div class="music-info">
-<h4>${song.title}</h4>
-<p>${song.artist}</p>
-</div>
-<span class="material-icons" style="color:#aaa;">play_circle</span>
-`;
-item.onclick=()=>{currentAudio.pause();currentAudio=new Audio(song.url);currentAudio.play();closeMusic();}
-container.appendChild(item);
+/* TEXT */
+function addText(){
+const text=new fabric.IText("টাইপ করুন",{
+left:canvas.width/2,
+top:canvas.height/2,
+fill:"#fff",
+originX:"center"
 });
+canvas.add(text);
+canvas.setActiveObject(text);
 }
 
 /* EFFECTS */
 const effects=[
-"Original","Sad","Vintage","B&W","Night","Gold","Neon","Retro","Soft","Cool","Warm","Dreamy","Fade","Bold","Mist","Ocean","Forest","Sunset","Cyber","Glitch"
+"Original","B&W","Vintage","Warm","Cool","Neon","Sad","Night","Gold","Retro",
+"Soft","Bold","Dreamy","Fade","Mist","Ocean","Forest","Sunset","Cyber","Glitch"
 ];
 
 function generateEffects(){
 const container=document.getElementById("effectContainer");
-effects.forEach((name,index)=>{
-const wrap=document.createElement("div");
-wrap.className="effect-item-wrapper";
+effects.forEach(name=>{
 const circle=document.createElement("div");
-circle.className=`effect-circle ${index==0?'selected':''}`;
-circle.innerHTML=`<img src="https://picsum.photos/seed/${name}/100">`;
+circle.className="effect-circle";
 circle.onclick=()=>applyFilter(name,circle);
-const label=document.createElement("div");
-label.className="eff-name";
-label.innerText=name;
-wrap.appendChild(circle);
-wrap.appendChild(label);
-container.appendChild(wrap);
+container.appendChild(circle);
 });
 }
 
@@ -221,48 +249,55 @@ el.classList.add('selected');
 canvas.getObjects().forEach(obj=>{
 if(obj.type==='image'){
 obj.filters=[];
+
 switch(type){
-case'Sad':obj.filters.push(new fabric.Image.filters.Grayscale());break;
-case'Vintage':obj.filters.push(new fabric.Image.filters.Sepia());break;
-case'B&W':obj.filters.push(new fabric.Image.filters.BlackWhite());break;
-case'Night':obj.filters.push(new fabric.Image.filters.Brightness({brightness:-0.3}));break;
-case'Gold':obj.filters.push(new fabric.Image.filters.BlendColor({color:'#FFD700',mode:'overlay',alpha:0.4}));break;
-case'Neon':obj.filters.push(new fabric.Image.filters.Contrast({contrast:0.5}));break;
-case'Retro':obj.filters.push(new fabric.Image.filters.Brownie());break;
-case'Soft':obj.filters.push(new fabric.Image.filters.Brightness({brightness:0.1}));break;
-case'Cool':obj.filters.push(new fabric.Image.filters.BlendColor({color:'#00f',mode:'screen',alpha:0.2}));break;
-case'Warm':obj.filters.push(new fabric.Image.filters.BlendColor({color:'#f90',mode:'overlay',alpha:0.3}));break;
-case'Dreamy':obj.filters.push(new fabric.Image.filters.Blur({blur:0.05}));break;
-case'Fade':obj.filters.push(new fabric.Image.filters.Contrast({contrast:-0.2}));break;
-case'Bold':obj.filters.push(new fabric.Image.filters.Saturation({saturation:0.5}));break;
-case'Mist':obj.filters.push(new fabric.Image.filters.BlendColor({color:'#fff',mode:'overlay',alpha:0.3}));break;
-case'Ocean':obj.filters.push(new fabric.Image.filters.BlendColor({color:'#0077be',mode:'overlay',alpha:0.4}));break;
-case'Forest':obj.filters.push(new fabric.Image.filters.BlendColor({color:'#228b22',mode:'overlay',alpha:0.3}));break;
-case'Sunset':obj.filters.push(new fabric.Image.filters.BlendColor({color:'#ff4500',mode:'overlay',alpha:0.4}));break;
-case'Cyber':obj.filters.push(new fabric.Image.filters.HueRotation({rotation:0.5}));break;
-case'Glitch':obj.filters.push(new fabric.Image.filters.Invert());break;
+case "B&W": obj.filters.push(new fabric.Image.filters.Grayscale()); break;
+case "Vintage": obj.filters.push(new fabric.Image.filters.Sepia()); break;
+case "Warm": obj.filters.push(new fabric.Image.filters.Brightness({brightness:0.1})); break;
+case "Cool": obj.filters.push(new fabric.Image.filters.Contrast({contrast:0.3})); break;
+case "Neon": obj.filters.push(new fabric.Image.filters.Invert()); break;
+case "Sad": obj.filters.push(new fabric.Image.filters.Saturation({saturation:-0.5})); break;
+case "Night": obj.filters.push(new fabric.Image.filters.Brightness({brightness:-0.4})); break;
+case "Gold": obj.filters.push(new fabric.Image.filters.BlendColor({color:"#FFD700",mode:"overlay",alpha:0.4})); break;
+case "Retro": obj.filters.push(new fabric.Image.filters.Brownie()); break;
+case "Soft": obj.filters.push(new fabric.Image.filters.Blur({blur:0.05})); break;
+case "Bold": obj.filters.push(new fabric.Image.filters.Contrast({contrast:0.6})); break;
+case "Dreamy": obj.filters.push(new fabric.Image.filters.Blur({blur:0.08})); break;
+case "Fade": obj.filters.push(new fabric.Image.filters.Contrast({contrast:-0.2})); break;
+case "Mist": obj.filters.push(new fabric.Image.filters.BlendColor({color:"#fff",mode:"overlay",alpha:0.3})); break;
+case "Ocean": obj.filters.push(new fabric.Image.filters.BlendColor({color:"#0077be",mode:"overlay",alpha:0.4})); break;
+case "Forest": obj.filters.push(new fabric.Image.filters.BlendColor({color:"#228b22",mode:"overlay",alpha:0.3})); break;
+case "Sunset": obj.filters.push(new fabric.Image.filters.BlendColor({color:"#ff4500",mode:"overlay",alpha:0.4})); break;
+case "Cyber": obj.filters.push(new fabric.Image.filters.HueRotation({rotation:0.5})); break;
+case "Glitch": obj.filters.push(new fabric.Image.filters.Invert()); break;
 }
+
 obj.applyFilters();
 }
 });
 canvas.renderAll();
 }
 
-/* TEXT */
-function addText(){
-const text=new fabric.IText("টাইপ করুন",{left:canvas.width/2,top:canvas.height/2,fill:"#fff",originX:"center"});
-canvas.add(text);
-canvas.setActiveObject(text);
+/* PANELS */
+function openEffects(){
+document.getElementById("effect-panel").classList.add("active");
+}
+function closeEffects(){
+document.getElementById("effect-panel").classList.remove("active");
 }
 
-/* PANEL */
-function openMusic(){closeEffects();document.getElementById("music-panel").classList.add("active");}
-function closeMusic(){document.getElementById("music-panel").classList.remove("active");}
-function openEffects(){closeMusic();document.getElementById("effect-panel").classList.add("active");}
-function closeEffects(){document.getElementById("effect-panel").classList.remove("active");}
+/* CONFIRM */
+function openConfirm(){
+document.getElementById("confirm-popup").classList.add("active");
+}
+function closeConfirm(){
+document.getElementById("confirm-popup").classList.remove("active");
+}
+function discardStory(){
+window.location.href="home.html";
+}
 
 generateEffects();
-generateMusic();
 
 </script>
 
