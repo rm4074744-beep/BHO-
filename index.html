@@ -1,119 +1,167 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mingle Joys</title>
+<title>MingleJoys - Login</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to bottom right, #6fb1fc, #ffd194);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #ffffff; 
+    display: flex; flex-direction: column; align-items: center;
+    min-height: 100vh;
+  }
 
-.card {
-  background: #ffffff;
-  width: 90%;
-  max-width: 380px;
-  padding: 30px 25px;
-  border-radius: 25px;
-  text-align: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-}
+  /* মেনু ও ড্রপডাউন সিস্টেম */
+  .menu-container {
+    position: absolute; top: 20px; right: 20px;
+    display: inline-block;
+  }
+  .dots-btn { display: flex; gap: 4px; cursor: pointer; padding: 10px; z-index: 100; }
+  .dot { width: 5px; height: 5px; background-color: #555; border-radius: 50%; }
 
-.logo {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 15px;
-}
+  .dropdown-content {
+    display: none; position: absolute; right: 0;
+    background-color: #fff; min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+    border-radius: 12px; z-index: 10; border: 1px solid #eee;
+    overflow: hidden;
+  }
 
-h1 {
-  margin: 10px 0 20px;
-  font-size: 28px;
-  color: #2d3a4b;
-}
+  .dropdown-content div, .dropdown-content a {
+    color: #333; padding: 12px 16px;
+    text-decoration: none; display: block; cursor: pointer;
+    font-size: 14px; border-bottom: 1px solid #f0f0f0;
+  }
+  .dropdown-content div:last-child { border-bottom: none; }
+  .dropdown-content div:hover, .dropdown-content a:hover { background-color: #f8f9fa; color: #1877f2; }
 
-input {
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  border-radius: 12px;
-  border: 1px solid #ddd;
-  font-size: 14px;
-}
+  /* সাব-মেনু (ভাষার তালিকা) */
+  #language-options { display: none; background-color: #fefefe; }
+  .lang-item { padding-left: 30px !important; font-size: 13px !important; }
 
-.login-btn {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border-radius: 12px;
-  border: none;
-  font-size: 16px;
-  color: white;
-  background: linear-gradient(to right, #2b6cb0, #4c51bf);
-}
+  .show { display: block; }
 
-.create-btn {
-  width: 100%;
-  padding: 12px;
-  margin-top: 15px;
-  border-radius: 12px;
-  border: none;
-  font-size: 16px;
-  color: white;
-  background: #3fa34d;
-}
+  /* মেইন কার্ড ডিজাইন */
+  .container { width: 90%; max-width: 400px; margin-top: 80px; text-align: center; }
+  .logo-img { width: 110px; height: auto; margin-bottom: 10px; }
+  h1 { font-size: 26px; color: #1c1e21; margin-bottom: 25px; font-weight: 700; }
+  
+  input {
+    width: 100%; padding: 16px; margin: 8px 0;
+    border-radius: 8px; border: 1px solid #dddfe2;
+    font-size: 16px; box-sizing: border-box; background-color: #f5f6f7;
+  }
 
-.forgot {
-  display: block;
-  margin-top: 10px;
-  font-size: 14px;
-  color: #2b6cb0;
-  text-decoration: none;
-}
+  .login-btn {
+    width: 100%; padding: 14px; margin-top: 12px;
+    border-radius: 8px; border: none; font-size: 18px;
+    font-weight: bold; color: white; background-color: #1877f2; cursor: pointer;
+  }
 
-.footer {
-  margin-top: 20px;
-  font-size: 16px;
-  color: #666;
-}
+  .create-btn {
+    padding: 14px 24px; border-radius: 8px; border: none;
+    font-size: 17px; font-weight: bold; color: white;
+    background-color: #42b72a; cursor: pointer; width: 85%; margin-top: 25px;
+  }
 
-.footer span {
-  font-family: cursive;
-  font-size: 22px;
-  color: #2b6cb0;
-}
+  .footer { margin-top: auto; padding-bottom: 30px; text-align: center; }
+  .footer h2 { font-size: 18px; color: #1c1e21; letter-spacing: 2px; text-transform: uppercase; }
+  
+  .rtl { direction: rtl; text-align: right; }
 </style>
 </head>
 
 <body>
 
-<div class="card">
-
-  <img src="1771793733093.png" class="logo">
-
-  <h1>MINGLE JOYS</h1>
-
-  <input type="text" placeholder="Email address">
-  <input type="password" placeholder="Password">
-
-  <button class="login-btn">Log In</button>
-
-  <a href="#" class="forgot">Forgot password?</a>
-
-  <button class="create-btn">Create New Account</button>
-
-  <div class="footer">
-    from <span>Ajju❤️ Riyajul</span>
+  <div class="menu-container">
+    <div class="dots-btn" onclick="toggleMainMenu()">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    </div>
+    
+    <div id="mainDropdown" class="dropdown-content">
+      <a href="help.html">Help</a>
+      <div onclick="toggleLangMenu(event)">Language ▸</div>
+      
+      <div id="language-options">
+        <div class="lang-item" onclick="setLanguage('bn')">বাংলা (Bengali)</div>
+        <div class="lang-item" onclick="setLanguage('hi')">हिन्दी (Hindi)</div>
+        <div class="lang-item" onclick="setLanguage('ur')">اردو (Urdu)</div>
+        <div class="lang-item" onclick="setLanguage('en')">English</div>
+      </div>
+    </div>
   </div>
 
-</div>
+  <div class="container" id="main-content">
+    <img src="your_logo.png" alt="MingleJoys" class="logo-img">
+    <h1>MINGLE JOYS</h1>
+
+    <div class="form-box">
+      <input type="text" id="user_input" placeholder="Mobile number or email address">
+      <input type="password" id="pass_input" placeholder="Password">
+      <button class="login-btn" id="login_text">Log in</button>
+      
+      <div style="margin: 20px 0; font-size: 14px;">
+         <a href="#" id="forgot_text" style="color: #1877f2; text-decoration: none;">Forgotten password?</a>
+      </div>
+
+      <div style="border-top: 1px solid #dadde1; margin: 20px 0;"></div>
+      <button class="create-btn" id="create_text" onclick="window.location.href='register.html'">Create new account</button>
+  </div>
+
+    <div class="footer">
+    <p>from</p>
+    <h2>MINGLEJOYS</h2>
+    <p class="copyright">© 2026 MingleJoys Community</p>
+    </div>
+
+<script>
+  // প্রধান মেনু খোলা/বন্ধ করা
+  function toggleMainMenu() {
+    document.getElementById("mainDropdown").classList.toggle("show");
+    document.getElementById("language-options").style.display = "none"; // মেনু খুললে সাব-মেনু বন্ধ থাকবে
+  }
+
+  // ভাষা সাব-মেনু টগল করা
+  function toggleLangMenu(event) {
+    event.stopPropagation(); // মেনু বন্ধ হওয়া আটকানো
+    var langDiv = document.getElementById("language-options");
+    if (langDiv.style.display === "block") {
+      langDiv.style.display = "none";
+    } else {
+      langDiv.style.display = "block";
+    }
+  }
+
+  // স্ক্রিনের বাইরে ক্লিক করলে মেনু বন্ধ হওয়া
+  window.onclick = function(event) {
+    if (!event.target.matches('.dots-btn') && !event.target.matches('.dot')) {
+      document.getElementById("mainDropdown").classList.remove('show');
+    }
+  }
+
+  const translations = {
+    'en': { user: "Mobile number or email address", pass: "Password", login: "Log in", forgot: "Forgotten password?", create: "Create new account", dir: "ltr" },
+    'bn': { user: "মোবাইল নম্বর বা ইমেল ঠিকানা", pass: "পাসওয়ার্ড", login: "লগ ইন করুন", forgot: "পাসওয়ার্ড ভুলে গেছেন?", create: "নতুন অ্যাকাউন্ট তৈরি করুন", dir: "ltr" },
+    'hi': { user: "मोबाइल नंबर या ईमेल पता", pass: "पासवर्ड", login: "लॉग इन करें", forgot: "पासवर्ड भूल गए?", create: "नया अकाउंट बनाएँ", dir: "ltr" },
+    'ur': { user: "موبائل نمبر یا ای میل ایڈریس", pass: "پاس ورڈ", login: "لاگ ان کریں", forgot: "پاس ورڈ بھول گئے؟", create: "نیا اکاؤنٹ بنائیں", dir: "rtl" }
+  };
+
+  function setLanguage(lang) {
+    const data = translations[lang];
+    const content = document.getElementById("main-content");
+    document.getElementById("user_input").placeholder = data.user;
+    document.getElementById("pass_input").placeholder = data.pass;
+    document.getElementById("login_text").innerText = data.login;
+    document.getElementById("forgot_text").innerText = data.forgot;
+    document.getElementById("create_text").innerText = data.create;
+    content.classList.toggle("rtl", data.dir === "rtl");
+    
+    // ভাষা সিলেক্ট করার পর মেনু বন্ধ করে দেওয়া
+    document.getElementById("mainDropdown").classList.remove('show');
+  }
+</script>
 
 </body>
 </html>
