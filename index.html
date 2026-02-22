@@ -1,165 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MingleJoys - Login</title>
+<title>MingleJoys - Authentic Connection</title>
 
 <style>
   body {
-    margin: 0; padding: 0;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background-color: #ffffff; 
-    display: flex; flex-direction: column; align-items: center;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #fcfcfc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     min-height: 100vh;
   }
 
-  /* মেনু ও ড্রপডাউন সিস্টেম */
-  .menu-container {
-    position: absolute; top: 20px; right: 20px;
-    display: inline-block;
+  /* থ্রি-ডট মেনু ও ড্রপডাউন */
+  .header-menu {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
   }
-  .dots-btn { display: flex; gap: 4px; cursor: pointer; padding: 10px; z-index: 100; }
-  .dot { width: 5px; height: 5px; background-color: #555; border-radius: 50%; }
+  .dots-btn {
+    display: flex;
+    gap: 4px;
+    cursor: pointer;
+    padding: 5px;
+  }
+  .dot { width: 5px; height: 5px; background-color: #777; border-radius: 50%; }
 
   .dropdown-content {
-    display: none; position: absolute; right: 0;
-    background-color: #fff; min-width: 160px;
-    box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
-    border-radius: 12px; z-index: 10; border: 1px solid #eee;
-    overflow: hidden;
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 20px;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0px 10px 20px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    z-index: 10;
+    border: 1px solid #eee;
   }
-
   .dropdown-content div, .dropdown-content a {
-    color: #333; padding: 12px 16px;
-    text-decoration: none; display: block; cursor: pointer;
-    font-size: 14px; border-bottom: 1px solid #f0f0f0;
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+    font-size: 14px;
   }
-  .dropdown-content div:last-child { border-bottom: none; }
-  .dropdown-content div:hover, .dropdown-content a:hover { background-color: #f8f9fa; color: #1877f2; }
+  .dropdown-content div:hover { background-color: #f8f9fa; color: #6e45e2; }
 
-  /* সাব-মেনু (ভাষার তালিকা) */
-  #language-options { display: none; background-color: #fefefe; }
-  .lang-item { padding-left: 30px !important; font-size: 13px !important; }
+  #lang-list { display: none; background-color: #fafafa; border-radius: 0 0 12px 12px; }
+  .lang-opt { padding-left: 30px !important; }
 
   .show { display: block; }
 
-  /* মেইন কার্ড ডিজাইন */
-  .container { width: 90%; max-width: 400px; margin-top: 80px; text-align: center; }
-  .logo-img { width: 110px; height: auto; margin-bottom: 10px; }
-  h1 { font-size: 26px; color: #1c1e21; margin-bottom: 25px; font-weight: 700; }
-  
+  /* মেইন কন্টেন্ট */
+  .login-container {
+    width: 90%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+  }
+
+  .logo-img {
+    width: 110px;
+    height: auto;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.08));
+  }
+
+  h1 {
+    font-size: 26px;
+    color: #1c1e21;
+    margin-bottom: 30px;
+    font-weight: 800;
+    letter-spacing: -1px;
+  }
+
+  .form-box { width: 100%; }
+
   input {
-    width: 100%; padding: 16px; margin: 8px 0;
-    border-radius: 8px; border: 1px solid #dddfe2;
-    font-size: 16px; box-sizing: border-box; background-color: #f5f6f7;
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 15px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    outline: none;
+    transition: 0.3s;
+  }
+
+  input:focus {
+    border-color: #6e45e2;
+    background-color: #fff;
   }
 
   .login-btn {
-    width: 100%; padding: 14px; margin-top: 12px;
-    border-radius: 8px; border: none; font-size: 18px;
-    font-weight: bold; color: white; background-color: #1877f2; cursor: pointer;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #6e45e2, #88d3ce);
+    color: white;
+    border: none;
+    border-radius: 30px; 
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(110, 69, 226, 0.2);
+  }
+
+  .forgot-link {
+    display: block;
+    margin-top: 20px;
+    color: #65676b;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* উন্নত ফুটার সেকশন */
+  .bottom-section {
+    width: 100%;
+    max-width: 400px;
+    margin-top: auto;
+    padding-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
   .create-btn {
-    padding: 14px 24px; border-radius: 8px; border: none;
-    font-size: 17px; font-weight: bold; color: white;
-    background-color: #42b72a; cursor: pointer; width: 85%; margin-top: 25px;
+    width: 90%;
+    padding: 12px;
+    background-color: transparent;
+    color: #6e45e2;
+    border: 2px solid #6e45e2;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 40px; /* ফুটার থেকে দূরত্ব */
+    transition: 0.3s;
   }
 
-  .footer { margin-top: auto; padding-bottom: 30px; text-align: center; }
-  .footer h2 { font-size: 18px; color: #1c1e21; letter-spacing: 2px; text-transform: uppercase; }
-  
+  .create-btn:hover {
+    background-color: rgba(110, 69, 226, 0.05);
+  }
+
+  .footer-brand p.from-text {
+    color: #8a8d91;
+    font-size: 13px;
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+
+  .footer-brand h2.brand-name {
+    letter-spacing: 3px;
+    font-size: 18px;
+    color: #1c1e21;
+    font-weight: 800;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .footer-brand p.copyright-text {
+    color: #bcc0c4;
+    font-size: 11px;
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
   .rtl { direction: rtl; text-align: right; }
 </style>
 </head>
-
 <body>
 
-  <div class="menu-container">
-    <div class="dots-btn" onclick="toggleMainMenu()">
+  <div class="header-menu">
+    <div class="dots-btn" onclick="toggleMain()">
       <span class="dot"></span><span class="dot"></span><span class="dot"></span>
     </div>
-    
-    <div id="mainDropdown" class="dropdown-content">
-      <a href="help.html">Help</a>
-      <div onclick="toggleLangMenu(event)">Language ▸</div>
-      
-      <div id="language-options">
-        <div class="lang-item" onclick="setLanguage('bn')">বাংলা (Bengali)</div>
-        <div class="lang-item" onclick="setLanguage('hi')">हिन्दी (Hindi)</div>
-        <div class="lang-item" onclick="setLanguage('ur')">اردو (Urdu)</div>
-        <div class="lang-item" onclick="setLanguage('en')">English</div>
+    <div id="mainDrop" class="dropdown-content">
+      <a href="help.html">Help Center</a>
+      <div onclick="toggleLang(event)">Languages ▸</div>
+      <div id="lang-list">
+        <div class="lang-opt" onclick="changeLang('bn')">বাংলা</div>
+        <div class="lang-opt" onclick="changeLang('hi')">हिन्दी</div>
+        <div class="lang-opt" onclick="changeLang('ur')">اردو</div>
+        <div class="lang-opt" onclick="changeLang('en')">English</div>
       </div>
     </div>
   </div>
 
-  <div class="container" id="main-content">
-    <img src="your_logo.png" alt="MingleJoys" class="logo-img">
+  <div class="login-container" id="content-area">
+    <img src="1771794663636.png" alt="Logo" class="logo-img">
+    
     <h1>MINGLE JOYS</h1>
 
     <div class="form-box">
-      <input type="text" id="user_input" placeholder="Mobile number or email address">
-      <input type="password" id="pass_input" placeholder="Password">
-      <button class="login-btn" id="login_text">Log in</button>
-      
-      <div style="margin: 20px 0; font-size: 14px;">
-         <a href="#" id="forgot_text" style="color: #1877f2; text-decoration: none;">Forgotten password?</a>
-      </div>
-
-      <div style="border-top: 1px solid #dadde1; margin: 20px 0;"></div>
-      <button class="create-btn" id="create_text" onclick="window.location.href='register.html'">Create new account</button>
+      <input type="text" id="user" placeholder="Email or phone number">
+      <input type="password" id="pass" placeholder="Password">
+      <button class="login-btn" id="login-text">Sign In</button>
+      <center><a href="#" class="forgot-link" id="forgot-text">Forgot account?</a></center>
+    </div>
   </div>
 
-    <div class="footer">
-    <p>from</p>
-    <h2>MINGLEJOYS</h2>
-    <p class="copyright">© 2026 MingleJoys Community</p>
+  <div class="bottom-section">
+    <button class="create-btn" id="create-text" onclick="window.location.href='register.html'">Create MingleJoys ID</button>
+    
+    <div class="footer-brand">
+        <p class="from-text">from</p>
+        <h2 class="brand-name">MINGLEJOYS</h2>
+        <p class="copyright-text">© 2026 MingleJoys Community</p>
     </div>
+  </div>
 
 <script>
-  // প্রধান মেনু খোলা/বন্ধ করা
-  function toggleMainMenu() {
-    document.getElementById("mainDropdown").classList.toggle("show");
-    document.getElementById("language-options").style.display = "none"; // মেনু খুললে সাব-মেনু বন্ধ থাকবে
+  function toggleMain() {
+    document.getElementById("mainDrop").classList.toggle("show");
+    document.getElementById("lang-list").style.display = "none";
   }
 
-  // ভাষা সাব-মেনু টগল করা
-  function toggleLangMenu(event) {
-    event.stopPropagation(); // মেনু বন্ধ হওয়া আটকানো
-    var langDiv = document.getElementById("language-options");
-    if (langDiv.style.display === "block") {
-      langDiv.style.display = "none";
-    } else {
-      langDiv.style.display = "block";
+  function toggleLang(e) {
+    e.stopPropagation();
+    var list = document.getElementById("lang-list");
+    list.style.display = (list.style.display === "block") ? "none" : "block";
+  }
+
+  window.onclick = function(e) {
+    if (!e.target.matches('.dots-btn') && !e.target.matches('.dot')) {
+      document.getElementById("mainDrop").classList.remove('show');
     }
   }
 
-  // স্ক্রিনের বাইরে ক্লিক করলে মেনু বন্ধ হওয়া
-  window.onclick = function(event) {
-    if (!event.target.matches('.dots-btn') && !event.target.matches('.dot')) {
-      document.getElementById("mainDropdown").classList.remove('show');
-    }
-  }
-
-  const translations = {
-    'en': { user: "Mobile number or email address", pass: "Password", login: "Log in", forgot: "Forgotten password?", create: "Create new account", dir: "ltr" },
-    'bn': { user: "মোবাইল নম্বর বা ইমেল ঠিকানা", pass: "পাসওয়ার্ড", login: "লগ ইন করুন", forgot: "পাসওয়ার্ড ভুলে গেছেন?", create: "নতুন অ্যাকাউন্ট তৈরি করুন", dir: "ltr" },
-    'hi': { user: "मोबाइल नंबर या ईमेल पता", pass: "पासवर्ड", login: "लॉग इन करें", forgot: "पासवर्ड भूल गए?", create: "नया अकाउंट बनाएँ", dir: "ltr" },
-    'ur': { user: "موبائل نمبر یا ای میل ایڈریس", pass: "پاس ورڈ", login: "لاگ ان کریں", forgot: "پاس ورڈ بھول گئے؟", create: "نیا اکاؤنٹ بنائیں", dir: "rtl" }
+  const dict = {
+    'en': { user: "Email or phone number", pass: "Password", login: "Sign In", forgot: "Forgot account?", create: "Create MingleJoys ID", dir: "ltr" },
+    'bn': { user: "ইমেল বা ফোন নম্বর", pass: "পাসওয়ার্ড", login: "সাইন ইন", forgot: "অ্যাকাউন্ট ভুলে গেছেন?", create: "নতুন আইডি তৈরি করুন", dir: "ltr" },
+    'hi': { user: "ईमेल या फोन नंबर", pass: "पासवर्ड", login: "साइन इन करें", forgot: "खाता भूल गए?", create: "नई आईडी बनाएँ", dir: "ltr" },
+    'ur': { user: "ای میل یا فون نمبر", pass: "پاس ورڈ", login: "سائن ان کریں", forgot: "اکاؤنٹ بھول گئے؟", create: "نئی آئی ڈی بنائیں", dir: "rtl" }
   };
 
-  function setLanguage(lang) {
-    const data = translations[lang];
-    const content = document.getElementById("main-content");
-    document.getElementById("user_input").placeholder = data.user;
-    document.getElementById("pass_input").placeholder = data.pass;
-    document.getElementById("login_text").innerText = data.login;
-    document.getElementById("forgot_text").innerText = data.forgot;
-    document.getElementById("create_text").innerText = data.create;
-    content.classList.toggle("rtl", data.dir === "rtl");
-    
-    // ভাষা সিলেক্ট করার পর মেনু বন্ধ করে দেওয়া
-    document.getElementById("mainDropdown").classList.remove('show');
+  function changeLang(l) {
+    const d = dict[l];
+    document.getElementById("user").placeholder = d.user;
+    document.getElementById("pass").placeholder = d.pass;
+    document.getElementById("login-text").innerText = d.login;
+    document.getElementById("forgot-text").innerText = d.forgot;
+    document.getElementById("create-text").innerText = d.create;
+    document.getElementById("content-area").classList.toggle("rtl", d.dir === "rtl");
+    document.getElementById("mainDrop").classList.remove('show');
   }
 </script>
 
