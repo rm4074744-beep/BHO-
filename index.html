@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MingleJoys - Authentic Connection</title>
+<title>MingleJoys - Login</title>
 
 <style>
   body {
@@ -17,7 +17,7 @@
     min-height: 100vh;
   }
 
-  /* থ্রি-ডট মেনু ও ড্রপডাউন */
+  /* থ্রি-ডট মেনু */
   .header-menu {
     width: 100%;
     display: flex;
@@ -46,44 +46,51 @@
     z-index: 10;
     border: 1px solid #eee;
   }
-  .dropdown-content div, .dropdown-content a {
+  .dropdown-content div {
     color: #333;
     padding: 12px 16px;
-    text-decoration: none;
-    display: block;
     cursor: pointer;
     font-size: 14px;
   }
   .dropdown-content div:hover { background-color: #f8f9fa; color: #6e45e2; }
 
-  #lang-list { display: none; background-color: #fafafa; border-radius: 0 0 12px 12px; }
-  .lang-opt { padding-left: 30px !important; }
-
   .show { display: block; }
 
-  /* মেইন কন্টেন্ট */
+  /* লোগো সেকশন - যা লোগোকে স্পষ্ট করবে */
   .login-container {
     width: 90%;
     max-width: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 40px;
+    margin-top: 30px;
+  }
+
+  .logo-box {
+    width: 150px; /* লোগোর কন্টেইনার সাইজ */
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
   }
 
   .logo-img {
-    width: 110px;
-    height: auto;
-    margin-bottom: 15px;
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.08));
+    max-width: 100%; /* লোগোকে বড় এবং স্পষ্ট দেখাবে */
+    max-height: 100%;
+    object-fit: contain;
+    /* লোগোর ব্যাকগ্রাউন্ড যদি পিওর হোয়াইট না হয় তবে এটি সাহায্য করবে */
+    mix-blend-mode: multiply; 
+    filter: contrast(1.1); /* লোগোর রঙ আরও গাঢ় ও স্পষ্ট করতে */
   }
 
   h1 {
     font-size: 26px;
     color: #1c1e21;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     font-weight: 800;
     letter-spacing: -1px;
+    text-transform: uppercase;
   }
 
   .form-box { width: 100%; }
@@ -98,7 +105,6 @@
     box-sizing: border-box;
     background-color: #f9f9f9;
     outline: none;
-    transition: 0.3s;
   }
 
   input:focus {
@@ -117,7 +123,6 @@
     font-weight: 700;
     cursor: pointer;
     margin-top: 10px;
-    box-shadow: 0 4px 15px rgba(110, 69, 226, 0.2);
   }
 
   .forgot-link {
@@ -126,19 +131,18 @@
     color: #65676b;
     text-decoration: none;
     font-size: 14px;
-    font-weight: 500;
+    text-align: center;
   }
 
-  /* উন্নত ফুটার সেকশন */
+  /* বটম সেকশন */
   .bottom-section {
     width: 100%;
     max-width: 400px;
     margin-top: auto;
-    padding-bottom: 40px;
+    padding-bottom: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
   }
 
   .create-btn {
@@ -151,37 +155,14 @@
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
-    margin-bottom: 40px; /* ফুটার থেকে দূরত্ব */
-    transition: 0.3s;
+    margin-bottom: 30px;
   }
 
-  .create-btn:hover {
-    background-color: rgba(110, 69, 226, 0.05);
-  }
-
-  .footer-brand p.from-text {
-    color: #8a8d91;
-    font-size: 13px;
-    margin-bottom: 5px;
-    font-weight: 500;
-  }
-
-  .footer-brand h2.brand-name {
-    letter-spacing: 3px;
-    font-size: 18px;
-    color: #1c1e21;
-    font-weight: 800;
-    margin: 0;
-    text-transform: uppercase;
-  }
-
-  .footer-brand p.copyright-text {
-    color: #bcc0c4;
-    font-size: 11px;
-    margin-top: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
+  /* আপনার পছন্দের ১ নম্বর ফুটার স্টাইল */
+  .footer-brand { text-align: center; }
+  .from-text { color: #8a8d91; font-size: 12px; margin-bottom: 4px; }
+  .brand-name { letter-spacing: 3px; font-size: 16px; color: #1c1e21; font-weight: 800; margin: 0; }
+  .copyright-text { color: #bcc0c4; font-size: 10px; margin-top: 6px; text-transform: uppercase; }
 
   .rtl { direction: rtl; text-align: right; }
 </style>
@@ -193,19 +174,15 @@
       <span class="dot"></span><span class="dot"></span><span class="dot"></span>
     </div>
     <div id="mainDrop" class="dropdown-content">
-      <a href="help.html">Help Center</a>
-      <div onclick="toggleLang(event)">Languages ▸</div>
-      <div id="lang-list">
-        <div class="lang-opt" onclick="changeLang('bn')">বাংলা</div>
-        <div class="lang-opt" onclick="changeLang('hi')">हिन्दी</div>
-        <div class="lang-opt" onclick="changeLang('ur')">اردو</div>
-        <div class="lang-opt" onclick="changeLang('en')">English</div>
-      </div>
+      <div onclick="changeLang('en')">English</div>
+      <div onclick="changeLang('bn')">বাংলা</div>
     </div>
   </div>
 
   <div class="login-container" id="content-area">
-    <img src="1771794663636.png" alt="Logo" class="logo-img">
+    <div class="logo-box">
+        <img src="1771794663636.png" alt="MingleJoys Logo" class="logo-img">
+    </div>
     
     <h1>MINGLE JOYS</h1>
 
@@ -213,12 +190,12 @@
       <input type="text" id="user" placeholder="Email or phone number">
       <input type="password" id="pass" placeholder="Password">
       <button class="login-btn" id="login-text">Sign In</button>
-      <center><a href="#" class="forgot-link" id="forgot-text">Forgot account?</a></center>
+      <a href="#" class="forgot-link" id="forgot-text">Forgot account?</a>
     </div>
   </div>
 
   <div class="bottom-section">
-    <button class="create-btn" id="create-text" onclick="window.location.href='register.html'">Create MingleJoys ID</button>
+    <button class="create-btn" id="create-text">Create MingleJoys ID</button>
     
     <div class="footer-brand">
         <p class="from-text">from</p>
@@ -230,26 +207,11 @@
 <script>
   function toggleMain() {
     document.getElementById("mainDrop").classList.toggle("show");
-    document.getElementById("lang-list").style.display = "none";
-  }
-
-  function toggleLang(e) {
-    e.stopPropagation();
-    var list = document.getElementById("lang-list");
-    list.style.display = (list.style.display === "block") ? "none" : "block";
-  }
-
-  window.onclick = function(e) {
-    if (!e.target.matches('.dots-btn') && !e.target.matches('.dot')) {
-      document.getElementById("mainDrop").classList.remove('show');
-    }
   }
 
   const dict = {
     'en': { user: "Email or phone number", pass: "Password", login: "Sign In", forgot: "Forgot account?", create: "Create MingleJoys ID", dir: "ltr" },
-    'bn': { user: "ইমেল বা ফোন নম্বর", pass: "পাসওয়ার্ড", login: "সাইন ইন", forgot: "অ্যাকাউন্ট ভুলে গেছেন?", create: "নতুন আইডি তৈরি করুন", dir: "ltr" },
-    'hi': { user: "ईमेल या फोन नंबर", pass: "पासवर्ड", login: "साइन इन करें", forgot: "खाता भूल गए?", create: "नई आईडी बनाएँ", dir: "ltr" },
-    'ur': { user: "ای میل یا فون نمبر", pass: "پاس ورڈ", login: "سائن ان کریں", forgot: "اکاؤنٹ بھول گئے؟", create: "نئی آئی ڈی بنائیں", dir: "rtl" }
+    'bn': { user: "ইমেল বা ফোন নম্বর", pass: "পাসওয়ার্ড", login: "সাইন ইন", forgot: "অ্যাকাউন্ট ভুলে গেছেন?", create: "নতুন আইডি তৈরি করুন", dir: "ltr" }
   };
 
   function changeLang(l) {
@@ -261,6 +223,12 @@
     document.getElementById("create-text").innerText = d.create;
     document.getElementById("content-area").classList.toggle("rtl", d.dir === "rtl");
     document.getElementById("mainDrop").classList.remove('show');
+  }
+
+  window.onclick = function(e) {
+    if (!e.target.matches('.dots-btn') && !e.target.matches('.dot')) {
+      document.getElementById("mainDrop").classList.remove('show');
+    }
   }
 </script>
 
