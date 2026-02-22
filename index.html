@@ -7,152 +7,83 @@
 
 <style>
   body {
-    margin: 0;
-    padding: 0;
+    margin: 0; padding: 0;
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background-color: #fcfcfc;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: flex; flex-direction: column; align-items: center;
     min-height: 100vh;
   }
 
-  /* থ্রি-ডট মেনু */
+  /* থ্রি-ডট মেনু ও ড্রপডাউন */
   .header-menu {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    padding: 20px;
-    box-sizing: border-box;
-    position: relative;
+    width: 100%; display: flex; justify-content: flex-end;
+    padding: 20px; box-sizing: border-box; position: relative;
   }
-  .dots-btn {
-    display: flex;
-    gap: 4px;
-    cursor: pointer;
-    padding: 5px;
-  }
+  .dots-btn { display: flex; gap: 4px; cursor: pointer; padding: 5px; }
   .dot { width: 5px; height: 5px; background-color: #777; border-radius: 50%; }
 
   .dropdown-content {
-    display: none;
-    position: absolute;
-    top: 50px;
-    right: 20px;
-    background-color: #fff;
-    min-width: 160px;
+    display: none; position: absolute; top: 50px; right: 20px;
+    background-color: #fff; min-width: 180px;
     box-shadow: 0px 10px 20px rgba(0,0,0,0.1);
-    border-radius: 12px;
-    z-index: 10;
-    border: 1px solid #eee;
+    border-radius: 12px; z-index: 10; border: 1px solid #eee; overflow: hidden;
   }
-  .dropdown-content div {
-    color: #333;
-    padding: 12px 16px;
-    cursor: pointer;
-    font-size: 14px;
+  .dropdown-content a, .dropdown-content div {
+    color: #333; padding: 12px 16px; text-decoration: none;
+    display: block; cursor: pointer; font-size: 14px;
   }
+  .dropdown-content div:hover, .dropdown-content a:hover { background-color: #f8f9fa; color: #6e45e2; }
 
-  .show { display: block; }
-
-  /* লোগো সেকশন - বড় করা হয়েছে */
+  /* লোগো সেকশন - বড় আকার */
   .login-container {
-    width: 90%;
-    max-width: 400px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
+    width: 90%; max-width: 400px;
+    display: flex; flex-direction: column; align-items: center;
+    margin-top: 10px;
   }
-
-  .logo-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-
+  .logo-wrapper { width: 100%; display: flex; justify-content: center; margin-bottom: 5px; }
   .logo-img {
-    width: 180px; /* লোগোর সাইজ এখান থেকে আরও বাড়ানো যাবে */
-    height: auto;
-    object-fit: contain;
-    /* লোগোর চারপাশের বাড়তি সাদা অংশ দূর করতে */
-    mix-blend-mode: multiply; 
+    width: 200px; /* লোগো আরও বড় করা হয়েছে */
+    height: auto; object-fit: contain; mix-blend-mode: multiply; 
   }
 
   h1 {
-    font-size: 30px;
-    color: #1c1e21;
-    margin-bottom: 25px;
-    font-weight: 800;
-    letter-spacing: -1px;
-    text-transform: uppercase;
+    font-size: 28px; color: #1c1e21; margin-bottom: 25px;
+    font-weight: 800; letter-spacing: -1px; text-transform: uppercase;
   }
 
+  /* ইনপুট ও বাটন */
   .form-box { width: 100%; }
-
   input {
-    width: 100%;
-    padding: 16px;
-    margin-bottom: 12px;
-    border: 1px solid #e0e0e0;
-    border-radius: 15px;
-    font-size: 16px;
-    box-sizing: border-box;
-    background-color: #f9f9f9;
-    outline: none;
+    width: 100%; padding: 16px; margin-bottom: 12px;
+    border: 1px solid #e0e0e0; border-radius: 15px;
+    font-size: 16px; box-sizing: border-box; background-color: #f9f9f9; outline: none;
   }
-
   .login-btn {
-    width: 100%;
-    padding: 15px;
+    width: 100%; padding: 15px; margin-top: 10px;
     background: linear-gradient(135deg, #6e45e2, #88d3ce);
-    color: white;
-    border: none;
-    border-radius: 30px; 
-    font-size: 18px;
-    font-weight: 700;
-    cursor: pointer;
-    margin-top: 10px;
+    color: white; border: none; border-radius: 30px; 
+    font-size: 18px; font-weight: 700; cursor: pointer;
   }
-
-  .forgot-link {
-    display: block;
-    margin-top: 20px;
-    color: #65676b;
-    text-decoration: none;
-    font-size: 14px;
-    text-align: center;
-  }
+  .forgot-link { display: block; margin-top: 20px; color: #65676b; text-decoration: none; font-size: 14px; text-align: center; }
 
   /* বটম সেকশন */
   .bottom-section {
-    width: 100%;
-    max-width: 400px;
-    margin-top: auto;
-    padding-bottom: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: 100%; max-width: 400px; margin-top: auto;
+    padding-bottom: 30px; display: flex; flex-direction: column; align-items: center;
   }
-
   .create-btn {
-    width: 90%;
-    padding: 13px;
-    background-color: transparent;
-    color: #6e45e2;
-    border: 2px solid #6e45e2;
-    border-radius: 30px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    margin-bottom: 30px;
+    width: 90%; padding: 13px; margin-bottom: 30px;
+    background-color: transparent; color: #6e45e2;
+    border: 2px solid #6e45e2; border-radius: 30px;
+    font-size: 16px; font-weight: 700; cursor: pointer;
   }
 
   .footer-brand { text-align: center; }
   .from-text { color: #8a8d91; font-size: 12px; margin-bottom: 4px; }
   .brand-name { letter-spacing: 3px; font-size: 18px; color: #1c1e21; font-weight: 800; margin: 0; }
   .copyright-text { color: #bcc0c4; font-size: 10px; margin-top: 6px; text-transform: uppercase; }
+
+  .rtl { direction: rtl; text-align: right; }
 </style>
 </head>
 <body>
@@ -161,12 +92,18 @@
     <div class="dots-btn" onclick="toggleMain()">
       <span class="dot"></span><span class="dot"></span><span class="dot"></span>
     </div>
+    
     <div id="mainDrop" class="dropdown-content">
-      <div onclick="alert('Help selected')">Help Center</div>
+      <a href="help.html">Help Center</a>
+      <div style="border-top: 1px solid #eee; padding: 10px 16px; font-weight: bold; color: #888; font-size: 12px;">Choose Language:</div>
+      <div onclick="changeLang('bn')">বাংলা (Bengali)</div>
+      <div onclick="changeLang('hi')">हिन्दी (Hindi)</div>
+      <div onclick="changeLang('ur')">اردو (Urdu)</div>
+      <div onclick="changeLang('en')">English</div>
     </div>
   </div>
 
-  <div class="login-container">
+  <div class="login-container" id="content-area">
     <div class="logo-wrapper">
         <img src="1771794663636.png" alt="MingleJoys Logo" class="logo-img">
     </div>
@@ -174,15 +111,15 @@
     <h1>MINGLE JOYS</h1>
 
     <div class="form-box">
-      <input type="text" placeholder="Email or phone number">
-      <input type="password" placeholder="Password">
-      <button class="login-btn">Sign In</button>
-      <a href="#" class="forgot-link">Forgot account?</a>
+      <input type="text" id="user" placeholder="Email or phone number">
+      <input type="password" id="pass" placeholder="Password">
+      <button class="login-btn" id="login-text">Sign In</button>
+      <a href="#" class="forgot-link" id="forgot-text">Forgot account?</a>
     </div>
   </div>
 
   <div class="bottom-section">
-    <button class="create-btn">Create MingleJoys ID</button>
+    <button class="create-btn" id="create-text">Create MingleJoys ID</button>
     
     <div class="footer-brand">
         <p class="from-text">from</p>
@@ -195,6 +132,25 @@
   function toggleMain() {
     document.getElementById("mainDrop").classList.toggle("show");
   }
+
+  const dict = {
+    'en': { user: "Email or phone number", pass: "Password", login: "Sign In", forgot: "Forgot account?", create: "Create MingleJoys ID", dir: "ltr" },
+    'bn': { user: "ইমেল বা ফোন নম্বর", pass: "পাসওয়ার্ড", login: "সাইন ইন", forgot: "অ্যাকাউন্ট ভুলে গেছেন?", create: "নতুন আইডি তৈরি করুন", dir: "ltr" },
+    'hi': { user: "ईमेल या फोन नंबर", pass: "पासवर्ड", login: "साइन इन करें", forgot: "खाता भूल गए?", create: "नई आईडी बनाएँ", dir: "ltr" },
+    'ur': { user: "ای میل یا فون نمبر", pass: "پاس ورڈ", login: "سائن ان کریں", forgot: "اکاؤنٹ بھول گئے؟", create: "نئی آئی ڈی بنائیں", dir: "rtl" }
+  };
+
+  function changeLang(l) {
+    const d = dict[l];
+    document.getElementById("user").placeholder = d.user;
+    document.getElementById("pass").placeholder = d.pass;
+    document.getElementById("login-text").innerText = d.login;
+    document.getElementById("forgot-text").innerText = d.forgot;
+    document.getElementById("create-text").innerText = d.create;
+    document.getElementById("content-area").classList.toggle("rtl", d.dir === "rtl");
+    document.getElementById("mainDrop").classList.remove('show');
+  }
+
   window.onclick = function(e) {
     if (!e.target.matches('.dots-btn') && !e.target.matches('.dot')) {
       document.getElementById("mainDrop").classList.remove('show');
