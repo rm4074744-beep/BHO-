@@ -52,40 +52,36 @@
     cursor: pointer;
     font-size: 14px;
   }
-  .dropdown-content div:hover { background-color: #f8f9fa; color: #6e45e2; }
 
   .show { display: block; }
 
-  /* লোগো সেকশন - যা লোগোকে স্পষ্ট করবে */
+  /* লোগো সেকশন - বড় করা হয়েছে */
   .login-container {
     width: 90%;
     max-width: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 30px;
+    margin-top: 20px;
   }
 
-  .logo-box {
-    width: 150px; /* লোগোর কন্টেইনার সাইজ */
-    height: 150px;
+  .logo-wrapper {
+    width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
     margin-bottom: 10px;
   }
 
   .logo-img {
-    max-width: 100%; /* লোগোকে বড় এবং স্পষ্ট দেখাবে */
-    max-height: 100%;
+    width: 180px; /* লোগোর সাইজ এখান থেকে আরও বাড়ানো যাবে */
+    height: auto;
     object-fit: contain;
-    /* লোগোর ব্যাকগ্রাউন্ড যদি পিওর হোয়াইট না হয় তবে এটি সাহায্য করবে */
+    /* লোগোর চারপাশের বাড়তি সাদা অংশ দূর করতে */
     mix-blend-mode: multiply; 
-    filter: contrast(1.1); /* লোগোর রঙ আরও গাঢ় ও স্পষ্ট করতে */
   }
 
   h1 {
-    font-size: 26px;
+    font-size: 30px;
     color: #1c1e21;
     margin-bottom: 25px;
     font-weight: 800;
@@ -107,14 +103,9 @@
     outline: none;
   }
 
-  input:focus {
-    border-color: #6e45e2;
-    background-color: #fff;
-  }
-
   .login-btn {
     width: 100%;
-    padding: 14px;
+    padding: 15px;
     background: linear-gradient(135deg, #6e45e2, #88d3ce);
     color: white;
     border: none;
@@ -147,7 +138,7 @@
 
   .create-btn {
     width: 90%;
-    padding: 12px;
+    padding: 13px;
     background-color: transparent;
     color: #6e45e2;
     border: 2px solid #6e45e2;
@@ -158,13 +149,10 @@
     margin-bottom: 30px;
   }
 
-  /* আপনার পছন্দের ১ নম্বর ফুটার স্টাইল */
   .footer-brand { text-align: center; }
   .from-text { color: #8a8d91; font-size: 12px; margin-bottom: 4px; }
-  .brand-name { letter-spacing: 3px; font-size: 16px; color: #1c1e21; font-weight: 800; margin: 0; }
+  .brand-name { letter-spacing: 3px; font-size: 18px; color: #1c1e21; font-weight: 800; margin: 0; }
   .copyright-text { color: #bcc0c4; font-size: 10px; margin-top: 6px; text-transform: uppercase; }
-
-  .rtl { direction: rtl; text-align: right; }
 </style>
 </head>
 <body>
@@ -174,28 +162,27 @@
       <span class="dot"></span><span class="dot"></span><span class="dot"></span>
     </div>
     <div id="mainDrop" class="dropdown-content">
-      <div onclick="changeLang('en')">English</div>
-      <div onclick="changeLang('bn')">বাংলা</div>
+      <div onclick="alert('Help selected')">Help Center</div>
     </div>
   </div>
 
-  <div class="login-container" id="content-area">
-    <div class="logo-box">
+  <div class="login-container">
+    <div class="logo-wrapper">
         <img src="1771794663636.png" alt="MingleJoys Logo" class="logo-img">
     </div>
     
     <h1>MINGLE JOYS</h1>
 
     <div class="form-box">
-      <input type="text" id="user" placeholder="Email or phone number">
-      <input type="password" id="pass" placeholder="Password">
-      <button class="login-btn" id="login-text">Sign In</button>
-      <a href="#" class="forgot-link" id="forgot-text">Forgot account?</a>
+      <input type="text" placeholder="Email or phone number">
+      <input type="password" placeholder="Password">
+      <button class="login-btn">Sign In</button>
+      <a href="#" class="forgot-link">Forgot account?</a>
     </div>
   </div>
 
   <div class="bottom-section">
-    <button class="create-btn" id="create-text">Create MingleJoys ID</button>
+    <button class="create-btn">Create MingleJoys ID</button>
     
     <div class="footer-brand">
         <p class="from-text">from</p>
@@ -208,23 +195,6 @@
   function toggleMain() {
     document.getElementById("mainDrop").classList.toggle("show");
   }
-
-  const dict = {
-    'en': { user: "Email or phone number", pass: "Password", login: "Sign In", forgot: "Forgot account?", create: "Create MingleJoys ID", dir: "ltr" },
-    'bn': { user: "ইমেল বা ফোন নম্বর", pass: "পাসওয়ার্ড", login: "সাইন ইন", forgot: "অ্যাকাউন্ট ভুলে গেছেন?", create: "নতুন আইডি তৈরি করুন", dir: "ltr" }
-  };
-
-  function changeLang(l) {
-    const d = dict[l];
-    document.getElementById("user").placeholder = d.user;
-    document.getElementById("pass").placeholder = d.pass;
-    document.getElementById("login-text").innerText = d.login;
-    document.getElementById("forgot-text").innerText = d.forgot;
-    document.getElementById("create-text").innerText = d.create;
-    document.getElementById("content-area").classList.toggle("rtl", d.dir === "rtl");
-    document.getElementById("mainDrop").classList.remove('show');
-  }
-
   window.onclick = function(e) {
     if (!e.target.matches('.dots-btn') && !e.target.matches('.dot')) {
       document.getElementById("mainDrop").classList.remove('show');
