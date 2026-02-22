@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MingleJoys - Professional Connect</title>
+<title>MingleJoys - Login</title>
 
 <style>
   body {
@@ -14,13 +14,12 @@
     min-height: 100vh;
   }
 
-  /* থ্রি-ডট মেনু ও ড্রপডাউন */
+  /* থ্রি-ডট মেনু */
   .header-menu {
     width: 100%; display: flex; justify-content: flex-end;
     padding: 20px; box-sizing: border-box; position: relative;
   }
-  .dots-btn { display: flex; gap: 4px; cursor: pointer; padding: 10px; transition: 0.2s; }
-  .dots-btn:active { transform: scale(0.9); }
+  .dots-btn { display: flex; gap: 4px; cursor: pointer; padding: 10px; }
   .dot { width: 5px; height: 5px; background-color: #555; border-radius: 50%; }
 
   .dropdown-content {
@@ -35,13 +34,12 @@
   }
   .dropdown-content div:hover { background-color: #f8f9fa; color: #6e45e2; }
 
-  /* সাব-মেনু (ভাষার জন্য) */
   #lang-options { display: none; background: #fafafa; }
-  .lang-item { padding-left: 35px !important; font-size: 14px !important; }
+  .lang-item { padding-left: 35px !important; }
 
   .show { display: block; }
 
-  /* লোগো সেকশন - একদম ক্লিন এবং বড় */
+  /* লোগো সেকশন */
   .login-container {
     width: 90%; max-width: 400px;
     display: flex; flex-direction: column; align-items: center;
@@ -49,9 +47,7 @@
   }
   .logo-img {
     width: 180px; height: auto; 
-    object-fit: contain;
-    /* লোগোর চারপাশের কালার পার্থক্য দূর করতে */
-    mix-blend-mode: multiply; 
+    object-fit: contain; mix-blend-mode: multiply; 
     filter: brightness(1.05) contrast(1.1);
   }
 
@@ -60,14 +56,22 @@
     font-weight: 800; letter-spacing: -1px; text-transform: uppercase;
   }
 
-  /* ইনপুট ও বাটন */
+  /* ইনপুট ফিল্ড ও আইকন স্টাইল */
   .form-box { width: 100%; }
+  .input-group { position: relative; width: 100%; margin-bottom: 12px; }
+  
   input {
-    width: 100%; padding: 16px; margin-bottom: 12px;
+    width: 100%; padding: 16px; 
     border: 1px solid #dddfe2; border-radius: 12px;
     font-size: 16px; box-sizing: border-box; background-color: #f5f6f7; outline: none;
   }
-  input:focus { border-color: #6e45e2; background-color: #fff; box-shadow: 0 0 0 2px rgba(110,69,226,0.1); }
+  
+  /* Eye Icon স্টাইল */
+  .eye-icon {
+    position: absolute; right: 15px; top: 50%;
+    transform: translateY(-50%); cursor: pointer;
+    color: #8a8d91; font-size: 18px;
+  }
 
   .login-btn {
     width: 100%; padding: 14px; margin-top: 10px;
@@ -78,7 +82,7 @@
 
   .forgot-link { display: block; margin-top: 20px; color: #1c1e21; text-decoration: none; font-size: 14px; text-align: center; font-weight: 500; }
 
-  /* বটম সেকশন - Create New Account এর লোকেশন */
+  /* বটম সেকশন */
   .bottom-section {
     width: 100%; max-width: 400px; margin-top: auto;
     padding-bottom: 40px; display: flex; flex-direction: column; align-items: center;
@@ -97,6 +101,7 @@
   .copyright-text { color: #bcc0c4; font-size: 11px; margin-top: 8px; text-transform: uppercase; }
 
   .rtl { direction: rtl; text-align: right; }
+  .rtl .eye-icon { right: auto; left: 15px; } /* উর্দু ভাষার জন্য আইকন বামে যাবে */
 </style>
 </head>
 <body>
@@ -107,8 +112,7 @@
     </div>
     
     <div id="mainDrop" class="dropdown-content">
-      <a href="help.html" style="border:none;">Help Center</a>
-      
+      <a href="help.html">Help Center</a>
       <div onclick="toggleLang(event)">Language ▸</div>
       <div id="lang-options">
         <div class="lang-item" onclick="changeLang('bn')">বাংলা</div>
@@ -121,12 +125,18 @@
 
   <div class="login-container" id="content-area">
     <img src="1771794663636.png" alt="MingleJoys Logo" class="logo-img">
-    
     <h1>MINGLE JOYS</h1>
 
     <div class="form-box">
-      <input type="text" id="user" placeholder="Mobile number or email">
-      <input type="password" id="pass" placeholder="Password">
+      <div class="input-group">
+        <input type="text" id="user" placeholder="Mobile number or email">
+      </div>
+      
+      <div class="input-group">
+        <input type="password" id="pass" placeholder="Password">
+        <span class="eye-icon" id="togglePass" onclick="togglePassword()">👁️</span>
+      </div>
+
       <button class="login-btn" id="login-text">Log In</button>
       <a href="#" class="forgot-link" id="forgot-text">Forgotten password?</a>
     </div>
@@ -138,7 +148,7 @@
     <div class="footer-brand">
         <p class="from-text">from</p>
         <h2 class="brand-name">MINGLEJOYS</h2>
-        <p class="copyright-text">© 2026 MingleJoys Community</p>
+        <p class="copyright-text">© 2026 MingleJoys Teams</p>
     </div>
   </div>
 
@@ -154,11 +164,24 @@
     langDiv.style.display = (langDiv.style.display === "block") ? "none" : "block";
   }
 
+  // পাসওয়ার্ড দেখানো বা লুকানোর ফাংশন
+  function togglePassword() {
+    const passInput = document.getElementById("pass");
+    const eyeIcon = document.getElementById("togglePass");
+    if (passInput.type === "password") {
+      passInput.type = "text";
+      eyeIcon.innerText = "👁️‍🗨️"; // পাসওয়ার্ড দেখা গেলে আইকন বদলাবে
+    } else {
+      passInput.type = "password";
+      eyeIcon.innerText = "👁️";
+    }
+  }
+
   const dict = {
     'en': { user: "Mobile number or email", pass: "Password", login: "Log In", forgot: "Forgotten password?", create: "Create new account", dir: "ltr" },
     'bn': { user: "মোবাইল নম্বর বা ইমেল", pass: "পাসওয়ার্ড", login: "লগ ইন", forgot: "পাসওয়ার্ড ভুলে গেছেন?", create: "নতুন অ্যাকাউন্ট তৈরি করুন", dir: "ltr" },
     'hi': { user: "मोबाइल नंबर या ईमेल", pass: "पासवर्ड", login: "लॉग इन", forgot: "पासवर्ड भूल गए?", create: "नया अकाउंट बनाएँ", dir: "ltr" },
-    'ur': { user: "موبائل نمبر یا ای میل", pass: "پاس ورڈ", login: "لاگ ان کریں", forgot: "پاس ورڈ بھول گئے؟", create: "نیا اکاؤنٹ بنائیں", dir: "rtl" }
+    'ur': { user: "موبائل نمبر یا ای میل", pass: "پاس ورڈ", login: "لاگن کریں", forgot: "پاس ورڈ بھول گئے؟", create: "نیا اکاؤنٹ بنائیں", dir: "rtl" }
   };
 
   function changeLang(l) {
@@ -172,7 +195,6 @@
     document.getElementById("mainDrop").classList.remove('show');
   }
 
-  // বাইরে ক্লিক করলে মেনু বন্ধ হবে
   window.onclick = function(e) {
     if (!e.target.matches('.dots-btn') && !e.target.matches('.dot')) {
       document.getElementById("mainDrop").classList.remove('show');
