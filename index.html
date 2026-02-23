@@ -56,7 +56,7 @@
     font-weight: 800; letter-spacing: -1px; text-transform: uppercase;
   }
 
-  /* ইনপুট ফিল্ড ও আইকন স্টাইল */
+  /* ইনপুট ফিল্ড */
   .form-box { width: 100%; }
   .input-group { position: relative; width: 100%; margin-bottom: 12px; }
   
@@ -66,7 +66,6 @@
     font-size: 16px; box-sizing: border-box; background-color: #f5f6f7; outline: none;
   }
   
-  /* Eye Icon স্টাইল */
   .eye-icon {
     position: absolute; right: 15px; top: 50%;
     transform: translateY(-50%); cursor: pointer;
@@ -87,21 +86,39 @@
     width: 100%; max-width: 400px; margin-top: auto;
     padding-bottom: 40px; display: flex; flex-direction: column; align-items: center;
   }
+
+  /* ক্রিয়েট অ্যাকাউন্ট বাটন এবং স্পিনার */
   .create-btn {
     width: 90%; padding: 12px; margin-bottom: 35px;
     background-color: transparent; color: #6e45e2;
     border: 1.5px solid #6e45e2; border-radius: 25px;
     font-size: 16px; font-weight: 700; cursor: pointer;
+    display: flex; justify-content: center; align-items: center;
+    gap: 10px; position: relative;
+    transition: all 0.3s;
   }
 
-  /* ব্র্যান্ডিং ফুটার */
+  .spinner {
+    width: 18px; height: 18px;
+    border: 3px solid rgba(110, 69, 226, 0.2);
+    border-top: 3px solid #6e45e2;
+    border-radius: 50%;
+    display: none; /* শুরুতে লুকানো */
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
   .footer-brand { text-align: center; }
   .from-text { color: #8a8d91; font-size: 13px; margin-bottom: 4px; }
   .brand-name { letter-spacing: 3px; font-size: 18px; color: #1c1e21; font-weight: 800; margin: 0; }
   .copyright-text { color: #bcc0c4; font-size: 11px; margin-top: 8px; text-transform: uppercase; }
 
   .rtl { direction: rtl; text-align: right; }
-  .rtl .eye-icon { right: auto; left: 15px; } /* উর্দু ভাষার জন্য আইকন বামে যাবে */
+  .rtl .eye-icon { right: auto; left: 15px; }
 </style>
 </head>
 <body>
@@ -143,7 +160,10 @@
   </div>
 
   <div class="bottom-section">
-    <button class="create-btn" id="create-text" onclick="location.href='register.html'">Create new account</button>
+    <button class="create-btn" id="create-account-btn" onclick="handleCreateAccount()">
+      <span id="create-text">Create new account</span>
+      <div class="spinner" id="btn-spinner"></div>
+    </button>
     
     <div class="footer-brand">
         <p class="from-text">from</p>
@@ -164,17 +184,33 @@
     langDiv.style.display = (langDiv.style.display === "block") ? "none" : "block";
   }
 
-  // পাসওয়ার্ড দেখানো বা লুকানোর ফাংশন
   function togglePassword() {
     const passInput = document.getElementById("pass");
     const eyeIcon = document.getElementById("togglePass");
     if (passInput.type === "password") {
       passInput.type = "text";
-      eyeIcon.innerText = "👁️‍🗨️"; // পাসওয়ার্ড দেখা গেলে আইকন বদলাবে
+      eyeIcon.innerText = "👁️‍🗨️";
     } else {
       passInput.type = "password";
       eyeIcon.innerText = "👁️";
     }
+  }
+
+  // ক্রিয়েট অ্যাকাউন্ট লোডিং ফাংশন
+  function handleCreateAccount() {
+    const btn = document.getElementById("create-account-btn");
+    const spinner = document.getElementById("btn-spinner");
+    const text = document.getElementById("create-text");
+
+    // লোডিং শুরু
+    spinner.style.display = "block";
+    btn.style.pointerEvents = "none"; // ডাবল ক্লিক বন্ধ করতে
+    btn.style.opacity = "0.7";
+
+    // ১.৫ সেকেন্ড পর পেজ পরিবর্তন (আপনি সময় কমাতে বা বাড়াতে পারেন)
+    setTimeout(() => {
+      location.href = 'join.html';
+    }, 1500);
   }
 
   const dict = {
