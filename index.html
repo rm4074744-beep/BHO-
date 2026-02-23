@@ -22,7 +22,7 @@
     min-height: 100vh;
   }
 
-  /* ৩টি ডট মেনু স্টাইল */
+  /* ৩টি ডট মেনু */
   .header-actions {
     width: 100%;
     display: flex;
@@ -37,7 +37,6 @@
     font-weight: bold;
     color: #555;
     letter-spacing: 2px;
-    padding: 5px;
   }
 
   /* ড্রপডাউন মেনু */
@@ -75,31 +74,32 @@
     justify-content: space-between;
   }
 
-  /* টিক চিহ্ন স্টাইল */
-  .check-mark {
-    color: #6e45e2;
-    font-weight: bold;
-    display: none; /* শুরুতে লুকানো */
-  }
-
-  .active .check-mark {
-    display: inline; /* সিলেক্ট করলে দেখা যাবে */
-  }
-
+  .check-mark { color: #6e45e2; font-weight: bold; display: none; }
+  .active .check-mark { display: inline; }
   .show { display: block !important; }
 
-  /* কন্টেইনার ও ইনপুট */
-  .login-container {
-    width: 90%; max-width: 400px;
-    display: flex; flex-direction: column; align-items: center;
+  /* লোগো সেকশন - আপনার দেওয়া মাপ অনুযায়ী */
+  .logo-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
     margin-top: 10px;
+    margin-bottom: 40px;
   }
 
-  .logo-img { width: 85px; margin-bottom: 60px; pointer-events: none; }
+  .logo-img { 
+    width: 300px;      /* আপনার চাহিদা অনুযায়ী প্রস্থ */
+    height: 100px;     /* আপনার চাহিদা অনুযায়ী উচ্চতা */
+    object-fit: contain; /* ছবি যাতে ফেটে না যায় */
+    background: transparent; /* ট্রান্সপারেন্ট ব্যাকগ্রাউন্ড */
+    pointer-events: none;
+  }
 
-  h1 { font-size: 26px; font-weight: 700; margin-bottom: 32px; }
+  h1 { font-size: 26px; font-weight: 700; margin-bottom: 32px; color: #000; text-align: center;}
 
-  .input-group { position: relative; width: 100%; margin-bottom: 24px; }
+  /* ইনপুট গ্রুপ */
+  .form-box { width: 90%; max-width: 400px; }
+  .input-group { position: relative; width: 100%; margin-bottom: 20px; }
   
   input {
     width: 100%; padding: 16px; padding-right: 50px;
@@ -110,7 +110,7 @@
   .eye-icon-img {
     position: absolute; right: 16px; top: 50%;
     transform: translateY(-50%);
-    cursor: pointer; width: 24px; opacity: 0.7;
+    cursor: pointer; width: 22px; opacity: 0.7;
   }
 
   /* বাটন */
@@ -119,7 +119,7 @@
     background: linear-gradient(135deg, #6e45e2, #88d3ce);
     color: white; border: none; border-radius: 30px; 
     font-size: 16px; font-weight: 600; cursor: pointer;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
   .bottom-section {
@@ -131,8 +131,23 @@
     width: 85%; padding: 12px;
     background: none; color: #6e45e2;
     border: 1px solid #6e45e2; border-radius: 30px;
-    font-size: 15px; font-weight: 600; margin: 0 auto 30px auto;
+    font-size: 15px; font-weight: 600; 
+    margin: 0 auto 20px auto;
+    display: flex; justify-content: center; align-items: center;
+    gap: 10px; cursor: pointer;
   }
+
+  /* স্পিনার */
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(110, 69, 226, 0.2);
+    border-top: 2px solid #6e45e2;
+    border-radius: 50%;
+    display: none;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
   .rtl { direction: rtl; text-align: right; }
   .rtl .eye-icon-img { right: auto; left: 16px; }
@@ -142,60 +157,50 @@
 
   <div class="header-actions">
     <div class="more-dots" onclick="toggleMenu(event)">...</div>
-
     <div class="dropdown-menu" id="mainMenu">
-      <div class="dropdown-item" id="help-text">Help Center</div>
-      <div class="dropdown-item" id="lang-menu-text" onclick="toggleLang(event)">
-        Language <span>▸</span>
-      </div>
-      
+      <div class="dropdown-item">Help Center</div>
+      <div class="dropdown-item" onclick="toggleLang(event)">Language <span>▸</span></div>
       <div id="lang-sub-menu">
-        <div class="lang-option active" id="opt-en" onclick="changeLang('en')">
-          <span>English</span>
-          <span class="check-mark">✓</span>
-        </div>
-        <div class="lang-option" id="opt-bn" onclick="changeLang('bn')">
-          <span>বাংলা</span>
-          <span class="check-mark">✓</span>
-        </div>
-        <div class="lang-option" id="opt-hi" onclick="changeLang('hi')">
-          <span>हिन्दी</span>
-          <span class="check-mark">✓</span>
-        </div>
-        <div class="lang-option" id="opt-ur" onclick="changeLang('ur')">
-          <span>اردو</span>
-          <span class="check-mark">✓</span>
-        </div>
+        <div class="lang-option active" id="opt-en" onclick="changeLang('en')"><span>English</span><span class="check-mark">✓</span></div>
+        <div class="lang-option" id="opt-bn" onclick="changeLang('bn')"><span>বাংলা</span><span class="check-mark">✓</span></div>
+        <div class="lang-option" id="opt-hi" onclick="changeLang('hi')"><span>हिन्दी</span><span class="check-mark">✓</span></div>
+        <div class="lang-option" id="opt-ur" onclick="changeLang('ur')"><span>اردو</span><span class="check-mark">✓</span></div>
       </div>
     </div>
   </div>
 
-  <div class="login-container">
-    <img src="1771794663636.png" class="logo-img">
-    <h1 id="page-title">MingleJoys</h1>
+  <div class="logo-container">
+    <img src="1000040222.jpg" class="logo-img">
+  </div>
 
+  <div class="form-box">
+    <h1 id="page-title">MingleJoys</h1>
     <div class="input-group">
       <input type="text" id="userInput" placeholder="Mobile number or email">
     </div>
     <div class="input-group">
       <input type="password" id="passInput" placeholder="Password">
-      <img src="Screenshot_2026_0224_015913.png" id="eyeIcon" class="eye-icon-img" onclick="togglePass()">
+      <img src="1000040302.png" id="eyeIcon" class="eye-icon-img" onclick="togglePass()">
     </div>
     <button class="login-btn" id="login-btn-text">Log In</button>
   </div>
 
   <div class="bottom-section">
-    <button class="create-btn" id="create-btn-text">Create new account</button>
+    <button class="create-btn" onclick="handleCreateAccount()">
+      <span id="create-btn-text">Create new account</span>
+      <div class="spinner" id="loading-spinner"></div>
+    </button>
     <p style="font-size: 13px; color: #999;" id="slogan-text">Connect. Share. Enjoy.</p>
     <p style="font-size: 15px; font-weight: 700; color: #555; margin: 0;">MINGLEJOYS</p>
   </div>
 
 <script>
+  // ল্যাঙ্গুয়েজ এবং অন্যান্য ফাংশন
   const translations = {
-    'en': { user: "Mobile number or email", pass: "Password", login: "Log In", create: "Create new account", help: "Help Center", slogan: "Connect. Share. Enjoy.", dir: "ltr" },
-    'bn': { user: "মোবাইল নম্বর বা ইমেল", pass: "পাসওয়ার্ড", login: "লগ ইন", create: "নতুন অ্যাকাউন্ট তৈরি করুন", help: "সহায়তা কেন্দ্র", slogan: "যুক্ত হন। শেয়ার করুন। আনন্দ করুন।", dir: "ltr" },
-    'hi': { user: "मोबाइल नंबर या ईमेल", pass: "पासवर्ड", login: "लॉग इन", create: "नया अकाउंट बनाएँ", help: "सहायता केंद्र", slogan: "जुड़ें। साझा करें। आनंद लें।", dir: "ltr" },
-    'ur': { user: "موبائل نمبر یا ای میل", pass: "پاس ورڈ", login: "لاگ ان کریں", create: "نیا اکاؤنٹ بنائیں", help: "مدد مرکز", slogan: "جڑیں۔ بانٹیں۔ لطف اٹھائیں۔", dir: "rtl" }
+    'en': { user: "Mobile number or email", pass: "Password", login: "Log In", create: "Create new account", slogan: "Connect. Share. Enjoy.", dir: "ltr" },
+    'bn': { user: "মোবাইল নম্বর বা ইমেল", pass: "পাসওয়ার্ড", login: "লগ ইন", create: "নতুন অ্যাকাউন্ট তৈরি করুন", slogan: "যুক্ত হন। শেয়ার করুন। আনন্দ করুন।", dir: "ltr" },
+    'hi': { user: "मोबाइल नंबर या ईमेल", pass: "पासवर्ड", login: "लॉग इन", create: "नया अकाउंट बनाएँ", slogan: "जुड़ें। साझा करें। आनंद लें।", dir: "ltr" },
+    'ur': { user: "موبائل نمبر یا ای میل", pass: "پاس ورڈ", login: "لاگ ان کریں", create: "نیا اکاؤنٹ بنائیں", slogan: "جڑیں۔ بانٹیں۔ لطف اٹھائیں۔", dir: "rtl" }
   };
 
   function changeLang(lang) {
@@ -204,57 +209,28 @@
     document.getElementById("passInput").placeholder = data.pass;
     document.getElementById("login-btn-text").innerText = data.login;
     document.getElementById("create-btn-text").innerText = data.create;
-    document.getElementById("help-text").innerText = data.help;
     document.getElementById("slogan-text").innerText = data.slogan;
-
     document.body.classList.toggle("rtl", data.dir === "rtl");
-
-    // টিক চিহ্ন লজিক
     document.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('active'));
     document.getElementById('opt-' + lang).classList.add('active');
-    
     setTimeout(() => { document.getElementById("mainMenu").classList.remove("show"); }, 300);
   }
 
-  function toggleMenu(e) {
-    e.stopPropagation();
-    document.getElementById("mainMenu").classList.toggle("show");
-  }
-
-  function toggleLang(e) {
-    e.stopPropagation();
-    document.getElementById("lang-sub-menu").classList.toggle("show");
-  }
-
+  function toggleMenu(e) { e.stopPropagation(); document.getElementById("mainMenu").classList.toggle("show"); }
+  function toggleLang(e) { e.stopPropagation(); document.getElementById("lang-sub-menu").classList.toggle("show"); }
   window.onclick = function() { document.getElementById("mainMenu").classList.remove("show"); }
 
   function togglePass() {
     const input = document.getElementById("passInput");
     const icon = document.getElementById("eyeIcon");
-    if (input.type === "password") {
-      input.type = "text";
-      icon.src = "Screenshot_2026_0224_015913.png"; 
-    } else {
-      input.type = "password";
-      icon.src = "Screenshot_2026_0224_020024.png"; 
-    }
+    input.type = (input.type === "password") ? "text" : "password";
+    icon.src = (input.type === "password") ? "1000040302.png" : "1000040304.png";
   }
- // ক্রিয়েট অ্যাকাউন্ট বাটনের জন্য ফাংশন
+
   function handleCreateAccount() {
-    const spinner = document.getElementById("loading-spinner");
-    const btnText = document.getElementById("create-btn-text");
-    
-    // স্পিনার দেখানো
-    spinner.style.display = "block";
-    
-    // ১.৫ সেকেন্ড পর অন্য পেজে নিয়ে যাওয়া
-    setTimeout(() => {
-      window.location.href = "join.html"; // এখানে আপনার অন্য পেজের নাম দিন
-    }, 1500);
+    document.getElementById("loading-spinner").style.display = "block";
+    setTimeout(() => { window.location.href = "register.html"; }, 1500);
   }
-</script>
-</body>
-</html>
 </script>
 </body>
 </html>
