@@ -239,6 +239,22 @@
       icon.src = "Screenshot_2026_0224_020024.png"; 
     }
   }
+ // ক্রিয়েট অ্যাকাউন্ট বাটনের জন্য ফাংশন
+  function handleCreateAccount() {
+    const spinner = document.getElementById("loading-spinner");
+    const btnText = document.getElementById("create-btn-text");
+    
+    // স্পিনার দেখানো
+    spinner.style.display = "block";
+    
+    // ১.৫ সেকেন্ড পর অন্য পেজে নিয়ে যাওয়া
+    setTimeout(() => {
+      window.location.href = "join.html"; // এখানে আপনার অন্য পেজের নাম দিন
+    }, 1500);
+  }
+</script>
+</body>
+</html>
 </script>
 </body>
 </html>
