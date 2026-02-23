@@ -231,6 +231,21 @@
     document.getElementById("loading-spinner").style.display = "block";
     setTimeout(() => { window.location.href = "register.html"; }, 1500);
   }
+ // পেজটি যখনই সামনে আসবে (ব্যাক করে আসলেও), স্পিনার বন্ধ হয়ে যাবে
+window.onpageshow = function(event) {
+    const btn = document.getElementById("create-account-btn");
+    const spinner = document.getElementById("btn-spinner");
+    const text = document.getElementById("create-text");
+
+    if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+        // স্পিনার লুকানো এবং বাটন স্বাভাবিক করা
+        spinner.style.display = "none";
+        btn.style.pointerEvents = "auto";
+        btn.style.opacity = "1";
+        text.innerText = "Create new account"; // আগের লেখা ফিরিয়ে আনা
+    }
+};
+ 
 </script>
 </body>
 </html>
