@@ -2,255 +2,199 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>MingleJoys - Login</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
 <style>
+  /* ১. গ্লোবাল ফন্ট এবং ইউজার রেস্ট্রিকশন */
+  * {
+    font-family: 'Inter', sans-serif !important;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
   body {
     margin: 0; padding: 0;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background-color: #ffffff;
     display: flex; flex-direction: column; align-items: center;
     min-height: 100vh;
+    color: #1c1e21;
   }
 
-  /* থ্রি-ডট মেনু */
-  .header-menu {
-    width: 100%; display: flex; justify-content: flex-end;
-    padding: 20px; box-sizing: border-box; position: relative;
-  }
-  .dots-btn { display: flex; gap: 4px; cursor: pointer; padding: 10px; }
-  .dot { width: 5px; height: 5px; background-color: #555; border-radius: 50%; }
-
-  .dropdown-content {
-    display: none; position: absolute; top: 60px; right: 20px;
-    background-color: #fff; min-width: 180px;
-    box-shadow: 0px 10px 25px rgba(0,0,0,0.1);
-    border-radius: 12px; z-index: 100; border: 1px solid #f0f0f0; overflow: hidden;
-  }
-  .dropdown-content div, .dropdown-content a {
-    color: #333; padding: 14px 20px; text-decoration: none;
-    display: block; cursor: pointer; font-size: 15px; border-bottom: 1px solid #f9f9f9;
-  }
-  .dropdown-content div:hover { background-color: #f8f9fa; color: #6e45e2; }
-
-  #lang-options { display: none; background: #fafafa; }
-  .lang-item { padding-left: 35px !important; }
-
-  .show { display: block; }
-
-  /* লোগো সেকশন */
+  /* ২. লোগো এবং হেডার (শেয়ারিং ডিজেবল) */
   .login-container {
     width: 90%; max-width: 400px;
     display: flex; flex-direction: column; align-items: center;
-    margin-top: 10px;
+    margin-top: 40px;
   }
+
   .logo-img {
-    width: 180px; height: auto; 
-    object-fit: contain; mix-blend-mode: multiply; 
-    filter: brightness(1.05) contrast(1.1);
+    width: 80px; height: auto;
+    margin-bottom: 24px;
+    pointer-events: none;
   }
 
   h1 {
-    font-size: 28px; color: #1c1e21; margin: 15px 0 30px 0;
-    font-weight: 800; letter-spacing: -1px; text-transform: uppercase;
+    font-size: 24px; font-weight: 700;
+    margin: 0 0 32px 0;
+    color: #000; letter-spacing: -0.5px;
   }
 
-  /* ইনপুট ফিল্ড */
+  /* ৩. ক্লিন ইনপুট ফিল্ড ও আইকন */
   .form-box { width: 100%; }
-  .input-group { position: relative; width: 100%; margin-bottom: 12px; }
+  .input-group { position: relative; margin-bottom: 24px; }
   
   input {
     width: 100%; padding: 16px; 
+    padding-right: 50px; /* আইকনের জন্য জায়গা */
     border: 1px solid #dddfe2; border-radius: 12px;
-    font-size: 16px; box-sizing: border-box; background-color: #f5f6f7; outline: none;
-  }
-  
-  .eye-icon {
-    position: absolute; right: 15px; top: 50%;
-    transform: translateY(-50%); cursor: pointer;
-    color: #8a8d91; font-size: 18px;
+    font-size: 16px; background-color: #ffffff;
+    outline: none; transition: border-color 0.2s;
+    -webkit-user-select: text;
+    user-select: text;
   }
 
+  input:focus {
+    border: 1px solid #6e45e2;
+  }
+
+  /* Material Eye Icon স্টাইল */
+  .eye-icon-container {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #777;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .material-icons-outlined {
+    font-size: 22px !important;
+  }
+
+  /* ৪. বাটন স্টাইল */
   .login-btn {
-    width: 100%; padding: 14px; margin-top: 10px;
+    width: 100%; padding: 16px;
     background: linear-gradient(135deg, #6e45e2, #88d3ce);
-    color: white; border: none; border-radius: 25px; 
-    font-size: 17px; font-weight: 700; cursor: pointer;
+    color: white; border: none; border-radius: 30px; 
+    font-size: 16px; font-weight: 600; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(110, 69, 226, 0.2);
+    margin-bottom: 24px;
   }
 
-  .forgot-link { display: block; margin-top: 20px; color: #1c1e21; text-decoration: none; font-size: 14px; text-align: center; font-weight: 500; }
+  .forgot-link {
+    display: block; color: #777; text-decoration: none;
+    font-size: 14px; text-align: center; margin-bottom: 32px;
+  }
 
-  /* বটম সেকশন */
+  /* ৫. সেকেন্ডারি বাটন */
   .bottom-section {
     width: 100%; max-width: 400px; margin-top: auto;
-    padding-bottom: 40px; display: flex; flex-direction: column; align-items: center;
+    padding-bottom: 40px; text-align: center;
   }
-
-  /* ক্রিয়েট অ্যাকাউন্ট বাটন এবং স্পিনার */
+  
   .create-btn {
-    width: 90%; padding: 12px; margin-bottom: 35px;
+    width: 85%; padding: 12px;
     background-color: transparent; color: #6e45e2;
-    border: 1.5px solid #6e45e2; border-radius: 25px;
-    font-size: 16px; font-weight: 700; cursor: pointer;
+    border: 1px solid #6e45e2; border-radius: 30px;
+    font-size: 15px; font-weight: 600; cursor: pointer;
     display: flex; justify-content: center; align-items: center;
-    gap: 10px; position: relative;
-    transition: all 0.3s;
+    gap: 8px; margin: 0 auto 32px auto;
   }
 
+  /* ৬. ব্র্যান্ডিং */
+  .footer-brand { color: #888; }
+  .slogan { font-size: 13px; color: #999; margin-bottom: 4px; }
+  .brand-name { font-size: 15px; font-weight: 700; color: #555; margin: 0; }
+
+  /* স্পিনার */
   .spinner {
-    width: 18px; height: 18px;
-    border: 3px solid rgba(110, 69, 226, 0.2);
-    border-top: 3px solid #6e45e2;
-    border-radius: 50%;
-    display: none; /* শুরুতে লুকানো */
+    width: 16px; height: 16px;
+    border: 2px solid rgba(110, 69, 226, 0.2);
+    border-top: 2px solid #6e45e2;
+    border-radius: 50%; display: none;
     animation: spin 0.8s linear infinite;
   }
+  @keyframes spin { 100% { transform: rotate(360deg); } }
 
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-
-  .footer-brand { text-align: center; }
-  .from-text { color: #8a8d91; font-size: 13px; margin-bottom: 4px; }
-  .brand-name { letter-spacing: 3px; font-size: 18px; color: #1c1e21; font-weight: 800; margin: 0; }
-  .copyright-text { color: #bcc0c4; font-size: 11px; margin-top: 8px; text-transform: uppercase; }
-
-  .rtl { direction: rtl; text-align: right; }
-  .rtl .eye-icon { right: auto; left: 15px; }
 </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
-  <div class="header-menu">
-    <div class="dots-btn" onclick="toggleMenu()">
-      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-    </div>
-    
-    <div id="mainDrop" class="dropdown-content">
-      <a href="help.html">Help Center</a>
-      <div onclick="toggleLang(event)">Language ▸</div>
-      <div id="lang-options">
-        <div class="lang-item" onclick="changeLang('bn')">বাংলা</div>
-        <div class="lang-item" onclick="changeLang('hi')">हिन्दी</div>
-        <div class="lang-item" onclick="changeLang('ur')">اردو</div>
-        <div class="lang-item" onclick="changeLang('en')">English</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="login-container" id="content-area">
-    <img src="1771794663636.png" alt="MingleJoys Logo" class="logo-img">
-    <h1>MINGLE JOYS</h1>
+  <div class="login-container">
+    <img src="1000040222.jpg" alt="Logo" class="logo-img">
+    <h1>MingleJoys</h1>
 
     <div class="form-box">
       <div class="input-group">
-        <input type="text" id="user" placeholder="Mobile number or email">
+        <input type="text" placeholder="Mobile number or email" spellcheck="false">
       </div>
-      
       <div class="input-group">
-        <input type="password" id="pass" placeholder="Password">
-        <span class="eye-icon" id="togglePass" onclick="togglePassword()">👁️</span>
+        <input type="password" id="passInput" placeholder="Password">
+        <div class="eye-icon-container" onclick="togglePassword()">
+          <span class="material-icons-outlined" id="eyeIcon">visibility</span>
+        </div>
       </div>
-
-      <button class="login-btn" id="login-text">Log In</button>
-      <a href="#" class="forgot-link" id="forgot-text">Forgotten password?</a>
+      <button class="login-btn">Log In</button>
+      <a href="#" class="forgot-link">Forgotten password?</a>
     </div>
   </div>
 
   <div class="bottom-section">
     <button class="create-btn" id="create-account-btn" onclick="handleCreateAccount()">
-      <span id="create-text">Create new account</span>
+      <span>Create new account</span>
       <div class="spinner" id="btn-spinner"></div>
     </button>
     
     <div class="footer-brand">
-        <p class="from-text">from</p>
-        <h2 class="brand-name">MINGLEJOYS</h2>
-        <p class="copyright-text">© 2026 MingleJoys Teams</p>
+        <p class="slogan">Connect. Share. Enjoy.</p>
+        <p class="brand-name">MINGLEJOYS</p>
     </div>
   </div>
 
 <script>
-  function toggleMenu() {
-    document.getElementById("mainDrop").classList.toggle("show");
-    document.getElementById("lang-options").style.display = "none";
-  }
-
-  function toggleLang(e) {
-    e.stopPropagation();
-    const langDiv = document.getElementById("lang-options");
-    langDiv.style.display = (langDiv.style.display === "block") ? "none" : "block";
-  }
-
+  // পাসওয়ার্ড দেখানো বা লুকানোর ফাংশন
   function togglePassword() {
-    const passInput = document.getElementById("pass");
-    const eyeIcon = document.getElementById("togglePass");
+    const passInput = document.getElementById("passInput");
+    const eyeIcon = document.getElementById("eyeIcon");
+    
     if (passInput.type === "password") {
       passInput.type = "text";
-      eyeIcon.innerText = "👁️‍🗨️";
+      eyeIcon.innerText = "visibility_off"; // আইকন পরিবর্তন
     } else {
       passInput.type = "password";
-      eyeIcon.innerText = "👁️";
+      eyeIcon.innerText = "visibility";
     }
   }
 
-  // ক্রিয়েট অ্যাকাউন্ট লোডিং ফাংশন
   function handleCreateAccount() {
     const btn = document.getElementById("create-account-btn");
     const spinner = document.getElementById("btn-spinner");
-    const text = document.getElementById("create-text");
-
-    // লোডিং শুরু
     spinner.style.display = "block";
-    btn.style.pointerEvents = "none"; // ডাবল ক্লিক বন্ধ করতে
     btn.style.opacity = "0.7";
-
-    // ১.৫ সেকেন্ড পর পেজ পরিবর্তন (আপনি সময় কমাতে বা বাড়াতে পারেন)
+    btn.style.pointerEvents = "none";
+    
     setTimeout(() => {
-      location.href = 'join.html';
+      location.href = 'register.html';
     }, 1500);
   }
 
-  const dict = {
-    'en': { user: "Mobile number or email", pass: "Password", login: "Log In", forgot: "Forgotten password?", create: "Create new account", dir: "ltr" },
-    'bn': { user: "মোবাইল নম্বর বা ইমেল", pass: "পাসওয়ার্ড", login: "লগ ইন", forgot: "পাসওয়ার্ড ভুলে গেছেন?", create: "নতুন অ্যাকাউন্ট তৈরি করুন", dir: "ltr" },
-    'hi': { user: "मोबाइल नंबर या ईमेल", pass: "पासवर्ड", login: "लॉग इन", forgot: "पासवर्ड भूल गए?", create: "नया अकाउंट बनाएँ", dir: "ltr" },
-    'ur': { user: "موبائل نمبر یا ای میل", pass: "پاس ورڈ", login: "لاگن کریں", forgot: "پاس ورڈ بھول گئے؟", create: "نیا اکاؤنٹ بنائیں", dir: "rtl" }
-  };
-
-  function changeLang(l) {
-    const d = dict[l];
-    document.getElementById("user").placeholder = d.user;
-    document.getElementById("pass").placeholder = d.pass;
-    document.getElementById("login-text").innerText = d.login;
-    document.getElementById("forgot-text").innerText = d.forgot;
-    document.getElementById("create-text").innerText = d.create;
-    document.getElementById("content-area").classList.toggle("rtl", d.dir === "rtl");
-    document.getElementById("mainDrop").classList.remove('show');
-  }
-
-  window.onclick = function(e) {
-    if (!e.target.matches('.dots-btn') && !e.target.matches('.dot')) {
-      document.getElementById("mainDrop").classList.remove('show');
-    }
-  }
-  // পেজটি যখনই সামনে আসবে (ব্যাক করে আসলেও), স্পিনার বন্ধ হয়ে যাবে
-window.onpageshow = function(event) {
-    const btn = document.getElementById("create-account-btn");
-    const spinner = document.getElementById("btn-spinner");
-    const text = document.getElementById("create-text");
-
+  window.onpageshow = function(event) {
     if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
-        // স্পিনার লুকানো এবং বাটন স্বাভাবিক করা
-        spinner.style.display = "none";
-        btn.style.pointerEvents = "auto";
+        document.getElementById("btn-spinner").style.display = "none";
+        const btn = document.getElementById("create-account-btn");
         btn.style.opacity = "1";
-        text.innerText = "Create new account"; // আগের লেখা ফিরিয়ে আনা
+        btn.style.pointerEvents = "auto";
     }
-};
-  
+  };
 </script>
 
 </body>
