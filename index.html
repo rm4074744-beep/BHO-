@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -12,7 +12,6 @@
     font-family: 'Inter', sans-serif !important;
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
-    user-select: none;
   }
 
   body {
@@ -22,111 +21,51 @@
     min-height: 100vh;
   }
 
-  /* ৩টি ডট মেনু ও ড্রপডাউন */
-  .header-actions {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    padding: 16px 20px;
-    position: relative;
-  }
-  
-  .more-dots {
-    cursor: pointer;
-    font-size: 24px;
-    font-weight: bold;
-    color: #555;
-    letter-spacing: 2px;
-    padding: 5px;
-  }
-
-  .dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 50px; right: 20px;
-    background: white;
-    box-shadow: 0 4px 25px rgba(0,0,0,0.1);
-    border-radius: 12px;
-    z-index: 1000;
-    width: 200px;
-    border: 1px solid #f0f0f0;
-  }
-
-  .dropdown-item {
-    padding: 14px 16px;
-    font-size: 15px;
-    color: #333;
-    cursor: pointer;
-    border-bottom: 1px solid #f9f9f9;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  #lang-sub-menu { display: none; background: #fafafa; border-radius: 0 0 12px 12px; }
-  
-  .lang-option { 
-    padding: 12px 16px; font-size: 14px; color: #555; 
-    cursor: pointer; display: flex; justify-content: space-between;
-  }
-
-  /* টিক চিহ্ন */
-  .check-mark { color: #1877F2; font-weight: bold; visibility: hidden; }
-  .active .check-mark { visibility: visible; }
-  .show { display: block !important; }
-
-  /* লোগো সেকশন - ফেসবুক সাইজ (৭৫px) */
+  /* লোগো কন্টেইনার - এখানে লোগো সাইজ কন্ট্রোল করা হয়েছে */
   .logo-section {
-    margin-top: 40px;
-    margin-bottom: 10px;
+    width: 300px; /* আপনার চাহিদা অনুযায়ী Width */
+    height: 100px; /* আপনার চাহিদা অনুযায়ী Height */
+    margin-top: 20px;
+    margin-bottom: 30px;
     display: flex;
     justify-content: center;
-  }
-
-  .logo-img { 
-    width: 75px; 
-    height: 75px;
-    object-fit: contain;
+    align-items: center;
+    overflow: hidden; /* লোগো যাতে বাইরে না যায় */
     background: transparent;
   }
 
-  .brand-title {
-    font-size: 26px;
-    font-weight: 700;
-    margin: 0 0 40px 0;
-    color: #000;
+  .logo-img { 
+    width: 100%; /* কন্টেইনারের সমান */
+    height: 100%; /* কন্টেইনারের সমান */
+    object-fit: contain; /* ছবি যাতে অরিজিনাল রেশিও বজায় রাখে এবং ফেটে না যায় */
+    pointer-events: none;
   }
 
-  /* ইনপুট ফিল্ড */
+  h1 { font-size: 24px; font-weight: 700; margin-bottom: 25px; color: #000; }
+
+  /* ফর্ম বক্স */
   .form-box { width: 90%; max-width: 400px; }
-  .input-group { position: relative; width: 100%; margin-bottom: 15px; }
+  .input-group { position: relative; width: 100%; margin-bottom: 20px; }
   
   input {
-    width: 100%; padding: 16px; 
-    border: 1px solid #dddfe2; border-radius: 12px;
-    font-size: 16px; outline: none; background: #F5F6F7;
+    width: 100%; padding: 16px; border: 1px solid #dddfe2; border-radius: 12px;
+    font-size: 16px; outline: none;
   }
 
   .eye-icon-img {
     position: absolute; right: 16px; top: 50%;
     transform: translateY(-50%);
-    cursor: pointer; width: 22px; opacity: 0.6;
+    cursor: pointer; width: 22px; opacity: 0.7;
   }
 
-  /* লগইন বাটন */
   .login-btn {
-    width: 100%; padding: 14px;
-    background-color: #1877F2;
+    width: 100%; padding: 16px;
+    background: linear-gradient(135deg, #6e45e2, #88d3ce);
     color: white; border: none; border-radius: 30px; 
-    font-size: 17px; font-weight: 600; cursor: pointer;
-    margin-top: 10px;
+    font-size: 16px; font-weight: 600; cursor: pointer;
   }
 
-  .forgot-link {
-    display: block; text-align: center; margin-top: 20px;
-    color: #4B4F56; text-decoration: none; font-size: 15px;
-  }
-
-  /* ক্রিয়েট অ্যাকাউন্ট ও স্পিনার */
+  /* ক্রিয়েট অ্যাকাউন্ট বাটন ও স্পিনার */
   .bottom-section {
     width: 100%; max-width: 400px; margin-top: auto;
     padding-bottom: 40px; text-align: center;
@@ -134,96 +73,82 @@
   
   .create-btn {
     width: 85%; padding: 12px;
-    background: none; color: #1877F2;
-    border: 1px solid #1877F2; border-radius: 30px;
+    background: none; color: #6e45e2;
+    border: 1px solid #6e45e2; border-radius: 30px;
     font-size: 15px; font-weight: 600; 
-    margin: 0 auto 25px auto;
+    margin: 0 auto 20px auto;
     display: flex; justify-content: center; align-items: center;
     gap: 10px; cursor: pointer;
+    position: relative;
+    transition: opacity 0.3s;
   }
 
   .spinner {
     width: 18px; height: 18px;
-    border: 3px solid rgba(24, 119, 242, 0.2);
-    border-top: 3px solid #1877F2;
+    border: 3px solid rgba(110, 69, 226, 0.2);
+    border-top: 3px solid #6e45e2;
     border-radius: 50%;
-    display: none;
+    display: none; /* শুরুতে বন্ধ */
     animation: spin 0.8s linear infinite;
   }
 
   @keyframes spin { 100% { transform: rotate(360deg); } }
 
-  .rtl { direction: rtl; }
-  .rtl .eye-icon-img { right: auto; left: 16px; }
+  .disabled { opacity: 0.6; pointer-events: none; }
 </style>
 </head>
 <body>
 
-  <div class="header-actions">
-    <div class="more-dots" onclick="toggleMenu(event)">...</div>
-    <div class="dropdown-menu" id="mainMenu">
-      <div class="dropdown-item">Help Center</div>
-      <div class="dropdown-item" onclick="toggleLang(event)">Language <span>▸</span></div>
-      <div id="lang-sub-menu">
-        <div class="lang-option active" id="opt-en" onclick="changeLang('en')"><span>English</span><span class="check-mark">✓</span></div>
-        <div class="lang-option" id="opt-bn" onclick="changeLang('bn')"><span>বাংলা</span><span class="check-mark">✓</span></div>
-        <div class="lang-option" id="opt-hi" onclick="changeLang('hi')"><span>हिन्दी</span><span class="check-mark">✓</span></div>
-        <div class="lang-option" id="opt-ur" onclick="changeLang('ur')"><span>اردو</span><span class="check-mark">✓</span></div>
-      </div>
-    </div>
-  </div>
-
   <div class="logo-section">
-    <img src="1000040196.png" class="logo-img">
+    <img src="1771794663636.png" class="logo-img">
   </div>
-  <h1 class="brand-title">MingleJoys</h1>
 
   <div class="form-box">
+    <h1>MingleJoys</h1>
     <div class="input-group">
-      <input type="text" id="userInput" placeholder="Mobile number or email">
+      <input type="text" placeholder="Mobile number or email">
     </div>
     <div class="input-group">
       <input type="password" id="passInput" placeholder="Password">
-      <img src="1000040302.png" id="eyeIcon" class="eye-icon-img" onclick="togglePass()">
+      <img src="Screenshot_2026_0224_015913.png" id="eyeIcon" class="eye-icon-img" onclick="togglePass()">
     </div>
-    <button class="login-btn" id="login-btn-text">Log In</button>
-    <a href="#" class="forgot-link" id="forgot-text">Forgotten password?</a>
+    <button class="login-btn">Log In</button>
   </div>
 
   <div class="bottom-section">
     <button class="create-btn" id="create-btn" onclick="handleCreateAccount()">
-      <span id="create-btn-text">Create new account</span>
+      <span id="btn-text">Create new account</span>
       <div class="spinner" id="loading-spinner"></div>
     </button>
-    <p style="font-size: 13px; color: #898F9C;" id="slogan-text">Connect. Share. Enjoy.</p>
-    <p style="font-size: 15px; font-weight: 700; color: #4B4F56; margin: 0;">MINGLEJOYS</p>
+    <p style="font-size: 13px; color: #999;">Connect. Share. Enjoy.</p>
+    <p style="font-size: 15px; font-weight: 700; color: #555; margin: 0;">MINGLEJOYS</p>
   </div>
 
 <script>
-  const translations = {
-    'en': { user: "Mobile number or email", pass: "Password", login: "Log In", forgot: "Forgotten password?", create: "Create new account", slogan: "Connect. Share. Enjoy.", dir: "ltr" },
-    'bn': { user: "মোবাইল নম্বর বা ইমেল", pass: "পাসওয়ার্ড", login: "লগ ইন", forgot: "পাসওয়ার্ড ভুলে গেছেন?", create: "নতুন অ্যাকাউন্ট তৈরি করুন", slogan: "যুক্ত হন। শেয়ার করুন। আনন্দ করুন।", dir: "ltr" },
-    'hi': { user: "मोबाइल नंबर या ईमेल", pass: "पासवर्ड", login: "लॉग इन", forgot: "পাসওয়ার্ড ভুলে গেছেন?", create: "नया अकाउंट बनाएँ", slogan: "जुड़ें। साझा करें। आनंद लें।", dir: "ltr" },
-    'ur': { user: "موبائل نمبر یا ای میل", pass: "پاس ورڈ", login: "لاگ ان کریں", forgot: "পাসওয়ার্ড ভুলে গেছেন?", create: "نیا اکاؤنٹ بنائیں", slogan: "جڑیں۔ بانٹیں۔ لطف اٹھائیں۔", dir: "rtl" }
-  };
-
-  function changeLang(lang) {
-    const data = translations[lang];
-    document.getElementById("userInput").placeholder = data.user;
-    document.getElementById("passInput").placeholder = data.pass;
-    document.getElementById("login-btn-text").innerText = data.login;
-    document.getElementById("forgot-text").innerText = data.forgot;
-    document.getElementById("create-btn-text").innerText = data.create;
-    document.getElementById("slogan-text").innerText = data.slogan;
-    document.body.classList.toggle("rtl", data.dir === "rtl");
-    document.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('active'));
-    document.getElementById('opt-' + lang).classList.add('active');
-    setTimeout(() => { document.getElementById("mainMenu").classList.remove("show"); }, 300);
+  // ক্রিয়েট অ্যাকাউন্ট ফাংশন
+  function handleCreateAccount() {
+    const spinner = document.getElementById("loading-spinner");
+    const btn = document.getElementById("create-btn");
+    
+    // স্পিনার দেখানো এবং বাটন ডিজেবল করা
+    spinner.style.display = "block";
+    btn.classList.add("disabled");
+    
+    // ১.৫ সেকেন্ড পর পেজ পরিবর্তন
+    setTimeout(() => {
+      window.location.href = "register.html";
+    }, 1500);
   }
 
-  function toggleMenu(e) { e.stopPropagation(); document.getElementById("mainMenu").classList.toggle("show"); }
-  function toggleLang(e) { e.stopPropagation(); document.getElementById("lang-sub-menu").classList.toggle("show"); }
-  window.onclick = function() { document.getElementById("mainMenu").classList.remove("show"); }
+  // ব্যাক বাটনে ফিরে আসলে স্পিনার বন্ধ করার ম্যাজিক কোড
+  window.onpageshow = function(event) {
+    if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+        // স্পিনার বন্ধ করা
+        document.getElementById("loading-spinner").style.display = "none";
+        // বাটন আবার সচল করা
+        document.getElementById("create-btn").classList.remove("disabled");
+    }
+  };
 
   function togglePass() {
     const input = document.getElementById("passInput");
@@ -236,20 +161,6 @@
       icon.src = "Screenshot_2026_0224_020024.png"; 
     }
   }
-
-  function handleCreateAccount() {
-    document.getElementById("loading-spinner").style.display = "block";
-    document.getElementById("create-btn").style.pointerEvents = "none";
-    setTimeout(() => { window.location.href = "register.html"; }, 1500);
-  }
-
-  // ব্যাক বাটন ফিক্স
-  window.onpageshow = function(event) {
-    if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
-        document.getElementById("loading-spinner").style.display = "none";
-        document.getElementById("create-btn").style.pointerEvents = "auto";
-    }
-  };
 </script>
 </body>
 </html>
