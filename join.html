@@ -6,110 +6,104 @@
 <title>Join Mingle Joys</title>
 
 <style>
+  /* একদম ধবধবে সাদা এবং ক্লিন লুক */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #ffffff !important; /* ফোর্স হোয়াইট */
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
 
-body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background:#f0f2f5;
-  display:flex;
-  justify-content:center;
-}
+  .container {
+    max-width: 400px;
+    width: 90%;
+    background: #ffffff;
+    padding: 20px;
+  }
 
-.container{
-  max-width:400px;
-  width:100%;
-  padding:20px;
-}
+  .back-arrow {
+    font-size: 24px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    display: inline-block;
+  }
 
-.back{
-  font-size:22px;
-  cursor:pointer;
-  margin-bottom:10px;
-}
+  h1 {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #000;
+  }
 
-h1{
-  font-size:28px;
-  margin-bottom:20px;
-}
+  /* ইমেজের চারপাশের সব বর্ডার ও ব্যাকগ্রাউন্ড রিমুভড */
+  .image-wrapper {
+    width: 100%;
+    text-align: center;
+    background: white;
+    margin-bottom: 20px;
+  }
 
-.image-box{
-  background:#f7d7d7;
-  border-radius:15px;
-  padding:10px;
-  text-align:center;
-}
+  .image-wrapper img {
+    width: 100%;
+    display: block;
+    /* আপনার ইমেজের বাড়তি অংশ লুকানোর জন্য অবজেক্ট ফিট */
+    object-fit: contain; 
+  }
 
-.image-box img{
-  width:100%;
-  border-radius:10px;
-}
+  .desc {
+    font-size: 16px;
+    color: #4b4f56;
+    margin-bottom: 30px;
+    line-height: 1.4;
+  }
 
-.text{
-  margin:20px 0;
-  font-size:16px;
-  color:#333;
-}
+  .btn-blue {
+    width: 100%;
+    padding: 15px;
+    background: #1877f2;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 12px;
+  }
 
-.btn-primary{
-  width:100%;
-  padding:15px;
-  background:#1877f2;
-  color:white;
-  border:none;
-  border-radius:25px;
-  font-size:16px;
-  cursor:pointer;
-  margin-bottom:15px;
-}
-
-.btn-secondary{
-  width:100%;
-  padding:15px;
-  background:white;
-  color:#333;
-  border:1px solid #ccc;
-  border-radius:25px;
-  font-size:16px;
-  cursor:pointer;
-}
-
-.btn-primary:hover{
-  background:#166fe5;
-}
-
-.btn-secondary:hover{
-  background:#f2f2f2;
-}
-
+  .btn-border {
+    width: 100%;
+    padding: 15px;
+    background: transparent;
+    color: #1877f2;
+    border: 1px solid #1877f2;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
 
 <div class="container">
+  <div class="back-arrow" onclick="history.back()">←</div>
+  
+  <h1>Join Mingle Joys</h1>
 
-<div class="back">←</div>
+  <div class="image-wrapper">
+    <img src="1000040216.png" alt="Join Image">
+  </div>
 
-<h1>Join Mingle Joys</h1>
+  <p class="desc">
+    Create an account to connect with friends, family and communities who share your interests.
+  </p>
 
-<div class="image-box">
-   <img src="file_00000000f20c7208afe5e3732499da18.png" alt="Join Image">
+  <button class="btn-blue" onclick="location.href='signup.html'">Create new account</button>
+  <button class="btn-border">Find my account</button>
 </div>
-
-<div class="text">
-Create an account to connect with friends, family and communities who share your interests.
-</div>
-
-<button class="btn-primary" onclick="goSignup()">Create new account</button>
-
-<button class="btn-secondary">Find my account</button>
-
-</div>
-
-<script>
-function goSignup(){
-  window.location.href = "signup.html";
-}
-</script>
 
 </body>
 </html>
