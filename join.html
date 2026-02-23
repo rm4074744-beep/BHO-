@@ -6,104 +6,172 @@
 <title>Join Mingle Joys</title>
 
 <style>
-  /* একদম ধবধবে সাদা এবং ক্লিন লুক */
+  /* বেসিক সেটআপ */
   body {
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background-color: #ffffff !important; /* ফোর্স হোয়াইট */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #ffffff;
     display: flex;
     justify-content: center;
     min-height: 100vh;
+    color: #000000;
+    overflow-x: hidden;
   }
 
   .container {
     max-width: 400px;
     width: 90%;
-    background: #ffffff;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
   }
 
-  .back-arrow {
-    font-size: 24px;
+  /* উপরে বাম কোণায় ব্যাক বাটন */
+  .header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .back-btn {
+    font-size: 28px;
+    text-decoration: none;
+    color: #000;
     cursor: pointer;
-    margin-bottom: 10px;
-    display: inline-block;
+    background: none;
+    border: none;
+    padding: 0;
+    line-height: 1;
   }
 
   h1 {
     font-size: 30px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #000;
+    font-weight: 700;
+    margin: 10px 0 25px 0;
   }
 
-  /* ইমেজের চারপাশের সব বর্ডার ও ব্যাকগ্রাউন্ড রিমুভড */
-  .image-wrapper {
+  .image-container {
     width: 100%;
-    text-align: center;
-    background: white;
-    margin-bottom: 20px;
-  }
-
-  .image-wrapper img {
-    width: 100%;
-    display: block;
-    /* আপনার ইমেজের বাড়তি অংশ লুকানোর জন্য অবজেক্ট ফিট */
-    object-fit: contain; 
-  }
-
-  .desc {
-    font-size: 16px;
-    color: #4b4f56;
     margin-bottom: 30px;
-    line-height: 1.4;
+    text-align: center;
+    background: #fff;
   }
 
-  .btn-blue {
+  .image-container img {
     width: 100%;
-    padding: 15px;
-    background: #1877f2;
-    color: #fff;
+    max-width: 320px;
+    height: auto;
+  }
+
+  .description {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #555;
+    margin-bottom: 40px;
+  }
+
+  /* বাটন এবং লোডার স্টাইল */
+  .btn-main {
+    width: 100%;
+    padding: 16px;
+    background-color: #1877f2;
+    color: #ffffff;
     border: none;
-    border-radius: 50px;
+    border-radius: 30px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    margin-bottom: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: background 0.3s;
   }
 
-  .btn-border {
+  /* ছোট সার্কেল বা স্পিনার */
+  .loader {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #ffffff;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: none; /* শুরুতে লুকানো থাকবে */
+    animation: rotation 0.8s linear infinite;
+    margin-left: 10px;
+  }
+
+  @keyframes rotation {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .btn-outline {
     width: 100%;
-    padding: 15px;
-    background: transparent;
+    padding: 16px;
+    background-color: transparent;
     color: #1877f2;
-    border: 1px solid #1877f2;
-    border-radius: 50px;
+    border: 1.5px solid #1877f2;
+    border-radius: 30px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
+    margin-top: 12px;
   }
+
 </style>
 </head>
 <body>
 
 <div class="container">
-  <div class="back-arrow" onclick="history.back()">←</div>
-  
-  <h1>Join Mingle Joys</h1>
-
-  <div class="image-wrapper">
-    <img src="1000040216.png" alt="Join Image">
+  <div class="header">
+    <button class="back-btn" onclick="goBack()">←</button>
   </div>
 
-  <p class="desc">
-    Create an account to connect with friends, family and communities who share your interests.
-  </p>
+  <h1>Join Mingle Joys</h1>
 
-  <button class="btn-blue" onclick="location.href='signup.html'">Create new account</button>
-  <button class="btn-border">Find my account</button>
+  <div class="image-container">
+     <img src="file_00000000f20c7208afe5e3732499da18.png" alt="Mingle Joys">
+  </div>
+
+  <div class="description">
+    Create an account to connect with friends, family and communities who share your interests.
+  </div>
+
+  <button class="btn-main" id="createBtn" onclick="startLoading()">
+    <span id="btnText">Create new account</span>
+    <div class="loader" id="loader"></div>
+  </button>
+
+  <button class="btn-outline">Find my account</button>
 </div>
+
+<script>
+  // লোডিং অ্যানিমেশন এবং পেজ পরিবর্তন
+  function startLoading() {
+    const btnText = document.getElementById('btnText');
+    const loader = document.getElementById('loader');
+    const createBtn = document.getElementById('createBtn');
+
+    // বাটন টেক্সট পরিবর্তন ও লোডার দেখানো
+    btnText.innerText = "Connecting...";
+    loader.style.display = "inline-block";
+    createBtn.style.pointerEvents = "none"; // ডাবল ক্লিক রোধ করতে
+    createBtn.style.opacity = "0.8";
+
+    // ২ সেকেন্ড পর অন্য পেজে যাবে
+    setTimeout(() => {
+      window.location.href = "signup.html";
+    }, 2000);
+  }
+
+  // আগের পেজে ফিরে যাওয়ার ফাংশন
+  function goBack() {
+    window.history.back();
+  }
+</script>
 
 </body>
 </html>
