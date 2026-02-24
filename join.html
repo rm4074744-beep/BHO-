@@ -6,7 +6,7 @@
 <title>MingleJoys - Get Started</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  /* ১. পুরো পেজ ধবধবে সাদা */
+  /* ১. গ্লোবাল স্টাইল */
   * { 
     font-family: 'Inter', sans-serif !important; 
     box-sizing: border-box; 
@@ -16,14 +16,14 @@
   
   body { 
     margin: 0; padding: 0; 
-    background-color: #ffffff; /* ধবধবে সাদা */
+    background-color: #ffffff; 
     display: flex; 
     flex-direction: column; 
     align-items: center; 
     min-height: 100vh; 
   }
 
-  /* ২. ব্যাক বাটন সবার উপরে */
+  /* ২. হেডার ও ব্যাক বাটন */
   .top-navigation {
     width: 100%;
     padding: 20px;
@@ -36,29 +36,26 @@
     display: flex;
     align-items: center;
     color: #111827;
-    transition: opacity 0.2s;
+    cursor: pointer;
   }
 
-  .back-btn-link:active { opacity: 0.5; }
-
-  /* ৩. "Join" এর বদলে নতুন শব্দ: Get Started with */
+  /* ৩. কন্টেন্ট ডিজাইন */
   h1 { 
     font-size: 26px; 
     font-weight: 800; 
     color: #111827; 
-    margin: 10px 0; 
+    margin: 5px 0; 
     text-align: center; 
     letter-spacing: -0.5px;
   }
 
   .hero-image { 
-    width: 210px; 
-    height: 210px; 
+    width: 240px; 
+    height: 240px; 
     border-radius: 50%; 
     object-fit: cover; 
-    margin: 30px 0; 
+    margin: 25px 0; 
     pointer-events: none;
-    /* আপনার দেওয়া সেই ডিজাইন বা ছবি */
   }
 
   .intro-text { 
@@ -67,11 +64,11 @@
     font-size: 15px; 
     line-height: 1.6; 
     max-width: 330px; 
-    margin-bottom: 40px; 
+    margin-bottom: 45px; 
     padding: 0 15px;
   }
 
-  /* ৪. পান্না সবুজ বাটন ডিজাইন */
+  /* ৪. বাটন ডিজাইন */
   .button-group { 
     width: 90%; 
     max-width: 400px; 
@@ -82,30 +79,67 @@
 
   .btn-primary {
     width: 100%; padding: 16px;
-    background: #059669; /* সলিড পান্না সবুজ - ক্লিন লুক */
-    color: white; border: none; border-radius: 30px;
+    background: #059669; /* পান্না সবুজ */
+    color: white; border: none; border-radius: 35px;
     font-size: 16px; font-weight: 700; cursor: pointer;
-    transition: transform 0.1s;
   }
-  .btn-primary:active { transform: scale(0.98); }
 
   .btn-outline {
     width: 100%; padding: 15px;
     background: none; color: #059669;
-    border: 2px solid #059669; border-radius: 30px;
+    border: 2px solid #059669; border-radius: 35px;
     font-size: 15px; font-weight: 700; cursor: pointer;
   }
+
+  /* ৫. কাস্টম পপআপ (Exit Modal) CSS */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center; align-items: center;
+  }
+
+  .modal-box {
+    background: white;
+    width: 85%; max-width: 320px;
+    padding: 24px;
+    border-radius: 24px;
+    text-align: left;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    animation: popIn 0.3s ease;
+  }
+
+  @keyframes popIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .modal-box h3 { margin: 0 0 10px 0; font-size: 20px; color: #111; }
+  .modal-box p { margin: 0 0 20px 0; font-size: 15px; color: #4b5563; line-height: 1.5; }
+
+  .modal-buttons { display: flex; flex-direction: column; }
+
+  .modal-btn {
+    background: none; border: none; 
+    font-weight: 700; font-size: 16px; 
+    padding: 15px 0; text-align: left; cursor: pointer;
+  }
+
+  .discard-btn { color: #dc2626; border-bottom: 1px solid #f3f4f6; }
+  .keep-btn { color: #059669; }
 </style>
 </head>
 <body>
 
   <div class="top-navigation">
-    <a href="index.html" class="back-btn-link">
+    <div class="back-btn-link" onclick="showExitModal()">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <line x1="19" y1="12" x2="5" y2="12"></line>
         <polyline points="12 19 5 12 12 5"></polyline>
       </svg>
-    </a>
+    </div>
   </div>
 
   <h1>Get Started with MingleJoys</h1>
@@ -120,6 +154,42 @@
     <button class="btn-primary" onclick="location.href='signup_details.html'">Create new account</button>
     <button class="btn-outline" onclick="location.href='login.html'">I already have an account</button>
   </div>
+
+  <div id="exitModal" class="modal-overlay">
+    <div class="modal-box">
+      <h3>Discard Progress?</h3>
+      <p>If you leave now, the information you've entered won't be saved on MingleJoys.</p>
+      
+      <div class="modal-buttons">
+        <button class="modal-btn discard-btn" onclick="confirmExit()">Discard Changes</button>
+        <button class="modal-btn keep-btn" onclick="closeModal()">Keep Registering</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // পপআপ দেখানোর ফাংশন
+  function showExitModal() {
+    document.getElementById('exitModal').style.display = 'flex';
+  }
+
+  // পপআপ বন্ধ করার ফাংশন
+  function closeModal() {
+    document.getElementById('exitModal').style.display = 'none';
+  }
+
+  // ইন্ডেক্স পেজে ফিরে যাওয়ার ফাংশন
+  function confirmExit() {
+    window.location.href = "index.html"; 
+  }
+
+  // হার্ডওয়্যার ব্যাক বাটন হ্যান্ডেল করা
+  window.onpopstate = function() {
+    showExitModal();
+    history.pushState(null, null, window.location.pathname);
+  };
+  history.pushState(null, null, window.location.pathname);
+</script>
 
 </body>
 </html>
