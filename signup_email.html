@@ -104,6 +104,13 @@
         console.error("Error:", error);
       }
     } else {
+     // ইউজার যে ইমেইলটি দিয়েছে সেটি মেমোরিতে সেভ করা
+const userEmail = document.getElementById('emailInput').value; 
+localStorage.setItem("mj_temp_email", userEmail); 
+
+// তারপর পাসওয়ার্ড পেজে যাওয়া
+window.location.href = 'signup_password.html';
+     
         window.location.href = 'signup_name.html';
     }
   });
