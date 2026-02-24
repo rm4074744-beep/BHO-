@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MingleJoys - Terms & Policies</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  * { font-family: 'Inter', sans-serif !important; box-sizing: border-box; -webkit-user-select: none; }
+  body { margin: 0; padding: 0; background-color: #ffffff; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+  .container { width: 90%; max-width: 400px; padding-top: 25px; flex: 1; display: flex; flex-direction: column; }
+  
+  .back-nav { margin-bottom: 25px; cursor: pointer; display: inline-block; }
+  
+  /* আপনার ব্র্যান্ডের লোগো সেকশন */
+  .logo-mini { width: 50px; height: 50px; margin-bottom: 15px; }
+
+  /* হেডিং - কালো কালার */
+  h2 { font-size: 24px; font-weight: 800; color: #000000; margin: 0 0 15px 0; letter-spacing: -0.5px; }
+  
+  .policy-box { 
+    background: #f0fdf4; /* পান্না সবুজ হালকা শেড */
+    border: 2px solid #ecfdf5;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    color: #374151;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .highlight-text { color: #059669; font-weight: 700; }
+  .blue-link { color: #0064e0; font-weight: 700; cursor: pointer; text-decoration: none; }
+
+  /* এগ্রি বাটন - পান্না সবুজ গ্রেডিয়েন্ট */
+  .agree-btn {
+    width: 100%; padding: 18px;
+    background: linear-gradient(135deg, #059669 0%, #0d9488 100%); 
+    color: white; border: none; border-radius: 35px; 
+    font-size: 17px; font-weight: 700; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+    margin-top: auto;
+    margin-bottom: 30px;
+  }
+
+  /* লার্ন মোর পপ-আপ */
+  .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); }
+  .modal-content { background-color: white; margin: 25% auto; padding: 25px; border-radius: 25px; width: 85%; max-width: 350px; text-align: center; }
+  .close-btn { margin-top: 20px; width: 100%; padding: 12px; background: #059669; color: white; border: none; border-radius: 15px; font-weight: 700; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="back-nav" onclick="history.back()">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+  </div>
+
+  <img src="1771794663636.png" class="logo-mini">
+  <h2>Review our terms</h2>
+
+  <div class="policy-box">
+    By joining <span class="highlight-text">MingleJoys</span>, you agree to our community standards. We prioritize your privacy and ensure your data stays protected. <span class="blue-link" id="openModal">Learn more</span>
+    <br><br>
+    Tapping <b>"Finish Registration"</b> means you accept our <span class="blue-link">Privacy Policy</span> and <span class="blue-link">User Agreement</span>.
+  </div>
+
+  <div style="font-size: 13px; color: #6b7280; padding: 0 10px;">
+    We use your info to personalize your experience, including showing you relevant content and friends.
+  </div>
+
+  <button class="agree-btn" id="finishBtn">Finish Registration</button>
+</div>
+
+<div id="infoModal" class="modal">
+  <div class="modal-content">
+    <h3 style="color:#059669">Privacy at MingleJoys</h3>
+    <p>We do not sell your personal data. Your contact info is only used to help you find friends and keep your account secure.</p>
+    <button class="close-btn" id="closeModal">I Agree</button>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+  import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
+    authDomain: "my-website-a0545.firebaseapp.com",
+    databaseURL: "https://my-website-a0545-default-rtdb.firebaseio.com",
+    projectId: "my-website-a0545",
+    storageBucket: "my-website-a0545.firebasestorage.app",
+    messagingSenderId: "103602694974",
+    appId: "1:103602694974:web:12f890844e6ad6a513da6f"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // পপ-আপ লজিক
+  const modal = document.getElementById("infoModal");
+  document.getElementById("openModal").onclick = () => modal.style.display = "block";
+  document.getElementById("closeModal").onclick = () => modal.style.display = "none";
+
+  document.getElementById('finishBtn').onclick = async () => {
+    const userId = localStorage.getItem("mj_user_id");
+
+    if (userId) {
+      try {
+        // ডাটাবেসে ফাইনাল আপডেট
+        await update(ref(db, 'users/' + userId), {
+          registrationStep: "fully_completed",
+          agreedToTerms: true,
+          accountStatus: "active",
+          completedAt: new Date().toISOString()
+        });
+
+        alert("Congratulations! Your MingleJoys account is ready.");
+        window.location.href = 'home.html';
+      } catch (e) { console.error(e); }
+    }
+  };
+</script>
+</body>
+</html>
