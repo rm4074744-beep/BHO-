@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-  /* ১. নিরাপত্তা: কপি-পেস্ট ও সিলেক্ট বন্ধ */
+  /* ১. নিরাপত্তা: কপি ও সিলেক্ট বন্ধ */
   * {
     font-family: 'Inter', sans-serif !important;
     box-sizing: border-box;
@@ -24,10 +24,9 @@
     background-color: #ffffff;
     display: flex; flex-direction: column; align-items: center;
     min-height: 100vh;
-    overflow-x: hidden;
   }
 
-  /* ২. ওপরের তিনটি ডট মেনু */
+  /* ওপরের তিনটি ডট মেনু */
   .header-actions {
     width: 100%;
     display: flex;
@@ -42,7 +41,6 @@
     font-weight: bold;
     color: #555;
     letter-spacing: 2px;
-    padding: 5px;
   }
 
   /* ড্রপডাউন মেনু */
@@ -51,7 +49,7 @@
     position: absolute;
     top: 55px; right: 20px;
     background: white;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 25px rgba(0,0,0,0.1);
     border-radius: 12px;
     z-index: 1000;
     width: 200px;
@@ -70,32 +68,27 @@
     align-items: center;
   }
 
-  /* ল্যাঙ্গুয়েজ সাব-মেনু */
   #lang-sub-menu { display: none; background: #fafafa; }
   
   .lang-option { 
-    padding: 12px 20px; 
-    font-size: 14px; 
-    color: #555; 
-    cursor: pointer;
-    display: flex; 
-    justify-content: space-between;
-    align-items: center;
+    padding: 12px 20px; font-size: 14px; color: #555; 
+    cursor: pointer; display: flex; justify-content: space-between;
   }
 
-  .check-mark { color: #1877F2; font-weight: bold; display: none; }
+  /* টিক চিহ্ন পান্না সবুজ */
+  .check-mark { color: #059669; font-weight: bold; display: none; }
   .active .check-mark { display: inline; }
   .show { display: block !important; }
 
-  /* লোগো ও উন্নত ব্র্যান্ড নাম */
-  .logo-section { margin-top: 20px; margin-bottom: 10px; }
-  .logo-img { width: 80px; height: 80px; object-fit: contain; pointer-events: none; }
+  /* লোগো ও ব্র্যান্ড নাম */
+  .logo-section { margin-top: 25px; margin-bottom: 10px; }
+  .logo-img { width: 75px; height: 75px; object-fit: contain; pointer-events: none; }
 
   h1 { 
     font-size: 32px; 
     font-weight: 800; 
-    margin: 0 0 30px 0; 
-    color: #000; 
+    margin: 0 0 35px 0; 
+    color: #1f2937; 
     text-align: center;
     letter-spacing: -1px;
   }
@@ -105,43 +98,54 @@
   .input-group { position: relative; width: 100%; margin-bottom: 15px; }
   
   input {
-    width: 100%; padding: 16px; border: 1px solid #dddfe2; border-radius: 12px;
-    font-size: 16px; outline: none; background: #f5f6f7;
+    width: 100%; padding: 16px; border: 1px solid #e5e7eb; border-radius: 14px;
+    font-size: 16px; outline: none; background: #f9fafb;
+    transition: all 0.3s ease;
   }
+  /* ফোকাস করলে পান্না সবুজ বর্ডার */
+  input:focus { border-color: #10b981; background: #fff; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }
 
   .eye-icon-img {
     position: absolute; right: 16px; top: 50%;
     transform: translateY(-50%);
-    cursor: pointer; width: 22px; opacity: 0.6;
+    cursor: pointer; width: 22px; opacity: 0.5;
   }
 
+  /* লগইন বাটন: সবুজ পান্না গ্রেডিয়েন্ট */
   .login-btn {
-    width: 100%; padding: 15px;
-    background: #1877F2;
+    width: 100%; padding: 16px;
+    background: linear-gradient(135deg, #059669 0%, #0d9488 100%); 
     color: white; border: none; border-radius: 30px; 
     font-size: 17px; font-weight: 700; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+    transition: transform 0.2s;
   }
+  .login-btn:active { transform: scale(0.98); }
 
-  /* ক্রিয়েট অ্যাকাউন্ট ও স্পিনার */
+  /* ক্রিয়েট অ্যাকাউন্ট বাটন: পান্না সবুজ বর্ডার */
+  .create-btn {
+    width: 85%; padding: 12px;
+    background: none; color: #059669;
+    border: 2px solid #059669; 
+    border-radius: 30px;
+    font-size: 15px; font-weight: 700; 
+    margin: 0 auto 25px auto;
+    display: flex; justify-content: center; align-items: center;
+    gap: 10px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .create-btn:active { background: rgba(5, 150, 105, 0.05); }
+
   .bottom-section {
     width: 100%; max-width: 400px; margin-top: auto;
     padding-bottom: 40px; text-align: center;
   }
-  
-  .create-btn {
-    width: 85%; padding: 12px;
-    background: none; color: #1877F2;
-    border: 1px solid #1877F2; border-radius: 30px;
-    font-size: 15px; font-weight: 600; 
-    margin: 0 auto 25px auto;
-    display: flex; justify-content: center; align-items: center;
-    gap: 10px; cursor: pointer;
-  }
 
+  /* স্পিনার কালার পান্না সবুজ */
   .spinner {
     width: 18px; height: 18px;
-    border: 3px solid rgba(24, 119, 242, 0.2);
-    border-top: 3px solid #1877F2;
+    border: 3px solid rgba(5, 150, 105, 0.2);
+    border-top: 3px solid #059669;
     border-radius: 50%;
     display: none;
     animation: spin 0.8s linear infinite;
@@ -150,36 +154,25 @@
   @keyframes spin { 100% { transform: rotate(360deg); } }
   .disabled { opacity: 0.6; pointer-events: none; }
 
-  /* RTL Support for Urdu */
+  /* RTL Support */
   .rtl { direction: rtl; text-align: right; }
   .rtl .eye-icon-img { right: auto; left: 16px; }
-  .rtl .more-dots { letter-spacing: 2px; }
 </style>
 </head>
 <body oncontextmenu="return false;">
 
   <div class="header-actions">
     <div class="more-dots" onclick="toggleMenu(event)">...</div>
-    
     <div class="dropdown-menu" id="mainMenu">
       <div class="dropdown-item" id="help-btn">Help Center</div>
       <div class="dropdown-item" id="lang-menu-btn" onclick="toggleLang(event)">
         Language <span>▸</span>
       </div>
-      
       <div id="lang-sub-menu">
-        <div class="lang-option active" id="opt-en" onclick="changeLang('en')">
-          English <span class="check-mark">✓</span>
-        </div>
-        <div class="lang-option" id="opt-bn" onclick="changeLang('bn')">
-          বাংলা <span class="check-mark">✓</span>
-        </div>
-        <div class="lang-option" id="opt-hi" onclick="changeLang('hi')">
-          हिन्दी <span class="check-mark">✓</span>
-        </div>
-        <div class="lang-option" id="opt-ur" onclick="changeLang('ur')">
-          اردو <span class="check-mark">✓</span>
-        </div>
+        <div class="lang-option active" id="opt-en" onclick="changeLang('en')">English <span class="check-mark">✓</span></div>
+        <div class="lang-option" id="opt-bn" onclick="changeLang('bn')">বাংলা <span class="check-mark">✓</span></div>
+        <div class="lang-option" id="opt-hi" onclick="changeLang('hi')">हिन्दी <span class="check-mark">✓</span></div>
+        <div class="lang-option" id="opt-ur" onclick="changeLang('ur')">اردو <span class="check-mark">✓</span></div>
       </div>
     </div>
   </div>
@@ -195,7 +188,7 @@
     </div>
     <div class="input-group">
       <input type="password" id="passInput" placeholder="Password">
-      <img src="Screenshot_2026_0224_015913.png" id="eyeIcon" class="eye-icon-img" onclick="togglePass()">
+      <img src="1000040302.png" id="eyeIcon" class="eye-icon-img" onclick="togglePass()">
     </div>
     <button class="login-btn" id="login-btn-text">Log In</button>
   </div>
@@ -205,23 +198,20 @@
       <span id="create-btn-text">Create new account</span>
       <div class="spinner" id="loading-spinner"></div>
     </button>
-    <p style="font-size: 13px; color: #898f9c;" id="slogan-text">Connect. Share. Enjoy.</p>
-    <p style="font-size: 15px; font-weight: 800; color: #4b4f56; margin: 0;">MINGLEJOYS</p>
+    <p style="font-size: 13px; color: #9ca3af;" id="slogan-text">Connect. Share. Enjoy.</p>
+    <p style="font-size: 15px; font-weight: 800; color: #6b7280; margin: 0;">MINGLEJOYS</p>
   </div>
 
 <script>
-  /* ভাষা পরিবর্তনের স্ক্রিপ্ট (Translations) */
   const languages = {
     'en': { user: "Mobile number or email", pass: "Password", login: "Log In", create: "Create new account", help: "Help Center", langMenu: "Language ▸", slogan: "Connect. Share. Enjoy.", dir: "ltr" },
     'bn': { user: "মোবাইল নম্বর বা ইমেল", pass: "পাসওয়ার্ড", login: "লগ ইন", create: "নতুন অ্যাকাউন্ট তৈরি করুন", help: "সহায়তা কেন্দ্র", langMenu: "ভাষা ▸", slogan: "যুক্ত হন। শেয়ার করুন। আনন্দ করুন।", dir: "ltr" },
-    'hi': { user: "मोबाइल नंबर या ईमेल", pass: "पासवर्ड", login: "लॉग इन", create: "नया अकाउंट बनाएँ", help: "सहायता केंद्र", langMenu: "भाषा ▸", slogan: "जुड़ें। साझा करें। आनंद लें।", dir: "ltr" },
+    'hi': { user: "मोबाइल नंबर या ईमेल", pass: "পাসवर्ड", login: "लॉग इन", create: "नया अकाउंट बनाएँ", help: "सहायता केंद्र", langMenu: "भाषा ▸", slogan: "जुड़ें। साझा करें। आनंद लें।", dir: "ltr" },
     'ur': { user: "موبائل نمبر یا ای میل", pass: "پاس ورڈ", login: "لاگ ان کریں", create: "نیا اکاؤنٹ بنائیں", help: "مدد مرکز", langMenu: "زبان ▸", slogan: "جڑیں۔ بانٹیں۔ لطف اٹھائیں۔", dir: "rtl" }
   };
 
   function changeLang(lang) {
     const data = languages[lang];
-    
-    // টেক্সট আপডেট
     document.getElementById("userInput").placeholder = data.user;
     document.getElementById("passInput").placeholder = data.pass;
     document.getElementById("login-btn-text").innerText = data.login;
@@ -229,35 +219,19 @@
     document.getElementById("help-btn").innerText = data.help;
     document.getElementById("lang-menu-btn").innerHTML = data.langMenu;
     document.getElementById("slogan-text").innerText = data.slogan;
-
-    // RTL (Urdu-র জন্য ডান দিক থেকে লেখা)
     document.body.className = (data.dir === "rtl") ? "rtl" : "";
-
-    // টিক চিহ্ন আপডেট
     document.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('active'));
     document.getElementById('opt-' + lang).classList.add('active');
-
-    // মেনু বন্ধ করা
     setTimeout(() => { document.getElementById("mainMenu").classList.remove("show"); }, 300);
   }
 
-  /* মেনু লজিক */
-  function toggleMenu(e) {
-    e.stopPropagation();
-    document.getElementById("mainMenu").classList.toggle("show");
-  }
-
-  function toggleLang(e) {
-    e.stopPropagation();
-    document.getElementById("lang-sub-menu").classList.toggle("show");
-  }
-
+  function toggleMenu(e) { e.stopPropagation(); document.getElementById("mainMenu").classList.toggle("show"); }
+  function toggleLang(e) { e.stopPropagation(); document.getElementById("lang-sub-menu").classList.toggle("show"); }
   window.onclick = function() {
     document.getElementById("mainMenu").classList.remove("show");
     document.getElementById("lang-sub-menu").classList.remove("show");
   }
 
-  /* ক্রিয়েট অ্যাকাউন্ট ও ব্যাক বাটন ফিক্স */
   function handleCreateAccount() {
     const spinner = document.getElementById("loading-spinner");
     const btn = document.getElementById("create-btn");
@@ -273,17 +247,11 @@
     }
   };
 
-  /* পাসওয়ার্ড শো/হাইড */
   function togglePass() {
     const input = document.getElementById("passInput");
     const icon = document.getElementById("eyeIcon");
-    if (input.type === "password") {
-      input.type = "text";
-      icon.src = "Screenshot_2026_0224_015913.png"; 
-    } else {
-      input.type = "password";
-      icon.src = "Screenshot_2026_0224_020024.png"; 
-    }
+    input.type = (input.type === "password") ? "text" : "password";
+    icon.src = (input.type === "password") ? "Screenshot_2026_0224_015913.png" : "Screenshot_2026_0224_020024.png";
   }
 </script>
 </body>
