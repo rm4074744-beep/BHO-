@@ -5,47 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>MingleJoys - Profile</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-
 <style>
   * { font-family: 'Inter', sans-serif !important; box-sizing: border-box; -webkit-user-select: none; }
   body { margin: 0; padding: 0; background-color: #f8fafc; color: #1f2937; }
-  
-  .header { 
-    background: #ffffff; padding: 20px; display: flex; align-items: center; 
-    border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 100;
-  }
+  .header { background: #ffffff; padding: 20px; display: flex; align-items: center; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 100; }
   .back-btn { cursor: pointer; margin-right: 15px; }
-
-  /* প্রোফাইল হেডার সেকশন */
   .profile-card { background: white; padding: 30px 20px; text-align: center; border-bottom: 1px solid #e5e7eb; }
-  .avatar-circle { 
-    width: 100px; height: 100px; background: #059669; color: white; 
-    border-radius: 50%; margin: 0 auto 15px; display: flex; 
-    align-items: center; justify-content: center; font-size: 40px; font-weight: 800;
-    box-shadow: 0 4px 15px rgba(5, 150, 105, 0.2);
-  }
+  .avatar-circle { width: 100px; height: 100px; background: #059669; color: white; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 800; box-shadow: 0 4px 15px rgba(5, 150, 105, 0.2); }
   #display-name { font-size: 22px; font-weight: 800; color: #000; margin: 0; }
   #display-email { font-size: 14px; color: #6b7280; margin-top: 5px; }
-
-  /* এবাউট ইনফো সেকশন */
   .section-title { padding: 20px 20px 10px; font-size: 16px; font-weight: 700; color: #059669; }
-  
   .info-container { background: white; margin: 0 15px; border-radius: 20px; overflow: hidden; border: 1px solid #ecfdf5; }
-  
-  .info-item { 
-    padding: 16px 20px; display: flex; justify-content: space-between; 
-    align-items: center; border-bottom: 1px solid #f1f5f9; 
-  }
+  .info-item { padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; }
   .info-item:last-child { border-bottom: none; }
-  
   .label { font-size: 14px; color: #6b7280; font-weight: 600; }
   .value { font-size: 15px; color: #000; font-weight: 700; }
-
-  /* লোডার স্টাইল */
-  #loader { 
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    background: white; display: flex; justify-content: center; align-items: center; z-index: 1000; 
-  }
+  #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: flex; justify-content: center; align-items: center; z-index: 1000; }
   .spinner { width: 40px; height: 40px; border: 4px solid #f0fdf4; border-top: 4px solid #059669; border-radius: 50%; animation: spin 1s linear infinite; }
   @keyframes spin { 100% { transform: rotate(360deg); } }
 </style>
@@ -101,7 +76,6 @@
   const db = getDatabase(app);
 
   async function loadProfile() {
-    // localStorage থেকে ইউজারের আইডি নেওয়া (যা সাইনআপের সময় সেভ করা হয়েছিল)
     const userId = localStorage.getItem("mj_user_id");
 
     if (!userId) {
@@ -114,15 +88,23 @@
       if (snapshot.exists()) {
         const userData = snapshot.val();
 
-        // ডাটাবেস থেকে তথ্য নিয়ে পেজে বসানো
-        document.getElementById('display-name').innerText = userData.fullName || "MingleJoys User";
-        document.getElementById('display-email').innerText = userData.email || "";
-        document.getElementById('user-initial').innerText = (userData.fullName || "M").charAt(0).toUpperCase();
+        // ১. নাম লোড করা (firstName + lastName)
+        const fName = userData.firstName || "";
+        const lName = userData.lastName || "";
+        const fullName = (fName + " " + lName).trim() || "MingleJoys User";
+        
+        document.getElementById('display-name').innerText = fullName;
+        document.getElementById('info-name').innerText = fullName;
+        document.getElementById('user-initial').innerText = fName.charAt(0).toUpperCase() || "M";
 
-        // About Info সেকশন লোড
-        document.getElementById('info-name').innerText = userData.fullName || "Not Set";
-        document.getElementById('info-dob').innerText = userData.dob || "Not Set"; // জন্ম তারিখ
-        document.getElementById('info-gender').innerText = userData.gender || "Not Set"; // মেল/ফিমেল
+        // ২. ইমেইল লোড করা
+        document.getElementById('display-email').innerText = userData.email || "";
+
+        // ৩. জন্ম তারিখ (আপনার ডেটাবেসে এটি 'birthday' নামে আছে)
+        document.getElementById('info-dob').innerText = userData.birthday || "Not Set";
+
+        // ৪. জেন্ডার লোড করা
+        document.getElementById('info-gender').innerText = userData.gender || "Not Set";
       }
     } catch (error) {
       console.error("Error loading profile:", error);
