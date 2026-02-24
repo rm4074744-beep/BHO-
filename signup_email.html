@@ -3,39 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MingleJoys - Secure your account</title>
+<title>MingleJoys - Join with Email</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
 <style>
+  /* কপি ও সিলেক্ট বন্ধ */
   * { font-family: 'Inter', sans-serif !important; box-sizing: border-box; -webkit-user-select: none; }
+  input { -webkit-user-select: text; user-select: text; }
+
   body { margin: 0; padding: 0; background-color: #ffffff; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-  .container { width: 90%; max-width: 400px; padding-top: 25px; }
+  .container { width: 90%; max-width: 400px; padding-top: 25px; flex: 1; display: flex; flex-direction: column; }
   
   .back-nav { margin-bottom: 25px; cursor: pointer; display: inline-block; }
   
-  h2 { font-size: 26px; font-weight: 800; color: #111827; margin: 0 0 10px 0; letter-spacing: -0.5px; }
+  /* হেডিং - কালো কালার */
+  h2 { font-size: 24px; font-weight: 800; color: #000000; margin: 0 0 10px 0; letter-spacing: -0.5px; }
   
-  /* ছোট করে কারণ ব্যাখ্যা */
-  .why-email { 
-    background-color: #f3f4f6; padding: 12px 16px; border-radius: 12px;
-    font-size: 14px; color: #4b5563; margin-bottom: 30px; line-height: 1.4;
-  }
-  .why-email b { color: #059669; }
+  .subtitle { font-size: 14px; color: #4b5563; line-height: 1.5; margin-bottom: 30px; }
 
-  .input-wrapper { width: 100%; margin-bottom: 20px; }
-  label { display: block; font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 8px; text-transform: uppercase; }
+  /* ইনপুট গ্রুপ স্টাইল (আপনার লগইন পেজের মত) */
+  .input-group { position: relative; width: 100%; margin-bottom: 20px; }
   
-  input[type="email"] {
-    width: 100%; padding: 18px; border: 2px solid #f3f4f6; border-radius: 20px;
-    font-size: 16px; outline: none; background-color: #f9fafb; transition: all 0.3s ease;
-  }
-  input[type="email"]:focus { border-color: #059669; background-color: #ffffff; }
+  label { display: block; font-size: 13px; font-weight: 700; color: #000000; margin-bottom: 8px; }
 
+  input {
+    width: 100%; padding: 16px; 
+    border: 1px solid #e5e7eb; border-radius: 14px;
+    font-size: 16px; outline: none; background: #f9fafb;
+    transition: all 0.3s ease;
+  }
+  input:focus { border-color: #10b981; background: #fff; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }
+
+  /* নেক্সট বাটন - পান্না সবুজ গ্রেডিয়েন্ট */
   .next-btn {
-    width: 100%; padding: 18px; 
-    background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
-    color: white; border: none; border-radius: 35px; 
-    font-size: 16px; font-weight: 700; margin-top: 20px; cursor: pointer;
-    box-shadow: 0 8px 15px rgba(5, 150, 105, 0.2);
+    width: 100%; padding: 16px;
+    background: linear-gradient(135deg, #059669 0%, #0d9488 100%); 
+    color: white; border: none; border-radius: 30px; 
+    font-size: 17px; font-weight: 700; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+    margin-top: 10px;
+  }
+
+  .switch-btn {
+    text-align: center; margin-top: 20px; font-size: 15px;
+    font-weight: 600; color: #059669; cursor: pointer;
   }
 </style>
 </head>
@@ -43,29 +54,27 @@
 
 <div class="container">
   <div class="back-nav" onclick="history.back()">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="19" y1="12" x2="5" y2="12"></line>
-      <polyline points="12 19 5 12 12 5"></polyline>
-    </svg>
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
   </div>
 
-  <h2>Add your email</h2>
+  <h2>What's your email?</h2>
+  <div class="subtitle">
+    Enter the email address where you can be contacted. No one will see this on your MingleJoys profile.
+  </div>
+
+  <div class="input-group">
+    <label>Email address</label>
+    <input type="email" id="emailInput" placeholder="Enter your email">
+  </div>
+
+  <button class="next-btn" id="emailNextBtn">Next</button>
   
-  <div class="why-email">
-    We use your email only to <b>secure your account</b> and help you log back in if you ever forget your password.
-  </div>
-
-  <div class="input-wrapper">
-    <label>Email Address</label>
-    <input type="email" id="userEmail" placeholder="e.g. name@email.com" autofocus>
-  </div>
-
-  <button class="next-btn" id="nextBtn">Continue</button>
+  <div class="switch-btn">Sign up with mobile number</div>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-  import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+  import { getDatabase, ref, update, push } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
@@ -80,41 +89,36 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  document.getElementById('nextBtn').addEventListener('click', async () => {
-    const email = document.getElementById('userEmail').value.trim();
-    const userId = localStorage.getItem("mj_user_id");
+  document.getElementById('emailNextBtn').onclick = async () => {
+    const email = document.getElementById('emailInput').value.trim();
 
-    // সিম্পল ইমেইল চেক
-    if (!email || !email.includes("@")) {
+    if (!email || !email.includes('@')) {
       alert("Please enter a valid email address.");
       return;
     }
 
-    if (userId) {
-      try {
-        // একই আইডির ভেতর ইমেইল আপডেট
-        await update(ref(db, 'users/' + userId), {
-          email: email,
-          registrationStep: "email_done"
-        });
+    try {
+      // ১. ইমেইলটি মেমোরিতে সেভ করা (এটিই পাসওয়ার্ড পেজের এরর দূর করবে)
+      localStorage.setItem("mj_temp_email", email);
 
-        // এরপরে পাসওয়ার্ড পেজে যাবে
-        window.location.href = 'signup_password.html';
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    } else {
-     // ইউজার যে ইমেইলটি দিয়েছে সেটি মেমোরিতে সেভ করা
-const userEmail = document.getElementById('emailInput').value; 
-localStorage.setItem("mj_temp_email", userEmail); 
+      // ২. ডাটাবেসে নতুন ইউজার তৈরি শুরু করা
+      const newUserRef = push(ref(db, 'users'));
+      const userId = newUserRef.key;
+      localStorage.setItem("mj_user_id", userId);
 
-// তারপর পাসওয়ার্ড পেজে যাওয়া
-window.location.href = 'signup_password.html';
-     
-        window.location.href = 'signup_name.html';
+      await update(ref(db, 'users/' + userId), {
+        email: email,
+        registrationStep: "email_done",
+        createdAt: new Date().toISOString()
+      });
+
+      // ৩. সফলভাবে সেভ হওয়ার পর পাসওয়ার্ড পেজে পাঠানো
+      window.location.href = 'signup_password.html';
+      
+    } catch (error) {
+      alert("Error: " + error.message);
     }
-  });
+  };
 </script>
-
 </body>
 </html>
