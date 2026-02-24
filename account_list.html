@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Choose Your Account - MingleJoys</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  * { font-family: 'Inter', sans-serif !important; box-sizing: border-box; -webkit-user-select: none; }
+  body { margin: 0; padding: 0; background-color: #f8fafc; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+
+  .header { width: 100%; padding: 20px; background: white; border-bottom: 1px solid #e5e7eb; text-align: center; }
+  h2 { font-size: 20px; font-weight: 800; color: #1f2937; margin: 0; }
+
+  .container { width: 90%; max-width: 400px; margin-top: 25px; }
+  .subtitle { font-size: 14px; color: #6b7280; text-align: center; margin-bottom: 20px; }
+
+  /* একাউন্ট কার্ড স্টাইল */
+  .account-card {
+    background: white; padding: 16px; border-radius: 18px; 
+    border: 1px solid #e5e7eb; display: flex; align-items: center; 
+    margin-bottom: 12px; cursor: pointer; transition: all 0.2s;
+  }
+  .account-card:active { transform: scale(0.97); background: #f0fdf4; border-color: #059669; }
+
+  .avatar {
+    width: 50px; height: 50px; background: #059669; color: white;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 800; margin-right: 15px;
+    box-shadow: 0 4px 10px rgba(5, 150, 105, 0.2);
+  }
+
+  .info { flex: 1; }
+  .info b { display: block; font-size: 16px; color: #000; margin-bottom: 2px; }
+  .info span { font-size: 13px; color: #6b7280; }
+
+  .arrow { color: #d1d5db; font-size: 18px; }
+
+  /* লোডার */
+  #loader { margin-top: 50px; display: block; }
+  .spinner { width: 30px; height: 30px; border: 3px solid #f0fdf4; border-top: 3px solid #059669; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; }
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+
+  #no-account { display: none; text-align: center; color: #ef4444; font-weight: 600; padding: 20px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h2>Choose your account</h2>
+</div>
+
+<div class="container">
+  <p class="subtitle" id="search-text">Searching accounts...</p>
+  
+  <div id="loader"><div class="spinner"></div></div>
+  <div id="account-list"></div>
+  <div id="no-account">No accounts found with this email.</div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+  import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
+    authDomain: "my-website-a0545.firebaseapp.com",
+    databaseURL: "https://my-website-a0545-default-rtdb.firebaseio.com",
+    projectId: "my-website-a0545",
+    storageBucket: "my-website-a0545.firebasestorage.app",
+    messagingSenderId: "103602694974",
+    appId: "1:103602694974:web:12f890844e6ad6a513da6f"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  async function fetchAccounts() {
+    // index.html থেকে আসা ইমেইলটি নেওয়া
+    const loginEmail = localStorage.getItem("mj_login_email");
+    
+    if (!loginEmail) {
+      window.location.href = 'index.html';
+      return;
+    }
+
+    document.getElementById('search-text').innerText = "Logged in with: " + loginEmail;
+
+    try {
+      const usersRef = ref(db, 'users');
+      const snapshot = await get(usersRef);
+      const listDiv = document.getElementById('account-list');
+      const loader = document.getElementById('loader');
+
+      loader.style.display = 'none';
+
+      if (snapshot.exists()) {
+        const users = snapshot.val();
+        let found = false;
+
+        Object.keys(users).forEach(userId => {
+          const user = users[userId];
+          
+          // ইমেইল ম্যাচ চেক করা (Case insensitive)
+          if (user.email && user.email.toLowerCase() === loginEmail.toLowerCase()) {
+            found = true;
+            const fullName = (user.firstName + " " + (user.lastName || "")).trim();
+            const firstLetter = (user.firstName || "M").charAt(0).toUpperCase();
+
+            const card = `
+              <div class="account-card" onclick="selectAccount('${userId}')">
+                <div class="avatar">${firstLetter}</div>
+                <div class="info">
+                  <b>${fullName}</b>
+                  <span>${user.email}</span>
+                </div>
+                <div class="arrow">▸</div>
+              </div>
+            `;
+            listDiv.innerHTML += card;
+          }
+        });
+
+        if (!found) {
+          document.getElementById('no-account').style.display = 'block';
+        }
+      } else {
+        document.getElementById('no-account').style.display = 'block';
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Something went wrong!");
+    }
+  }
+
+  // একাউন্ট সিলেক্ট করলে প্রোফাইলে নিয়ে যাবে
+  window.selectAccount = (uid) => {
+    localStorage.setItem("mj_user_id", uid); // প্রোফাইল পেজের জন্য আইডি সেট
+    window.location.href = 'profile.html';
+  };
+
+  fetchAccounts();
+</script>
+</body>
+</html>
