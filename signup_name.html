@@ -3,23 +3,68 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MingleJoys - Name Setup</title>
+<title>MingleJoys - Identify Yourself</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  /* আপনার আগের সেই ইউনিক ডিজাইন সিএসএস এখানে থাকবে */
-  * { font-family: 'Inter', sans-serif !important; box-sizing: border-box; }
-  body { margin: 0; padding: 0; background-color: #ffffff; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+  * { 
+    font-family: 'Inter', sans-serif !important; 
+    box-sizing: border-box; 
+    -webkit-user-select: none;
+  }
+  
+  body { 
+    margin: 0; padding: 0; 
+    background-color: #ffffff; 
+    display: flex; flex-direction: column; align-items: center; 
+    min-height: 100vh; 
+  }
+
   .container { width: 90%; max-width: 400px; padding-top: 25px; }
+
   .back-nav { margin-bottom: 25px; cursor: pointer; display: inline-block; }
+
   h2 { font-size: 26px; font-weight: 800; color: #111827; margin: 0 0 10px 0; letter-spacing: -0.5px; }
   p.subtitle { color: #6b7280; font-size: 15px; margin-bottom: 35px; line-height: 1.5; }
-  .input-wrapper { width: 100%; margin-bottom: 20px; }
-  label { display: block; font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 8px; text-transform: uppercase; }
-  input[type="text"] { width: 100%; padding: 18px; border: 2px solid #f3f4f6; border-radius: 20px; font-size: 16px; outline: none; background-color: #f9fafb; transition: all 0.3s ease; }
-  input:focus { border-color: #059669; background-color: #ffffff; }
+
+  .input-wrapper { width: 100%; margin-bottom: 20px; position: relative; }
+  
+  label { 
+    display: block; font-size: 13px; font-weight: 700; 
+    color: #374151; margin-bottom: 8px; text-transform: uppercase;
+  }
+  
+  input[type="text"] {
+    width: 100%; padding: 18px; 
+    border: 2px solid #f3f4f6;
+    border-radius: 20px;
+    font-size: 16px; outline: none; 
+    background-color: #f9fafb;
+    transition: all 0.3s ease;
+  }
+  
+  input:focus { 
+    border-color: #059669; 
+    background-color: #ffffff;
+  }
+
+  /* এরর স্টাইল ও এনিমেশন */
   input.error-shake { border-color: #ef4444 !important; animation: shake 0.4s ease-in-out; }
-  @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 50% { transform: translateX(8px); } 75% { transform: translateX(-8px); } }
-  .next-btn { width: 100%; padding: 18px; background: linear-gradient(135deg, #059669 0%, #0d9488 100%); color: white; border: none; border-radius: 35px; font-size: 16px; font-weight: 700; margin-top: 20px; cursor: pointer; }
+  
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    50% { transform: translateX(8px); }
+    75% { transform: translateX(-8px); }
+  }
+
+  .next-btn {
+    width: 100%; padding: 18px; 
+    background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+    color: white; border: none; border-radius: 35px; 
+    font-size: 16px; font-weight: 700; 
+    margin-top: 20px; cursor: pointer;
+    box-shadow: 0 8px 15px rgba(5, 150, 105, 0.2);
+  }
 </style>
 </head>
 <body>
@@ -50,9 +95,9 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-  import { getDatabase, ref, set, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+  import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
-  // আপনার দেওয়া কনফিগারেশন
+  // আপনার ফায়ারবেস কনফিগারেশন
   const firebaseConfig = {
     apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
     authDomain: "my-website-a0545.firebaseapp.com",
@@ -69,22 +114,31 @@
   const db = getDatabase(app);
 
   document.getElementById('submitBtn').addEventListener('click', async () => {
-    const fName = document.getElementById('firstName').value.trim();
-    const lName = document.getElementById('lastName').value.trim();
+    const fNameInput = document.getElementById('firstName');
+    const lNameInput = document.getElementById('lastName');
+    const fName = fNameInput.value.trim();
+    const lName = lNameInput.value.trim();
 
+    // ভ্যালিডেশন চেক
     if (fName === "" || lName === "") {
-      document.getElementById('firstName').classList.add('error-shake');
+      if(fName === "") fNameInput.classList.add('error-shake');
+      if(lName === "") lNameInput.classList.add('error-shake');
+      
+      setTimeout(() => {
+        fNameInput.classList.remove('error-shake');
+        lNameInput.classList.remove('error-shake');
+      }, 400);
       return;
     }
 
-    // ১. ইউজারের জন্য একটি ইউনিক আইডি তৈরি করা বা আগেরটা নেওয়া
+    // ১. নতুন ইউনিক আইডি তৈরি বা আগেরটি চেক করা
     let userId = localStorage.getItem("mj_user_id");
     if (!userId) {
-      userId = "MJ" + Math.floor(Math.random() * 1000000); // ইউনিক আইডি জেনারেট
+      userId = "MJ" + Math.floor(100000 + Math.random() * 900000); 
       localStorage.setItem("mj_user_id", userId);
     }
 
-    // ২. রিয়েল-টাইম ডাটাবেসে একই ফাইলের ভেতর সেভ করা
+    // ২. রিয়েল-টাইম ডাটাবেসে ইউজারের নিজস্ব ফাইলে ডাটা সেভ
     try {
       await update(ref(db, 'users/' + userId), {
         firstName: fName,
@@ -97,7 +151,7 @@
       window.location.href = 'signup_birthday.html';
     } catch (error) {
       console.error("Database Error:", error);
-      alert("Something went wrong. Please check your internet.");
+      alert("Something went wrong. Please check your internet connection.");
     }
   });
 </script>
