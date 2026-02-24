@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MingleJoys - Birthday</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { font-family: 'Inter', sans-serif !important; box-sizing: border-box; }
+  body { margin: 0; padding: 0; background-color: #ffffff; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+  .container { width: 90%; max-width: 400px; padding-top: 25px; }
+  
+  .back-nav { margin-bottom: 25px; cursor: pointer; display: inline-block; }
+  h2 { font-size: 26px; font-weight: 800; color: #111827; margin: 0 0 10px 0; letter-spacing: -0.5px; }
+  p.subtitle { color: #6b7280; font-size: 15px; margin-bottom: 35px; line-height: 1.5; }
+
+  /* ডেট ইনপুট ডিজাইন */
+  .input-wrapper { width: 100%; margin-bottom: 20px; }
+  label { display: block; font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 8px; text-transform: uppercase; }
+  
+  input[type="date"] {
+    width: 100%; padding: 18px; border: 2px solid #f3f4f6; border-radius: 20px;
+    font-size: 16px; outline: none; background-color: #f9fafb; color: #111827;
+  }
+  input[type="date"]:focus { border-color: #059669; background-color: #ffffff; }
+
+  .next-btn {
+    width: 100%; padding: 18px; 
+    background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+    color: white; border: none; border-radius: 35px; 
+    font-size: 16px; font-weight: 700; margin-top: 20px; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="back-nav" onclick="history.back()">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+  </div>
+
+  <h2>When's your big day?</h2> <p class="subtitle">MingleJoys uses your birthday to provide the right experience for your age.</p>
+
+  <div class="input-wrapper">
+    <label>Date of Birth</label>
+    <input type="date" id="birthDate">
+  </div>
+
+  <button class="next-btn" id="nextBtn">Continue</button>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+  import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
+    authDomain: "my-website-a0545.firebaseapp.com",
+    databaseURL: "https://my-website-a0545-default-rtdb.firebaseio.com",
+    projectId: "my-website-a0545",
+    storageBucket: "my-website-a0545.firebasestorage.app",
+    messagingSenderId: "103602694974",
+    appId: "1:103602694974:web:12f890844e6ad6a513da6f"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  document.getElementById('nextBtn').addEventListener('click', async () => {
+    const dob = document.getElementById('birthDate').value;
+    const userId = localStorage.getItem("mj_user_id"); // আগের আইডি খুঁজে বের করা
+
+    if (!dob) {
+      alert("Please select your birthday.");
+      return;
+    }
+
+    if (userId) {
+      try {
+        // একই ইউজারের ফাইলের ভেতর জন্মদিন আপডেট করা
+        await update(ref(db, 'users/' + userId), {
+          birthday: dob,
+          registrationStep: "birthday_done"
+        });
+
+        window.location.href = 'signup_gender.html';
+      } catch (error) {
+        console.error("Update failed:", error);
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
