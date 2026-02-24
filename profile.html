@@ -1,177 +1,137 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Profile - MingleJoys</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MingleJoys - Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:#f2f2f2;
-}
+  * { font-family: 'Inter', sans-serif !important; box-sizing: border-box; -webkit-user-select: none; }
+  body { margin: 0; padding: 0; background-color: #f8fafc; color: #1f2937; }
+  
+  .header { 
+    background: #ffffff; padding: 20px; display: flex; align-items: center; 
+    border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 100;
+  }
+  .back-btn { cursor: pointer; margin-right: 15px; }
 
-/* Cover */
-.cover{
-    width:100%;
-    height:160px;
-    background:url('https://via.placeholder.com/600x200') center/cover;
-}
+  /* প্রোফাইল হেডার সেকশন */
+  .profile-card { background: white; padding: 30px 20px; text-align: center; border-bottom: 1px solid #e5e7eb; }
+  .avatar-circle { 
+    width: 100px; height: 100px; background: #059669; color: white; 
+    border-radius: 50%; margin: 0 auto 15px; display: flex; 
+    align-items: center; justify-content: center; font-size: 40px; font-weight: 800;
+    box-shadow: 0 4px 15px rgba(5, 150, 105, 0.2);
+  }
+  #display-name { font-size: 22px; font-weight: 800; color: #000; margin: 0; }
+  #display-email { font-size: 14px; color: #6b7280; margin-top: 5px; }
 
-/* Big DP */
-.big-dp{
-    width:110px;
-    height:110px;
-    border-radius:50%;
-    border:4px solid white;
-    margin:-55px auto 10px auto;
-    display:block;
-}
+  /* এবাউট ইনফো সেকশন */
+  .section-title { padding: 20px 20px 10px; font-size: 16px; font-weight: 700; color: #059669; }
+  
+  .info-container { background: white; margin: 0 15px; border-radius: 20px; overflow: hidden; border: 1px solid #ecfdf5; }
+  
+  .info-item { 
+    padding: 16px 20px; display: flex; justify-content: space-between; 
+    align-items: center; border-bottom: 1px solid #f1f5f9; 
+  }
+  .info-item:last-child { border-bottom: none; }
+  
+  .label { font-size: 14px; color: #6b7280; font-weight: 600; }
+  .value { font-size: 15px; color: #000; font-weight: 700; }
 
-/* Buttons */
-.profile-buttons{
-    text-align:center;
-    margin-bottom:10px;
-}
-
-.profile-buttons button{
-    padding:6px 12px;
-    margin:5px;
-    border:none;
-    border-radius:6px;
-    background:#007bff;
-    color:white;
-    cursor:pointer;
-}
-
-/* Create Post Box */
-.create-box{
-    background:#ffffff;
-    margin:10px;
-    padding:10px;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-}
-
-.create-left{
-    display:flex;
-    align-items:center;
-}
-
-.small-dp{
-    width:40px;
-    height:40px;
-    border-radius:50%;
-    margin-right:10px;
-}
-
-.create-left span{
-    color:gray;
-}
-
-.more{
-    font-size:20px;
-    cursor:pointer;
-}
-
-/* Friend Section */
-.friend-section{
-    background:#ffffff;
-    margin:10px;
-    padding:10px;
-    border-radius:10px;
-}
-
-.friend-title{
-    font-weight:bold;
-    margin-bottom:8px;
-}
-
-.friend-list{
-    display:flex;
-}
-
-.friend-list img{
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    margin-right:8px;
-}
-
-/* Bio */
-.bio{
-    background:#ffffff;
-    margin:10px;
-    padding:10px;
-    border-radius:10px;
-    text-align:center;
-    color:#555;
-}
-
-/* Posts */
-.post{
-    background:#ffffff;
-    margin:10px;
-    padding:10px;
-    border-radius:10px;
-}
-
-.post img{
-    width:100%;
-    border-radius:8px;
-}
+  /* লোডার স্টাইল */
+  #loader { 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background: white; display: flex; justify-content: center; align-items: center; z-index: 1000; 
+  }
+  .spinner { width: 40px; height: 40px; border: 4px solid #f0fdf4; border-top: 4px solid #059669; border-radius: 50%; animation: spin 1s linear infinite; }
+  @keyframes spin { 100% { transform: rotate(360deg); } }
 </style>
 </head>
-
 <body>
 
-<!-- Cover -->
-<div class="cover"></div>
+<div id="loader"><div class="spinner"></div></div>
 
-<!-- Big DP -->
-<img class="big-dp" src="https://via.placeholder.com/150">
-
-<!-- Buttons -->
-<button onclick="location.href='edit.html'">Edit Profile</button>
-    <button>Add Story</button>
+<div class="header">
+  <div class="back-btn" onclick="history.back()">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+  </div>
+  <span style="font-weight: 800; font-size: 18px;">Profile</span>
 </div>
 
-<!-- Create Post -->
-<div class="create-box">
-    <div class="create-left">
-        <img class="small-dp" src="https://via.placeholder.com/150">
-        <span>What's on your mind?</span>
-    </div>
-    <div class="more">⋮</div>
+<div class="profile-card">
+  <div class="avatar-circle" id="user-initial">M</div>
+  <h2 id="display-name">Loading...</h2>
+  <p id="display-email">---</p>
 </div>
 
-<!-- Friend Section -->
-<div class="friend-section">
-    <div class="friend-title">Friends</div>
-    <div class="friend-list">
-        <img src="https://via.placeholder.com/100">
-        <img src="https://via.placeholder.com/100">
-        <img src="https://via.placeholder.com/100">
-        <img src="https://via.placeholder.com/100">
-    </div>
+<div class="section-title">About Info</div>
+<div class="info-container">
+  <div class="info-item">
+    <span class="label">Full Name</span>
+    <span class="value" id="info-name">---</span>
+  </div>
+  <div class="info-item">
+    <span class="label">Birthday</span>
+    <span class="value" id="info-dob">---</span>
+  </div>
+  <div class="info-item">
+    <span class="label">Gender</span>
+    <span class="value" id="info-gender">---</span>
+  </div>
 </div>
 
-<!-- Bio -->
-<div class="bio">
-    Web Developer | Building MingleJoys 🚀
-</div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+  import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
-<!-- Uploaded Content -->
-<div class="post">
-    <img src="https://via.placeholder.com/400x250">
-</div>
+  const firebaseConfig = {
+    apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
+    authDomain: "my-website-a0545.firebaseapp.com",
+    databaseURL: "https://my-website-a0545-default-rtdb.firebaseio.com",
+    projectId: "my-website-a0545",
+    storageBucket: "my-website-a0545.firebasestorage.app",
+    messagingSenderId: "103602694974",
+    appId: "1:103602694974:web:12f890844e6ad6a513da6f"
+  };
 
-<div class="post">
-    <img src="https://via.placeholder.com/400x250">
-</div>
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
+  async function loadProfile() {
+    // localStorage থেকে ইউজারের আইডি নেওয়া (যা সাইনআপের সময় সেভ করা হয়েছিল)
+    const userId = localStorage.getItem("mj_user_id");
+
+    if (!userId) {
+      window.location.href = 'login.html';
+      return;
+    }
+
+    try {
+      const snapshot = await get(ref(db, 'users/' + userId));
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+
+        // ডাটাবেস থেকে তথ্য নিয়ে পেজে বসানো
+        document.getElementById('display-name').innerText = userData.fullName || "MingleJoys User";
+        document.getElementById('display-email').innerText = userData.email || "";
+        document.getElementById('user-initial').innerText = (userData.fullName || "M").charAt(0).toUpperCase();
+
+        // About Info সেকশন লোড
+        document.getElementById('info-name').innerText = userData.fullName || "Not Set";
+        document.getElementById('info-dob').innerText = userData.dob || "Not Set"; // জন্ম তারিখ
+        document.getElementById('info-gender').innerText = userData.gender || "Not Set"; // মেল/ফিমেল
+      }
+    } catch (error) {
+      console.error("Error loading profile:", error);
+    } finally {
+      document.getElementById('loader').style.display = 'none';
+    }
+  }
+
+  loadProfile();
+</script>
 </body>
 </html>
