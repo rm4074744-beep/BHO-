@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MingleJoys - How do you identify?</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { font-family: 'Inter', sans-serif !important; box-sizing: border-box; -webkit-user-select: none; }
+  body { margin: 0; padding: 0; background-color: #ffffff; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+  .container { width: 90%; max-width: 400px; padding-top: 25px; }
+  
+  .back-nav { margin-bottom: 25px; cursor: pointer; display: inline-block; }
+  
+  h2 { font-size: 26px; font-weight: 800; color: #111827; margin: 0 0 10px 0; letter-spacing: -0.5px; }
+  p.subtitle { color: #6b7280; font-size: 15px; margin-bottom: 35px; line-height: 1.5; }
+
+  /* জেন্ডার কার্ড ডিজাইন */
+  .gender-options { display: flex; flex-direction: column; gap: 12px; }
+  
+  .gender-card {
+    padding: 20px; border: 2px solid #f3f4f6; border-radius: 20px;
+    display: flex; justify-content: space-between; align-items: center;
+    cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+    background-color: #f9fafb;
+  }
+  
+  .gender-card span { font-size: 17px; font-weight: 600; color: #374151; }
+
+  /* সিলেকশন হলে যে ডিজাইন হবে */
+  .gender-card.active {
+    border-color: #059669; 
+    background-color: #ecfdf5; 
+    transform: scale(1.02);
+    box-shadow: 0 10px 15px -3px rgba(5, 150, 105, 0.1);
+  }
+  
+  .gender-card.active span { color: #059669; }
+
+  /* কাস্টম রেডিও সার্কেল */
+  .radio-circle {
+    width: 22px; height: 22px; border: 2px solid #d1d5db; border-radius: 50%;
+    position: relative; transition: all 0.3s ease;
+  }
+  
+  .gender-card.active .radio-circle {
+    border-color: #059669; background-color: #059669;
+  }
+  
+  .gender-card.active .radio-circle::after {
+    content: ""; position: absolute; top: 5px; left: 5px;
+    width: 8px; height: 8px; background: white; border-radius: 50%;
+  }
+
+  .next-btn {
+    width: 100%; padding: 18px; 
+    background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+    color: white; border: none; border-radius: 35px; 
+    font-size: 16px; font-weight: 700; margin-top: 40px; cursor: pointer;
+    box-shadow: 0 8px 15px rgba(5, 150, 105, 0.2);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="back-nav" onclick="history.back()">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+  </div>
+
+  <h2>How do you identify?</h2>
+  <p class="subtitle">Select your gender. This helps us personalize your MingleJoys experience.</p>
+
+  <div class="gender-options">
+    <div class="gender-card" onclick="selectGender(this, 'Male')">
+      <span>Male</span>
+      <div class="radio-circle"></div>
+    </div>
+    
+    <div class="gender-card" onclick="selectGender(this, 'Female')">
+      <span>Female</span>
+      <div class="radio-circle"></div>
+    </div>
+    
+    <div class="gender-card" onclick="selectGender(this, 'Rather not say')">
+      <span>Rather not say</span>
+      <div class="radio-circle"></div>
+    </div>
+  </div>
+
+  <button class="next-btn" id="finishBtn">Continue</button>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+  import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
+    authDomain: "my-website-a0545.firebaseapp.com",
+    databaseURL: "https://my-website-a0545-default-rtdb.firebaseio.com",
+    projectId: "my-website-a0545",
+    storageBucket: "my-website-a0545.firebasestorage.app",
+    messagingSenderId: "103602694974",
+    appId: "1:103602694974:web:12f890844e6ad6a513da6f"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  let selectedValue = "";
+
+  // কার্ড সিলেক্ট করার ফাংশন
+  window.selectGender = (element, gender) => {
+    document.querySelectorAll('.gender-card').forEach(card => card.classList.remove('active'));
+    element.classList.add('active');
+    selectedValue = gender;
+  };
+
+  document.getElementById('finishBtn').addEventListener('click', async () => {
+    const userId = localStorage.getItem("mj_user_id");
+
+    if (!selectedValue) {
+      alert("Please select your gender identification.");
+      return;
+    }
+
+    if (userId) {
+      try {
+        // একই ইউজারের আইডির আন্ডারে জেন্ডার আপডেট
+        await update(ref(db, 'users/' + userId), {
+          gender: selectedValue,
+          registrationStep: "gender_done"
+        });
+
+        // পরবর্তী ধাপ: ইমেইল পেজ
+        window.location.href = 'signup_email.html';
+      } catch (error) {
+        console.error("Update failed:", error);
+      }
+    } else {
+        window.location.href = 'signup_name.html';
+    }
+  });
+</script>
+
+</body>
+</html>
