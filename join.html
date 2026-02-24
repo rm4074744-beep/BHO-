@@ -2,185 +2,124 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Join Facebook</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MingleJoys - Get Started</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  /* ১. পুরো ব্যাকগ্রাউন্ড একদম পিওর সাদা নিশ্চিত করা */
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #ffffff !important;
-    color: #1c1e21;
+  /* ১. পুরো পেজ ধবধবে সাদা */
+  * { 
+    font-family: 'Inter', sans-serif !important; 
+    box-sizing: border-box; 
+    -webkit-user-select: none; 
+    user-select: none; 
+  }
+  
+  body { 
+    margin: 0; padding: 0; 
+    background-color: #ffffff; /* ধবধবে সাদা */
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    min-height: 100vh; 
+  }
+
+  /* ২. ব্যাক বাটন সবার উপরে */
+  .top-navigation {
+    width: 100%;
+    padding: 20px;
     display: flex;
-    justify-content: center;
-    min-height: 100vh;
+    justify-content: flex-start;
   }
 
-  .container {
-    max-width: 450px;
-    width: 100%;
-    padding: 16px;
+  .back-btn-link {
+    text-decoration: none;
     display: flex;
-    flex-direction: column;
-    background-color: #ffffff;
-  }
-
-  /* ব্যাক বাটন স্টাইল */
-  .header {
-    margin-top: 10px;
-    margin-bottom: 20px;
-  }
-
-  .back-btn {
-    font-size: 24px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #000;
-    padding: 0;
-  }
-
-  /* শিরোনাম */
-  h1 {
-    font-size: 24px;
-    font-weight: 700;
-    margin: 0 0 20px 0;
-    color: #000;
-  }
-
-  /* ছবির কন্টেইনার - ছবির বর্ডার গোল করা হয়েছে */
-  .image-container {
-    width: 100%;
-    margin-bottom: 25px;
-    text-align: center;
-  }
-
-  .image-container img {
-    width: 100%;
-    border-radius: 12px; /* ছবির কোনাগুলো গোল করার জন্য */
-    display: block;
-  }
-
-  /* ডেসক্রিপশন টেক্সট */
-  .description {
-    font-size: 16px;
-    line-height: 1.4;
-    color: #4b4f56;
-    margin-bottom: 35px;
-    padding-right: 10px;
-  }
-
-  /* নীল বাটন (Create Account) */
-  .btn-main {
-    width: 100%;
-    padding: 14px 0;
-    background-color: #0064e0; /* ফেসবুকের অফিসিয়াল ব্লু */
-    color: #ffffff;
-    border: none;
-    border-radius: 25px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: center;
     align-items: center;
+    color: #111827;
+    transition: opacity 0.2s;
   }
 
-  /* সাদা বাটন (Find Account) */
+  .back-btn-link:active { opacity: 0.5; }
+
+  /* ৩. "Join" এর বদলে নতুন শব্দ: Get Started with */
+  h1 { 
+    font-size: 26px; 
+    font-weight: 800; 
+    color: #111827; 
+    margin: 10px 0; 
+    text-align: center; 
+    letter-spacing: -0.5px;
+  }
+
+  .hero-image { 
+    width: 210px; 
+    height: 210px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    margin: 30px 0; 
+    pointer-events: none;
+    /* আপনার দেওয়া সেই ডিজাইন বা ছবি */
+  }
+
+  .intro-text { 
+    text-align: center; 
+    color: #4b5563; 
+    font-size: 15px; 
+    line-height: 1.6; 
+    max-width: 330px; 
+    margin-bottom: 40px; 
+    padding: 0 15px;
+  }
+
+  /* ৪. পান্না সবুজ বাটন ডিজাইন */
+  .button-group { 
+    width: 90%; 
+    max-width: 400px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 15px; 
+  }
+
+  .btn-primary {
+    width: 100%; padding: 16px;
+    background: #059669; /* সলিড পান্না সবুজ - ক্লিন লুক */
+    color: white; border: none; border-radius: 30px;
+    font-size: 16px; font-weight: 700; cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .btn-primary:active { transform: scale(0.98); }
+
   .btn-outline {
-    width: 100%;
-    padding: 14px 0;
-    background-color: #ffffff;
-    color: #1c1e21;
-    border: 1px solid #bec3c9;
-    border-radius: 25px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
+    width: 100%; padding: 15px;
+    background: none; color: #059669;
+    border: 2px solid #059669; border-radius: 30px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
   }
-
-  /* লোডার স্টাইল */
-  .loader {
-    width: 18px;
-    height: 18px;
-    border: 2px solid #ffffff;
-    border-bottom-color: transparent;
-    border-radius: 50%;
-    display: none;
-    animation: rotation 0.8s linear infinite;
-    margin-left: 10px;
-  }
-
-  @keyframes rotation {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-
 </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="header">
-    <button class="back-btn" onclick="goBack()">←</button>
+  <div class="top-navigation">
+    <a href="login.html" class="back-btn-link">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+    </a>
   </div>
 
-  <h1>Join Facebook</h1>
+  <h1>Get Started with MingleJoys</h1>
 
-  <div class="image-container">
-     <img src="file_00000000f20c7208afe5e3732499da18.png" alt="Banner Image">
+  <img src="1771894097888.png" class="hero-image">
+
+  <p class="intro-text">
+    Connect with friends and discover new communities of people who share your passions.
+  </p>
+
+  <div class="button-group">
+    <button class="btn-primary" onclick="location.href='signup_details.html'">Create new account</button>
+    <button class="btn-outline" onclick="location.href='login.html'">I already have an account</button>
   </div>
-
-  <div class="description">
-    Create an account to connect with friends, family and communities of people who share your interests.
-  </div>
-
-  <button class="btn-main" id="createBtn" onclick="startLoading()">
-    <span id="btnText">Create new account</span>
-    <div class="loader" id="loader"></div>
-  </button>
-
-  <button class="btn-outline">Find my account</button>
-</div>
-
-<script>
-  function startLoading() {
-    const btnText = document.getElementById('btnText');
-    const loader = document.getElementById('loader');
-    const createBtn = document.getElementById('createBtn');
-
-    btnText.innerText = "Processing...";
-    loader.style.display = "inline-block";
-    createBtn.style.opacity = "0.8";
-    createBtn.style.pointerEvents = "none";
-
-    setTimeout(() => {
-      window.location.href = "sign.html";
-    }, 2000);
-  }
-
-  function goBack() {
-    window.history.back();
-  }
-  // পেজটি যখনই সামনে আসবে (ব্যাক করে আসলেও), স্পিনার বন্ধ হয়ে যাবে
-window.onpageshow = function(event) {
-    const btn = document.getElementById("create-account-btn");
-    const spinner = document.getElementById("btn-spinner");
-    const text = document.getElementById("create-text");
-
-    if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
-        // স্পিনার লুকানো এবং বাটন স্বাভাবিক করা
-        spinner.style.display = "none";
-        btn.style.pointerEvents = "auto";
-        btn.style.opacity = "1";
-        text.innerText = "Create new account"; // আগের লেখা ফিরিয়ে আনা
-    }
-};
-  
-</script>
 
 </body>
 </html>
