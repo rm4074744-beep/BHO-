@@ -7,113 +7,157 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        :root { --bg: #ffffff; --text: #1e293b; --card: #f8fafc; --border: #f1f5f9; --icon-bg: #ecfdf5; --green: #059669; }
-        .dark-theme { --bg: #0f172a; --text: #f8fafc; --card: #1e293b; --border: #334155; --icon-bg: #065f46; --green: #10b981; }
+        :root { --bg: #ffffff; --text: #1e293b; --card: #f8fafc; --border: #f1f5f9; --icon-bg: #ecfdf5; --green: #22c55e; --gray: #94a3b8; }
+        .dark-theme { --bg: #0f172a; --text: #f8fafc; --card: #1e293b; --border: #334155; --icon-bg: #164e33; --green: #22c55e; }
 
-        /* ১. লেখা কপি এবং সিলেক্ট বন্ধ করার জন্য */
-        * { 
-            font-family: 'Plus Jakarta Sans', sans-serif !important; 
-            box-sizing: border-box; 
-            margin: 0; padding: 0;
-            -webkit-user-select: none; /* Chrome/Safari/Opera */
-            -moz-user-select: none;    /* Firefox */
-            -ms-user-select: none;     /* IE/Edge */
-            user-select: none;         /* Standard */
-            -webkit-touch-callout: none; /* iOS Safari (Long press disable) */
-        }
-
-        /* ২. ফোনের ফন্ট সাইজ সেটিংস যেন ডিজাইন নষ্ট না করে */
-        html { -webkit-text-size-adjust: none; text-size-adjust: none; }
-
+        * { font-family: 'Plus Jakarta Sans', sans-serif !important; box-sizing: border-box; margin: 0; padding: 0; -webkit-user-select: none; user-select: none; }
         body { background: var(--bg); color: var(--text); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        .header { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid var(--border); background: var(--bg); }
+        .header { display: flex; align-items: center; padding: 15px 20px; border-bottom: 1px solid var(--border); }
         .icon-btn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text); }
         .title { flex-grow: 1; text-align: center; font-weight: 800; font-size: 18px; }
 
-        .container { flex: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; padding: 30px 20px; }
+        .container { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 30px 20px; }
         
-        .lock-hero { width: 90px; height: 90px; background: var(--icon-bg); border-radius: 30px; display: flex; align-items: center; justify-content: center; color: var(--green); margin-bottom: 20px; }
-        h2 { font-size: 20px; font-weight: 800; margin-bottom: 10px; }
-        .subtitle { font-size: 13px; color: #94a3b8; text-align: center; margin-bottom: 25px; line-height: 1.5; }
-
-        .feature-card { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 15px; margin-bottom: 20px; }
-        .feature-row { display: flex; gap: 12px; margin-bottom: 15px; align-items: flex-start; }
-        .f-icon { font-size: 18px; }
-        .f-content b { font-size: 14px; font-weight: 800; display: block; }
-        .f-content p { font-size: 12px; color: #94a3b8; line-height: 1.4; }
-
-        /* ৩. বাটন ডিজাইন - একদম নিচে ফিক্সড */
-        .footer { padding: 15px 20px; border-top: 1px solid var(--border); background: var(--bg); }
-        .btn-confirm { 
-            width: 100%; background: var(--green); color: white; border: none; padding: 16px; 
-            border-radius: 15px; font-weight: 800; font-size: 15px; cursor: pointer;
-            -webkit-tap-highlight-color: transparent; /* মোবাইলে ক্লিক করলে নীল রঙের আভা বন্ধ */
+        /* অ্যানিমেশন বক্স */
+        .animation-box { position: relative; width: 150px; height: 150px; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; }
+        
+        /* সার্কুলার প্রগ্রেস বার */
+        svg.progress-ring { position: absolute; transform: rotate(-90deg); width: 140px; height: 140px; z-index: 5; }
+        svg.progress-ring circle {
+            fill: transparent; stroke-width: 8; stroke-linecap: round;
+            stroke-dasharray: 440; stroke-dashoffset: 440;
         }
-        .btn-confirm:active { transform: scale(0.98); opacity: 0.9; }
-
-        /* ৪. টোস্ট মেসেজ ডিজাইন */
-        #toast {
-            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: #1e293b; color: white; padding: 12px 25px; border-radius: 50px;
-            font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: 0.5s; z-index: 1000;
+        .loading circle { stroke: var(--green); animation: load-spin 1.5s ease-in-out infinite; }
+        @keyframes load-spin {
+            0% { stroke-dashoffset: 440; transform: rotate(0deg); }
+            50% { stroke-dashoffset: 110; }
+            100% { stroke-dashoffset: 440; transform: rotate(360deg); }
         }
-        #toast.show { top: 30px; }
+
+        /* ব্যাকগ্রাউন্ড গোল বৃত্ত */
+        .success-bg {
+            position: absolute; width: 125px; height: 125px; background: var(--icon-bg);
+            border-radius: 40px; display: flex; align-items: center; justify-content: center;
+            transition: 0.4s; z-index: 1;
+        }
+        .success-bg.active { background: var(--green); transform: scale(1.05); }
+
+        /* তালা ও টিক চিহ্ন এরিয়া */
+        .icon-container { position: relative; display: flex; align-items: center; justify-content: center; z-index: 2; }
+        .lock-icon { width: 60px; height: 60px; color: var(--green); transition: 0.3s; }
+        .lock-icon.locked { color: white; }
+
+        .tick-box {
+            position: absolute; width: 45px; height: 45px; background: var(--green);
+            color: white; border-radius: 15px; display: none; align-items: center; justify-content: center;
+            bottom: -15px; right: -15px; border: 4px solid var(--bg); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 10;
+        }
+        .tick-box.show { display: flex; animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+
+        h2 { font-size: 24px; font-weight: 800; margin-top: 15px; }
+        .subtitle { font-size: 14px; color: var(--gray); text-align: center; margin-top: 8px; }
+
+        .feature-card { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 22px; margin-top: 25px; }
+        .feature-row { display: flex; gap: 15px; margin-bottom: 20px; }
+        .f-content b { font-size: 15px; font-weight: 800; display: block; }
+        .f-content p { font-size: 13px; color: var(--gray); line-height: 1.4; }
+
+        .footer { padding: 20px; border-top: 1px solid var(--border); }
+        .btn-confirm { width: 100%; background: var(--green); color: white; border: none; padding: 18px; border-radius: 18px; font-weight: 800; font-size: 16px; cursor: pointer; }
     </style>
 </head>
-<body oncontextmenu="return false;"> <div id="toast">✅ আপনার প্রোফাইল লক হয়েছে</div>
+<body>
 
     <div class="header">
-        <div class="icon-btn" onclick="location.href='menu.html'">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        </div>
+        <div class="icon-btn" onclick="location.href='menu.html'"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></div>
         <div class="title">Lock Profile</div>
-        <div class="icon-btn"></div>
+        <div style="width: 40px;"></div>
     </div>
 
     <div class="container">
-        <div class="lock-hero">
-            <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <div class="animation-box">
+            <svg class="progress-ring" id="ring" viewBox="0 0 150 150"><circle cx="75" cy="75" r="70"></circle></svg>
+            
+            <div class="success-bg" id="bg-box">
+                <div class="icon-container">
+                    <svg id="lock-svg" class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    
+                    <div class="tick-box" id="tick-box">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                </div>
+            </div>
         </div>
-        <h2>Lock your profile</h2>
+        
+        <h2 id="status-text">Unlock Profile</h2>
         <p class="subtitle">Make your photos and posts more private in one step.</p>
 
         <div class="feature-card">
             <div class="feature-row">
-                <span class="f-icon">🛡️</span>
-                <div class="f-content">
-                    <b>More Privacy</b>
-                    <p>Only friends will see the photos, posts and stories on your timeline.</p>
-                </div>
+                <span style="font-size: 20px;">🛡️</span>
+                <div class="f-content"><b>More Privacy</b><p>Only friends will see the photos, posts and stories on your timeline.</p></div>
             </div>
             <div class="feature-row">
-                <span class="f-icon">👤</span>
-                <div class="f-content">
-                    <b>Secure Profile</b>
-                    <p>Only friends will see your full-size profile picture and cover photo.</p>
-                </div>
+                <span style="font-size: 20px;">👤</span>
+                <div class="f-content"><b>Secure Profile</b><p>Only friends will see your full-size profile picture and cover photo.</p></div>
             </div>
         </div>
     </div>
 
     <div class="footer">
-        <button class="btn-confirm" onclick="activateLock()">Lock Your Profile</button>
+        <button class="btn-confirm" id="main-btn" onclick="startLocking()">Lock Profile</button>
     </div>
 
     <script>
-        // ডার্ক মোড চেক
-        if(localStorage.getItem('mode') === 'dark') { document.body.classList.add('dark-theme'); }
+        window.onload = function() {
+            if(localStorage.getItem('mode') === 'dark') document.body.classList.add('dark-theme');
+            if(localStorage.getItem('profile_is_locked') === 'true') { showLockedState(); }
+        }
 
-        function activateLock() {
-            localStorage.setItem('profile_is_locked', 'true');
-            const toast = document.getElementById('toast');
-            toast.classList.add('show');
-            
-            // ২ সেকেন্ড পর হোম পেজে রিডাইরেক্ট
-            setTimeout(() => {
-                window.location.href = 'Home.html';
-            }, 2000);
+        function startLocking() {
+            const btn = document.getElementById('main-btn');
+            const ring = document.getElementById('ring');
+            const bgBox = document.getElementById('bg-box');
+            const lockSvg = document.getElementById('lock-svg');
+            const tickBox = document.getElementById('tick-box');
+            const status = document.getElementById('status-text');
+
+            if(btn.innerText === "Lock Profile") {
+                ring.classList.add('loading');
+                btn.disabled = true;
+
+                setTimeout(() => {
+                    ring.classList.remove('loading');
+                    ring.style.display = 'none';
+                    bgBox.classList.add('active'); // গোল ঘর সবুজ হবে
+                    lockSvg.classList.add('locked'); // তালা সাদা হবে
+                    
+                    setTimeout(() => {
+                        tickBox.classList.add('show'); // তালার ওপর টিক আসবে
+                        status.innerText = "Lock Profile";
+                        btn.innerText = "Unlock Profile";
+                        btn.style.background = "#64748b";
+                        btn.disabled = false;
+                        localStorage.setItem('profile_is_locked', 'true');
+                        setTimeout(() => { window.location.href = 'Home.html'; }, 1500);
+                    }, 400);
+                }, 2000);
+            } else {
+                localStorage.setItem('profile_is_locked', 'false');
+                location.reload();
+            }
+        }
+
+        function showLockedState() {
+            document.getElementById('bg-box').classList.add('active');
+            document.getElementById('lock-svg').classList.add('locked');
+            document.getElementById('tick-box').classList.add('show');
+            document.getElementById('status-text').innerText = "Lock Profile";
+            document.getElementById('main-btn').innerText = "Unlock Profile";
+            document.getElementById('main-btn').style.background = "#64748b";
         }
     </script>
 </body>
