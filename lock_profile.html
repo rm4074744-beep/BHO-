@@ -13,12 +13,20 @@
         body { background: var(--bg); color: var(--text); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
         .header { display: flex; align-items: center; padding: 15px 20px; border-bottom: 1px solid var(--border); }
-        .icon-btn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text); }
+        .title { flex-grow: 1; text-align: center; font-weight: 800; font-size: 18px; }
 
-        .container { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 30px 20px; overflow-y: auto; }
+        .container { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 20px; 
+            overflow-y: auto; 
+            padding-bottom: 100px; /* বাটনের জন্য জায়গা রাখা হয়েছে */
+        }
 
-        /* এনিমেশন এরিয়া */
-        .animation-box { position: relative; width: 160px; height: 160px; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; }
+        /* বড় এনিমেশন বক্স */
+        .animation-box { position: relative; width: 160px; height: 160px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; }
         
         svg.progress-ring { position: absolute; transform: rotate(-90deg); width: 160px; height: 160px; z-index: 5; visibility: hidden; }
         svg.progress-ring.active { visibility: visible; }
@@ -28,39 +36,57 @@
         .success-bg { position: absolute; width: 130px; height: 130px; background: var(--icon-bg); border-radius: 45px; display: flex; align-items: center; justify-content: center; transition: 0.5s; }
         .success-bg.active { background: var(--green); }
 
-        /* তালা ও খোলার এনিমেশন */
+        /* প্রফেশনাল তালা এনিমেশন */
         .lock-container { position: relative; width: 65px; height: 65px; }
         .lock-shackle { stroke: var(--green); stroke-width: 2.5; fill: none; transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); transform-origin: bottom left; }
         .locked .lock-shackle { stroke: white; }
-        .unlocked-now .lock-shackle { transform: translateY(-10px) rotate(-20deg); } /* তালা খোলার এনিমেশন */
+        .unlocked-now .lock-shackle { transform: translateY(-10px) rotate(-20deg); }
         .lock-body { fill: var(--green); transition: 0.3s; }
         .locked .lock-body { fill: white; }
 
+        /* বড় টিক চিহ্ন */
         .tick-box { position: absolute; width: 55px; height: 55px; background: var(--green); color: white; border-radius: 18px; display: none; align-items: center; justify-content: center; bottom: -10px; right: -10px; border: 5px solid var(--bg); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
         .tick-box.show { display: flex; animation: pop 0.4s forwards; }
         @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
 
-        h2 { font-size: 26px; font-weight: 800; margin-top: 15px; }
-        .subtitle { font-size: 14px; color: var(--gray); text-align: center; margin: 8px 0 25px; }
+        h2 { font-size: 26px; font-weight: 800; margin-top: 10px; }
+        .subtitle { font-size: 14px; color: var(--gray); text-align: center; margin: 8px 0 20px; }
 
-        /* আপনার হারানো সেই দুটো লেখা */
-        .feature-card { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 22px; }
+        .feature-card { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 20px; }
         .feature-row { display: flex; gap: 15px; margin-bottom: 20px; text-align: left; }
-        .f-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
         .f-content b { font-size: 16px; font-weight: 800; display: block; }
         .f-content p { font-size: 13px; color: var(--gray); line-height: 1.4; }
 
-        .footer { padding: 20px; border-top: 1px solid var(--border); }
-        .btn-confirm { width: 100%; background: #e2e8f0; color: #1e293b; border: none; padding: 18px; border-radius: 20px; font-weight: 800; font-size: 17px; cursor: pointer; transition: 0.3s; }
+        /* বাটনটি এখন একটু উপরে এবং সুন্দরভাবে দেখা যাবে */
+        .footer { 
+            position: fixed; 
+            bottom: 20px; 
+            left: 0; 
+            width: 100%; 
+            padding: 0 20px; 
+            z-index: 100;
+        }
+        .btn-confirm { 
+            width: 100%; 
+            background: #e2e8f0; 
+            color: #1e293b; 
+            border: none; 
+            padding: 18px; 
+            border-radius: 20px; 
+            font-weight: 800; 
+            font-size: 17px; 
+            cursor: pointer; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
         .btn-confirm.primary { background: var(--green); color: white; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="icon-btn" onclick="location.href='menu.html'"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></div>
-        <div style="flex-grow: 1; text-align: center; font-weight: 800;">Lock Profile</div>
-        <div style="width: 40px;"></div>
+        <div onclick="location.href='menu.html'" style="cursor:pointer;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></div>
+        <div class="title">Lock Profile</div>
+        <div style="width: 24px;"></div>
     </div>
 
     <div class="container">
@@ -82,18 +108,12 @@
 
         <div class="feature-card">
             <div class="feature-row">
-                <div class="f-icon">🛡️</div>
-                <div class="f-content">
-                    <b>More Privacy</b>
-                    <p>Only friends will see the photos, posts and stories on your timeline.</p>
-                </div>
+                <span>🛡️</span>
+                <div class="f-content"><b>More Privacy</b><p>Only friends will see the photos, posts and stories on your timeline.</p></div>
             </div>
             <div class="feature-row">
-                <div class="f-icon">👤</div>
-                <div class="f-content">
-                    <b>Secure Profile</b>
-                    <p>Only friends will see your full-size profile picture and cover photo.</p>
-                </div>
+                <span>👤</span>
+                <div class="f-content"><b>Secure Profile</b><p>Only friends will see your full-size profile picture and cover photo.</p></div>
             </div>
         </div>
     </div>
