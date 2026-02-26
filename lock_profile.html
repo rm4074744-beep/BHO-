@@ -17,56 +17,44 @@
         .icon-btn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text); }
         .title { flex-grow: 1; text-align: center; font-weight: 800; font-size: 18px; }
 
-        .container { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 30px 20px; }
+        .container { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 30px 20px; overflow-y: auto; }
         
-        /* অ্যানিমেশন বক্স */
-        .animation-box { position: relative; width: 150px; height: 150px; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; }
+        .animation-box { position: relative; width: 160px; height: 160px; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; }
         
-        /* সার্কুলার প্রগ্রেস বার */
-        svg.progress-ring { position: absolute; transform: rotate(-90deg); width: 140px; height: 140px; z-index: 5; }
-        svg.progress-ring circle {
-            fill: transparent; stroke-width: 8; stroke-linecap: round;
-            stroke-dasharray: 440; stroke-dashoffset: 440;
-        }
+        /* ভিডিওর মতো প্রগ্রেস রিং */
+        svg.progress-ring { position: absolute; transform: rotate(-90deg); width: 160px; height: 160px; z-index: 5; }
+        svg.progress-ring circle { fill: transparent; stroke-width: 8; stroke-linecap: round; stroke-dasharray: 440; stroke-dashoffset: 440; }
         .loading circle { stroke: var(--green); animation: load-spin 1.5s ease-in-out infinite; }
-        @keyframes load-spin {
-            0% { stroke-dashoffset: 440; transform: rotate(0deg); }
-            50% { stroke-dashoffset: 110; }
-            100% { stroke-dashoffset: 440; transform: rotate(360deg); }
-        }
+        @keyframes load-spin { 0% { stroke-dashoffset: 440; transform: rotate(0deg); } 50% { stroke-dashoffset: 110; } 100% { stroke-dashoffset: 440; transform: rotate(360deg); } }
 
-        /* ব্যাকগ্রাউন্ড গোল বৃত্ত */
-        .success-bg {
-            position: absolute; width: 125px; height: 125px; background: var(--icon-bg);
-            border-radius: 40px; display: flex; align-items: center; justify-content: center;
-            transition: 0.4s; z-index: 1;
-        }
+        .success-bg { position: absolute; width: 130px; height: 130px; background: var(--icon-bg); border-radius: 45px; display: flex; align-items: center; justify-content: center; transition: 0.4s; z-index: 1; }
         .success-bg.active { background: var(--green); transform: scale(1.05); }
 
-        /* তালা ও টিক চিহ্ন এরিয়া */
         .icon-container { position: relative; display: flex; align-items: center; justify-content: center; z-index: 2; }
-        .lock-icon { width: 60px; height: 60px; color: var(--green); transition: 0.3s; }
+        .lock-icon { width: 65px; height: 65px; color: var(--green); transition: 0.3s; }
         .lock-icon.locked { color: white; }
 
+        /* বড় টিক চিহ্ন */
         .tick-box {
-            position: absolute; width: 45px; height: 45px; background: var(--green);
-            color: white; border-radius: 15px; display: none; align-items: center; justify-content: center;
-            bottom: -15px; right: -15px; border: 4px solid var(--bg); 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 10;
+            position: absolute; width: 55px; height: 55px; background: var(--green);
+            color: white; border-radius: 18px; display: none; align-items: center; justify-content: center;
+            bottom: -10px; right: -10px; border: 5px solid var(--bg); 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3); z-index: 10;
         }
-        .tick-box.show { display: flex; animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+        .tick-box.show { display: flex; animation: pop-tick 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes pop-tick { 0% { transform: scale(0); } 100% { transform: scale(1); } }
 
-        h2 { font-size: 24px; font-weight: 800; margin-top: 15px; }
-        .subtitle { font-size: 14px; color: var(--gray); text-align: center; margin-top: 8px; }
+        h2 { font-size: 26px; font-weight: 800; margin-top: 15px; }
+        .subtitle { font-size: 14px; color: var(--gray); text-align: center; margin-top: 8px; margin-bottom: 25px; }
 
-        .feature-card { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 22px; margin-top: 25px; }
+        .feature-card { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 22px; }
         .feature-row { display: flex; gap: 15px; margin-bottom: 20px; }
-        .f-content b { font-size: 15px; font-weight: 800; display: block; }
+        .f-content b { font-size: 15px; font-weight: 800; display: block; margin-bottom: 3px; }
         .f-content p { font-size: 13px; color: var(--gray); line-height: 1.4; }
 
-        .footer { padding: 20px; border-top: 1px solid var(--border); }
-        .btn-confirm { width: 100%; background: var(--green); color: white; border: none; padding: 18px; border-radius: 18px; font-weight: 800; font-size: 16px; cursor: pointer; }
+        .footer { padding: 20px; border-top: 1px solid var(--border); background: var(--bg); }
+        .btn-confirm { width: 100%; background: var(--green); color: white; border: none; padding: 18px; border-radius: 20px; font-weight: 800; font-size: 17px; cursor: pointer; transition: 0.3s; }
+        .btn-confirm:active { transform: scale(0.98); }
     </style>
 </head>
 <body>
@@ -80,13 +68,11 @@
     <div class="container">
         <div class="animation-box">
             <svg class="progress-ring" id="ring" viewBox="0 0 150 150"><circle cx="75" cy="75" r="70"></circle></svg>
-            
             <div class="success-bg" id="bg-box">
                 <div class="icon-container">
                     <svg id="lock-svg" class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                    
                     <div class="tick-box" id="tick-box">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                     </div>
                 </div>
             </div>
@@ -132,17 +118,17 @@
                 setTimeout(() => {
                     ring.classList.remove('loading');
                     ring.style.display = 'none';
-                    bgBox.classList.add('active'); // গোল ঘর সবুজ হবে
-                    lockSvg.classList.add('locked'); // তালা সাদা হবে
+                    bgBox.classList.add('active'); 
+                    lockSvg.classList.add('locked'); 
                     
                     setTimeout(() => {
-                        tickBox.classList.add('show'); // তালার ওপর টিক আসবে
+                        tickBox.classList.add('show'); 
                         status.innerText = "Lock Profile";
                         btn.innerText = "Unlock Profile";
                         btn.style.background = "#64748b";
                         btn.disabled = false;
                         localStorage.setItem('profile_is_locked', 'true');
-                        setTimeout(() => { window.location.href = 'Home.html'; }, 1500);
+                        setTimeout(() => { window.location.href = 'Home.html'; }, 2000);
                     }, 400);
                 }, 2000);
             } else {
