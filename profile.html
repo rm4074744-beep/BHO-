@@ -3,107 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MingleJoys Profile</title>
+    <title>MingleJoys Pro Profile</title>
+    
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
         * { font-family: 'Plus Jakarta Sans', sans-serif !important; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { margin: 0; background: #ffffff; color: #1f2937; overflow-x: hidden; }
+        body { margin: 0; background: #ffffff; color: #111827; }
 
-        /* ১. নেভিগেশন */
+        /* ১. টপ নেভিগেশন ফিক্স */
         .header-nav {
             display: flex; align-items: center; padding: 15px 20px;
             position: sticky; top: 0; background: white; z-index: 100; gap: 15px;
             border-bottom: 1px solid #f1f5f9;
         }
-        .nav-name { font-weight: 800; font-size: 17px; flex-grow: 1; }
+        .material-icons { font-size: 24px; cursor: pointer; color: #1e293b; display: inline-block; }
+        .nav-name { font-weight: 800; font-size: 18px; flex-grow: 1; text-align: center; }
 
-        /* ২. প্রোফাইল ও কভার */
-        .cover-box { 
-            width: 100%; height: 200px; background: #064e3b; 
-            border-radius: 0 0 40px 40px; background-size: cover; position: relative;
-        }
-        .cam-mini {
-            position: absolute; background: white; border-radius: 10px;
-            padding: 7px; width: 34px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer;
-        }
-        .cam-cover { bottom: 20px; right: 25px; }
+        /* ২. হিরো সেকশন - কভার ও প্রোফাইল ইমেজ */
+        .hero-section { position: relative; }
+        .cover-photo { width: 100%; height: 210px; background: #064e3b; border-radius: 0 0 45px 45px; }
         
         .profile-wrap { margin-top: -60px; padding: 0 25px; position: relative; }
-        .sq-avatar {
-            width: 120px; height: 120px; border-radius: 40px; border: 5px solid white;
-            background: #059669; background-size: cover; position: relative;
+        .avatar-box {
+            width: 115px; height: 115px; border-radius: 38px; border: 5px solid white;
+            background: #059669; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-        .cam-dp { bottom: -3px; right: -3px; width: 32px; border: 2.5px solid #059669; }
 
-        /* ৩. বাটন ও ট্যাব */
-        .action-bar { display: flex; gap: 10px; margin-top: 20px; }
-        .btn-inspire { flex: 2; background: #059669; color: white; border: none; padding: 14px; border-radius: 16px; font-weight: 800; }
-        .btn-edit { flex: 1; background: #f1f5f9; border: none; padding: 14px; border-radius: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; text-decoration: none; color: black; }
-        .bento-btn { width: 46px; height: 46px; background: #f1f5f9; border-radius: 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3.5px; padding: 11px; cursor: pointer; }
-        .dot { width: 6px; height: 6px; background: #1e293b; border-radius: 2px; }
+        /* ৩. বাটন ও এডিট আইকন ফিক্স */
+        .action-bar { display: flex; gap: 10px; margin-top: 22px; align-items: center; }
+        .btn-inspire { flex: 2; background: #059669; color: white; border: none; padding: 14px; border-radius: 16px; font-weight: 800; font-size: 14px; }
+        
+        .btn-edit { 
+            flex: 1; background: #f1f5f9; border: none; padding: 14px; border-radius: 16px; 
+            font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 6px;
+            text-decoration: none; color: #111827;
+        }
 
-        .tab-row { display: flex; justify-content: space-between; margin-top: 25px; padding: 0 25px; border-bottom: 1px solid #f1f5f9; }
+        /* ৪. বেন্টো মেনু (সরাসরি পেজ নেভিগেশন) */
+        .bento-btn {
+            width: 48px; height: 48px; background: #f1f5f9; border-radius: 16px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+        }
+
+        /* ৫. এবাউট ইনফো (সি মোর ফিচার) */
+        .about-card { margin: 25px 20px; padding: 18px; background: #f8fafc; border-radius: 24px; }
+        .about-text { 
+            font-size: 13px; color: #64748b; line-height: 1.6; font-weight: 600;
+            overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+        }
+        .about-full { -webkit-line-clamp: unset !important; display: block !important; }
+        .see-more { color: #059669; font-weight: 800; font-size: 13px; cursor: pointer; margin-top: 8px; display: inline-block; }
+
+        /* ৬. ট্যাব ও পোস্ট বক্স */
+        .tab-row { display: flex; justify-content: space-between; margin: 25px 25px 0; border-bottom: 1px solid #f1f5f9; }
         .tab { padding-bottom: 12px; font-weight: 800; font-size: 13px; color: #94a3b8; cursor: pointer; }
         .tab-active { color: #059669; border-bottom: 3px solid #059669; }
 
-        /* ৪. পোস্ট ইনপুট ও অ্যালবাম আইকন */
-        .post-card { margin: 25px 20px; background: #f8fafc; border-radius: 24px; padding: 14px 20px; display: flex; align-items: center; gap: 15px; }
-        .mini-dp { width: 42px; height: 42px; border-radius: 15px; background: #059669; background-size: cover; }
-        .album-icon { width: 28px; cursor: pointer; }
-
-        /* ৫. ফেসবুক স্টাইল স্লাইডিং মেনু */
-        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); display: none; z-index: 2000; }
-        .menu-sheet { 
-            position: fixed; bottom: -100%; left: 0; width: 100%; background: white; 
-            border-radius: 30px 30px 0 0; padding: 15px 0 40px; transition: 0.4s; z-index: 2001; 
-            max-height: 80vh; overflow-y: auto;
+        .post-input {
+            margin: 25px 20px; padding: 15px 20px; background: #f8fafc; border-radius: 24px;
+            display: flex; align-items: center; gap: 15px;
         }
-        .sheet-open { bottom: 0 !important; }
-        .menu-item { display: flex; align-items: center; padding: 15px 25px; gap: 15px; border-bottom: 1px solid #f8fafc; cursor: pointer; }
-        .menu-item:active { background: #f1f5f9; }
-        .icon-circ { width: 36px; height: 36px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-        .item-text { font-weight: 700; font-size: 15px; }
-
-        /* কপি লিঙ্ক সেকশন */
-        .copy-box { margin-top: 15px; padding: 15px 25px; border-top: 8px solid #f1f5f9; }
-        .link-display { background: #f8fafc; padding: 12px; border-radius: 12px; display: flex; align-items: center; gap: 10px; color: #059669; font-weight: 700; font-size: 13px; }
-
-        /* পপ-আপ মেসেজ */
-        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1e293b; color: white; padding: 12px 25px; border-radius: 50px; opacity: 0; transition: 0.4s; z-index: 3000; display: flex; gap: 10px; align-items: center; }
-        .toast-show { transform: translateX(-50%) translateY(0) !important; opacity: 1 !important; }
+        .mini-avatar { width: 40px; height: 40px; border-radius: 14px; background: #059669; }
+        .album-icon { width: 28px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="header-nav">
-        <span class="material-icons" onclick="history.back()">chevron_left</span>
-        <div class="nav-name" id="topName">MingleJoys</div>
+        <span class="material-icons" onclick="history.back()">arrow_back</span>
+        <div class="nav-name">MingleJoys</div>
         <span class="material-icons">search</span>
     </div>
 
-    <div class="cover-box" id="coverView">
-        <img src="https://i.ibb.co/v4v8fS6/camera-icon.png" class="cam-mini cam-cover" onclick="document.getElementById('cInp').click()">
-        <input type="file" id="cInp" hidden onchange="alert('Cover Upload Triggered')">
-    </div>
+    <div class="hero-section">
+        <div class="cover-photo"></div>
+        <div class="profile-wrap">
+            <div class="avatar-box"></div>
+            <h2 style="margin: 15px 0 5px; font-weight: 800; font-size: 24px;">Maraj Khan</h2>
+            <p style="color: #64748b; font-size: 13px; font-weight: 700;">435 friends • 12 posts</p>
 
-    <div class="profile-wrap">
-        <div class="sq-avatar" id="dpView">
-            <img src="https://i.ibb.co/v4v8fS6/camera-icon.png" class="cam-mini cam-dp" onclick="document.getElementById('dInp').click()">
-            <input type="file" id="dInp" hidden onchange="alert('DP Upload Triggered')">
-        </div>
-        <h1 id="mainName" style="margin:15px 0 5px; font-size: 26px; font-weight: 800;">User Name</h1>
-        <p style="color:#64748b; font-weight:700; font-size:13px;">435 friends • 12 posts</p>
-
-        <div class="action-bar">
-            <button class="btn-inspire">✨ Inspire Others</button>
-            <a href="Edit_Profile.html" class="btn-edit">Edit <span class="material-icons" style="font-size:16px; margin-left:5px;">edit</span></a>
-            <div class="bento-btn" onclick="openMenu()">
-                <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-                <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-                <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            <div class="action-bar">
+                <button class="btn-inspire">✨ Inspire Others</button>
+                <a href="Edit_Profile.html" class="btn-edit">
+                    Edit <span class="material-icons" style="font-size: 18px;">edit</span>
+                </a>
+                <div class="bento-btn" onclick="location.href='Menu.html'">
+                    <span class="material-icons">grid_view</span>
+                </div>
             </div>
         </div>
+    </div>
+
+    <div class="about-card">
+        <div class="about-text" id="bioText">
+            স্বাগতম আমার MingleJoys প্রোফাইলে! এখানে আমি আমার জীবনের সুন্দর মুহূর্তগুলো শেয়ার করি। আপনি যদি আমার সম্পর্কে আরও জানতে চান, তবে নিচের See More বাটনে ক্লিক করুন।
+        </div>
+        <div class="see-more" onclick="toggleBio()" id="bioBtn">See More</div>
     </div>
 
     <div class="tab-row">
@@ -113,67 +110,20 @@
         <div class="tab">Orders</div>
     </div>
 
-    <div class="post-card">
-        <div class="mini-dp" id="miniDp"></div>
-        <div style="flex-grow:1; color:#64748b; font-weight:700; font-size:14px;">What's on your mind?</div>
+    <div class="post-input">
+        <div class="mini-avatar"></div>
+        <div style="flex-grow:1; color:#94a3b8; font-size:14px; font-weight:700;">What's on your mind?</div>
         <img src="https://i.ibb.co/SrtP0mS/album-icon.png" class="album-icon">
     </div>
 
-    <div class="menu-overlay" id="overlay" onclick="closeMenu()"></div>
-    <div class="menu-sheet" id="menu">
-        <div style="width:40px; height:5px; background:#e2e8f0; border-radius:10px; margin:0 auto 15px;"></div>
-        
-        <div class="menu-item" onclick="location.href='Archive.html'">
-            <div class="icon-circ"><span class="material-icons">archive</span></div>
-            <div class="item-text">Archive</div>
-        </div>
-        <div class="menu-item">
-            <div class="icon-circ"><span class="material-icons">history</span></div>
-            <div class="item-text">Activity Log</div>
-        </div>
-        <div class="menu-item">
-            <div class="icon-circ"><span class="material-icons">lock</span></div>
-            <div class="item-text">Lock Profile</div>
-        </div>
-        <div class="menu-item">
-            <div class="icon-circ"><span class="material-icons">visibility</span></div>
-            <div class="item-text">View As</div>
-        </div>
-
-        <div class="copy-box">
-            <p style="font-weight:800; font-size:13px; margin-bottom:10px; color:#64748b;">Your profile link</p>
-            <div class="link-display" onclick="copyProfileLink()">
-                <span class="material-icons">link</span>
-                https://minglejoys.com/profile/user_id
-            </div>
-            <p style="font-size:11px; color:#94a3b8; margin-top:8px;">আপনার ব্যক্তিগত প্রোফাইল লিঙ্ক শেয়ার করুন।</p>
-        </div>
-    </div>
-
-    <div id="toast"><span class="material-icons">check_circle</span> Link Copied!</div>
-
     <script>
-        // মেনু ফাংশন
-        function openMenu() {
-            document.getElementById('menu').classList.add('sheet-open');
-            document.getElementById('overlay').style.display = 'block';
+        // সি মোর টগল ফাংশন
+        function toggleBio() {
+            const bio = document.getElementById('bioText');
+            const btn = document.getElementById('bioBtn');
+            bio.classList.toggle('about-full');
+            btn.innerText = bio.classList.contains('about-full') ? "See Less" : "See More";
         }
-        function closeMenu() {
-            document.getElementById('menu').classList.remove('sheet-open');
-            document.getElementById('overlay').style.display = 'none';
-        }
-        function copyProfileLink() {
-            navigator.clipboard.writeText(window.location.href);
-            closeMenu();
-            const t = document.getElementById('toast');
-            t.classList.add('toast-show');
-            setTimeout(() => t.classList.remove('toast-show'), 3000);
-        }
-
-        // Firebase বা LocalStorage থেকে নাম লোড করার উদাহরণ
-        const name = "John Doe"; // এখানে আপনার ডাটাবেসের নাম বসবে
-        document.getElementById('topName').innerText = name;
-        document.getElementById('mainName').innerText = name;
     </script>
 </body>
 </html>
