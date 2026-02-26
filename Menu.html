@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Menu Settings - MingleJoys</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ডার্ক মোড কালার ভেরিয়েবল */
+        :root { --bg: #ffffff; --text: #1e293b; --card: #f1f5f9; --border: #f1f5f9; --sub: #94a3b8; }
+        .dark-theme { --bg: #0f172a; --text: #f8fafc; --card: #1e293b; --border: #334155; --sub: #64748b; }
+
+        * { font-family: 'Plus Jakarta Sans', sans-serif !important; box-sizing: border-box; margin: 0; padding: 0; transition: 0.2s; }
+        body { background: var(--bg); color: var(--text); }
+
+        .header {
+            display: flex; align-items: center; padding: 15px 20px;
+            border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 100;
+        }
+        .icon-btn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text); }
+        .title { flex-grow: 1; text-align: center; font-weight: 800; font-size: 18px; }
+
+        .section-label { padding: 20px 20px 8px; font-size: 12px; font-weight: 800; color: var(--sub); text-transform: uppercase; }
+        
+        .menu-item {
+            display: flex; align-items: center; padding: 14px 20px;
+            gap: 15px; cursor: pointer; border-bottom: 1px solid var(--border);
+        }
+        .menu-item:active { opacity: 0.7; }
+        
+        .icon-box {
+            width: 44px; height: 44px; background: var(--card);
+            border-radius: 14px; display: flex; align-items: center;
+            justify-content: center; color: #059669;
+        }
+        
+        .info { flex-grow: 1; }
+        .main-text { font-size: 15px; font-weight: 700; color: var(--text); display: block; }
+        .sub-text { font-size: 11px; color: var(--sub); font-weight: 600; }
+
+        /* ডার্ক মোড সুইচ */
+        .toggle-track { width: 38px; height: 20px; background: #cbd5e1; border-radius: 10px; position: relative; }
+        .toggle-circle { width: 16px; height: 16px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: 0.3s; }
+        .active-track { background: #059669; }
+        .active-track .toggle-circle { left: 20px; }
+
+        .link-card {
+            margin: 25px 20px; padding: 25px; background: var(--card); 
+            border: 2px dashed #059669; border-radius: 24px; text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="icon-btn" onclick="history.back()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </div>
+        <div class="title">Profile Settings</div>
+        <div class="icon-btn">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </div>
+    </div>
+
+    <div class="section-label">Privacy & Activity</div>
+
+    <div class="menu-item" onclick="location.href='archive.html'">
+        <div class="icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+        </div>
+        <div class="info">
+            <span class="main-text">Archive</span>
+            <span class="sub-text">See your hidden posts and stories</span>
+        </div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="3"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </div>
+
+    <div class="menu-item" onclick="location.href='activity_log.html'">
+        <div class="icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </div>
+        <div class="info">
+            <span class="main-text">Activity Log</span>
+            <span class="sub-text">Manage your tags and history</span>
+        </div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="3"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </div>
+
+    <div class="menu-item" onclick="location.href='lock_profile.html'">
+        <div class="icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        </div>
+        <div class="info">
+            <span class="main-text">Lock Profile</span>
+            <span class="sub-text">Secure your photos and posts</span>
+        </div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="3"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </div>
+
+    <div class="section-label">Account Settings</div>
+
+    <div class="menu-item" onclick="toggleDarkMode()">
+        <div class="icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </div>
+        <div class="info">
+            <span class="main-text">Dark Mode</span>
+            <span class="sub-text">Change your display appearance</span>
+        </div>
+        <div class="toggle-track" id="track">
+            <div class="toggle-circle"></div>
+        </div>
+    </div>
+
+    <div class="link-card">
+        <p style="font-size: 13px; font-weight: 800; color: var(--sub);">Your Profile Link</p>
+        <p style="color: #059669; font-weight: 700; margin: 12px 0;">https://minglejoys.com/maraj_khan</p>
+        <button style="background:#059669; color:white; border:none; padding:10px 20px; border-radius:12px; font-weight:800; cursor:pointer;">Copy Link</button>
+    </div>
+
+    <script>
+        function toggleDarkMode() {
+            const body = document.body;
+            const track = document.getElementById('track');
+            body.classList.toggle('dark-theme');
+            track.classList.toggle('active-track');
+            
+            // সেটিং সেভ রাখা
+            const isDark = body.classList.contains('dark-theme');
+            localStorage.setItem('mode', isDark ? 'dark' : 'light');
+        }
+
+        // আগে থেকে সেভ করা থাকলে সেটা লোড করা
+        if(localStorage.getItem('mode') === 'dark') {
+            document.body.classList.add('dark-theme');
+            document.getElementById('track').classList.add('active-track');
+        }
+    </script>
+</body>
+</html>
