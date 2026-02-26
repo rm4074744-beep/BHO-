@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lock Profile - MingleJoys</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --bg: #ffffff; --text: #1e293b; --card: #f8fafc; --border: #f1f5f9; --icon-bg: #ecfdf5; --green: #059669; }
+        .dark-theme { --bg: #0f172a; --text: #f8fafc; --card: #1e293b; --border: #334155; --icon-bg: #065f46; --green: #10b981; }
+
+        * { font-family: 'Plus Jakarta Sans', sans-serif !important; box-sizing: border-box; margin: 0; padding: 0; transition: 0.2s; }
+        body { background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; overflow: hidden; }
+
+        /* হেডার */
+        .header {
+            display: flex; align-items: center; padding: 15px 20px;
+            border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 100;
+        }
+        .icon-btn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text); }
+        .title { flex-grow: 1; text-align: center; font-weight: 800; font-size: 18px; }
+
+        .container { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 40px 25px; overflow-y: auto; }
+        
+        .lock-hero {
+            width: 110px; height: 110px; background: var(--icon-bg); border-radius: 38px;
+            display: flex; align-items: center; justify-content: center; color: var(--green); margin-bottom: 25px;
+        }
+
+        h2 { font-size: 22px; font-weight: 800; margin-bottom: 12px; }
+        .subtitle { font-size: 14px; color: #94a3b8; font-weight: 600; text-align: center; margin-bottom: 35px; line-height: 1.5; }
+
+        .feature-card { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 22px; }
+        .feature-row { display: flex; gap: 16px; margin-bottom: 22px; align-items: flex-start; }
+        .feature-row:last-child { margin-bottom: 0; }
+        
+        .f-icon-circle { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: var(--green); font-size: 18px; }
+        .f-content b { font-size: 14px; font-weight: 800; display: block; margin-bottom: 3px; }
+        .f-content p { font-size: 13px; color: #94a3b8; font-weight: 600; line-height: 1.4; }
+
+        /* সুন্দর মেসেজ বক্স (Toast) */
+        #toast {
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+            background: #1e293b; color: white; padding: 15px 25px; border-radius: 20px;
+            font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 1000;
+        }
+        #toast.show { top: 30px; }
+
+        /* বটম বাটন */
+        .footer { padding: 20px 25px; background: var(--bg); border-top: 1px solid var(--border); }
+        .btn-confirm { 
+            width: 100%; background: var(--green); color: white; border: none; padding: 16px; 
+            border-radius: 18px; font-weight: 800; font-size: 15px; cursor: pointer;
+            box-shadow: 0 10px 20px rgba(5, 150, 105, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="toast">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        আপনার প্রোফাইল লক হয়েছে
+    </div>
+
+    <div class="header">
+        <div class="icon-btn" onclick="location.href='menu.html'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </div>
+        <div class="title">Lock Profile</div>
+        <div class="icon-btn"></div>
+    </div>
+
+    <div class="container">
+        <div class="lock-hero">
+            <svg width="55" height="55" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        </div>
+        
+        <h2>Lock your profile</h2>
+        <p class="subtitle">Make your photos and posts more private in one step.</p>
+
+        <div class="feature-card">
+            <div class="feature-row">
+                <div class="f-icon-circle">🛡️</div>
+                <div class="f-content">
+                    <b>More Privacy</b>
+                    <p>Only friends will see the photos, posts and stories on your timeline.</p>
+                </div>
+            </div>
+            <div class="feature-row">
+                <div class="f-icon-circle">👤</div>
+                <div class="f-content">
+                    <b>Secure Profile</b>
+                    <p>Only friends will see your full-size profile picture and cover photo.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <button class="btn-confirm" onclick="activateLock()">Lock Your Profile</button>
+    </div>
+
+    <script>
+        if(localStorage.getItem('mode') === 'dark') {
+            document.body.classList.add('dark-theme');
+        }
+
+        function activateLock() {
+            // ১. লক স্টেট সেভ
+            localStorage.setItem('profile_is_locked', 'true');
+            
+            // ২. সুন্দর মেসেজ বক্স দেখানো
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            
+            // ৩. ২ সেকেন্ড পর হোম পেজে চলে যাবে
+            setTimeout(() => {
+                window.location.href = 'Home.html';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
