@@ -63,8 +63,9 @@
     cursor: pointer;
     border-bottom: 1px solid #f5f5f5;
   }
+  .dropdown-item:hover { background-color: #f9f9f9; }
 
-  /* লোগো সেকশন - ক্লিন এবং বর্ডারহীন */
+  /* লোগো সেকশন - একদম ক্লিন */
   .logo-section { 
     margin-top: 40px; 
     margin-bottom: 10px;
@@ -78,9 +79,9 @@
     height: 85px; 
     object-fit: contain; 
     pointer-events: none;
-    /* আপনার পাঠানো ছবির বিচ্ছিরি চারকোনা ভাব দূর করার জন্য */
     background: transparent;
-    border-radius: 50%; /* লোগোর রাউন্ডেড শেপ বজায় রাখতে */
+    border: none !important;
+    box-shadow: none !important; /* ছাই রঙ দূর করার জন্য */
   }
 
   h1 { 
@@ -92,7 +93,7 @@
     letter-spacing: -1.5px;
   }
 
-  /* ফর্ম বক্স ও ইনপুট */
+  /* ফর্ম ডিজাইন */
   .form-box { width: 90%; max-width: 400px; }
   .input-group { position: relative; width: 100%; margin-bottom: 15px; }
   
@@ -101,11 +102,7 @@
     font-size: 16px; outline: none; background: #f9fafb;
     transition: all 0.3s ease;
   }
-  input:focus { 
-    border-color: #059669; 
-    background: #fff; 
-    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.08); 
-  }
+  input:focus { border-color: #059669; background: #fff; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.08); }
 
   .eye-icon-img {
     position: absolute; right: 18px; top: 50%;
@@ -113,20 +110,16 @@
     cursor: pointer; width: 24px; opacity: 0.4;
   }
 
-  /* লগইন বাটন - আপনার ছবির সবুজ রঙের সাথে মিল রেখে */
+  /* বাটন ডিজাইন */
   .login-btn {
     width: 100%; padding: 16px;
     background: #059669; 
     color: white; border: none; border-radius: 35px; 
     font-size: 18px; font-weight: 700; cursor: pointer;
-    box-shadow: 0 4px 15px rgba(5, 150, 105, 0.2);
     display: flex; justify-content: center; align-items: center; gap: 10px;
-    transition: 0.3s;
     margin-top: 10px;
   }
-  .login-btn:active { transform: scale(0.97); }
 
-  /* বটম সেকশন */
   .create-btn {
     width: 90%; padding: 14px;
     background: none; color: #059669;
@@ -135,25 +128,24 @@
     font-size: 16px; font-weight: 700; 
     margin: 0 auto 30px auto;
     display: flex; justify-content: center; align-items: center;
-    cursor: pointer; transition: 0.3s;
+    cursor: pointer;
   }
 
-  .bottom-section {
-    width: 100%; max-width: 400px; margin-top: auto;
-    padding-bottom: 30px; text-align: center;
-  }
-
-  .white-spinner {
+  /* ফাস্ট স্পিনার */
+  .spinner {
     width: 20px; height: 20px;
     border: 3px solid rgba(255, 255, 255, 0.3);
     border-top: 3px solid #ffffff;
     border-radius: 50%;
     display: none;
-    animation: spin 0.8s linear infinite;
+    animation: spin 0.4s linear infinite;
   }
+  .spinner-green { border: 3px solid rgba(5, 150, 105, 0.2); border-top: 3px solid #059669; }
 
   @keyframes spin { 100% { transform: rotate(360deg); } }
+  .bottom-section { width: 100%; max-width: 400px; margin-top: auto; padding-bottom: 30px; text-align: center; }
   .disabled { opacity: 0.6; pointer-events: none; }
+  .show { display: block !important; }
 </style>
 </head>
 <body oncontextmenu="return false;">
@@ -161,8 +153,10 @@
   <div class="header-actions">
     <div class="more-dots" onclick="toggleMenu(event)">...</div>
     <div class="dropdown-menu" id="mainMenu">
-      <div class="dropdown-item">Help Center</div>
-      <div class="dropdown-item" onclick="toggleLang(event)">Language ▸</div>
+      <div class="dropdown-item" id="help-text">Help Center</div>
+      <div class="dropdown-item" onclick="changeLang('en')">English</div>
+      <div class="dropdown-item" onclick="changeLang('bn')">বাংলা</div>
+      <div class="dropdown-item" onclick="changeLang('hi')">हिन्दी</div>
     </div>
   </div>
 
@@ -182,45 +176,64 @@
     
     <button class="login-btn" id="login-btn" onclick="handleLogin()">
       <span id="login-btn-text">Log In</span>
-      <div class="white-spinner" id="login-spinner"></div>
+      <div class="spinner" id="login-spinner"></div>
     </button>
   </div>
 
   <div class="bottom-section">
     <button class="create-btn" id="create-btn" onclick="handleCreateAccount()">
       <span id="create-btn-text">Create new account</span>
+      <div class="spinner spinner-green" id="create-spinner"></div>
     </button>
-    <p style="font-size: 13px; color: #6b7280; margin-bottom: 5px;">Connect. Share. Enjoy.</p>
+    <p style="font-size: 13px; color: #6b7280; margin-bottom: 5px;" id="slogan-text">Connect. Share. Enjoy.</p>
     <p style="font-size: 14px; font-weight: 800; color: #4b5563; margin: 0; letter-spacing: 1px;">MINGLEJOYS</p>
   </div>
 
 <script>
+  // ভাষার ডাটা সেটআপ
+  const languages = {
+    'en': { user: "Mobile number or email", pass: "Password", login: "Log In", create: "Create new account", slogan: "Connect. Share. Enjoy.", help: "Help Center" },
+    'bn': { user: "মোবাইল নম্বর বা ইমেল", pass: "পাসওয়ার্ড", login: "লগ ইন", create: "নতুন অ্যাকাউন্ট তৈরি করুন", slogan: "যুক্ত হন। শেয়ার করুন। আনন্দ করুন।", help: "সহায়তা কেন্দ্র" },
+    'hi': { user: "मोबाइल नंबर या ईमेल", pass: "पासवर्ड", login: "लॉग इन", create: "नया अकाउंट बनाएँ", slogan: "जुड़ें। साझा करें। आनंद लें।", help: "सहायता केंद्र" }
+  };
+
+  function changeLang(lang) {
+    const data = languages[lang];
+    document.getElementById("userInput").placeholder = data.user;
+    document.getElementById("passInput").placeholder = data.pass;
+    document.getElementById("login-btn-text").innerText = data.login;
+    document.getElementById("create-btn-text").innerText = data.create;
+    document.getElementById("slogan-text").innerText = data.slogan;
+    document.getElementById("help-text").innerText = data.help;
+    document.getElementById("mainMenu").classList.remove("show");
+  }
+
+  // লগইন: ০.০৫২ সেকেন্ড পর ট্রান্সফার
   function handleLogin() {
-    const user = document.getElementById("userInput").value.trim();
-    const pass = document.getElementById("passInput").value.trim();
     const btnText = document.getElementById("login-btn-text");
     const spinner = document.getElementById("login-spinner");
     const btn = document.getElementById("login-btn");
 
-    if (!user || !pass) {
-      alert("Please enter both email and password.");
-      return;
-    }
+    btnText.style.display = "none";
+    spinner.style.display = "block";
+    btn.classList.add("disabled");
+
+    setTimeout(() => { window.location.href = "account_list.html"; }, 52);
+  }
+
+  // ক্রিয়েট অ্যাকাউন্ট: ০.০৬৭ সেকেন্ড পর ট্রান্সফার
+  function handleCreateAccount() {
+    const btnText = document.getElementById("create-btn-text");
+    const spinner = document.getElementById("create-spinner");
+    const btn = document.getElementById("create-btn");
 
     btnText.style.display = "none";
     spinner.style.display = "block";
     btn.classList.add("disabled");
-    
-    localStorage.setItem("mj_login_email", user);
-    setTimeout(() => { window.location.href = "account_list.html"; }, 1500);
+
+    setTimeout(() => { window.location.href = "join.html"; }, 67);
   }
 
-  function handleCreateAccount() {
-    window.location.href = "join.html";
-  }
-
-  function toggleMenu(e) { e.stopPropagation(); document.getElementById("mainMenu").classList.toggle("show"); }
-  
   function togglePass() {
     const input = document.getElementById("passInput");
     const icon = document.getElementById("eyeIcon");
@@ -228,14 +241,12 @@
     icon.src = (input.type === "password") ? "Screenshot_2026_0224_015913.png" : "Screenshot_2026_0224_020024.png";
   }
 
-  // মেনু দেখানোর জন্য সিম্পল স্ক্রিপ্ট
-  document.getElementById("mainMenu").style.display = "none";
   function toggleMenu(e) {
     e.stopPropagation();
-    const menu = document.getElementById("mainMenu");
-    menu.style.display = (menu.style.display === "none") ? "block" : "none";
+    document.getElementById("mainMenu").classList.toggle("show");
   }
-  window.onclick = function() { document.getElementById("mainMenu").style.display = "none"; }
+
+  window.onclick = function() { document.getElementById("mainMenu").classList.remove("show"); }
 </script>
 </body>
 </html>
