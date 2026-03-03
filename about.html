@@ -3,86 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About MingleJoys</title>
+    <title>About MingleJoys | Trust & Integrity Hub</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --emerald: #50C878; --bg: #ffffff; --text: #050505; --border: #f0f2f5; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: var(--text); }
-
-        .header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; position: sticky; top: 0; background: #fff; z-index: 10; }
-        .header i { font-size: 28px; cursor: pointer; margin-right: 15px; }
-        .header h1 { font-size: 20px; font-weight: 800; }
-
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-
-        .brand-box { text-align: center; padding: 40px 0; }
-        .logo { width: 75px; height: 75px; background: var(--emerald); border-radius: 22px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 35px; font-weight: 800; }
-        
-        /* 📂 মেনু বা ভাগগুলো */
-        .menu-section { margin-top: 10px; }
-        .menu-item {
-            display: flex; align-items: center; padding: 20px;
-            background: #fff; border: 1.5px solid var(--border);
-            border-radius: 20px; margin-bottom: 12px;
-            text-decoration: none; color: var(--text); transition: 0.2s;
+        :root {
+            --emerald: #50C878;
+            --bg: #ffffff;
+            --text: #050505;
+            --sub-text: #4b4b4b;
+            --border: #f0f2f5;
         }
-        .menu-item:active { background: #f8fafc; transform: scale(0.98); }
-        .menu-item i.icon { font-size: 28px; color: var(--emerald); margin-right: 15px; }
-        .menu-item div { flex-grow: 1; }
-        .menu-item b { font-size: 17px; display: block; }
-        .menu-item span { font-size: 13px; color: #888; }
-        .menu-item i.arrow { color: #ccc; }
 
-        .footer { text-align: center; margin-top: 50px; padding: 30px; color: #aaa; font-size: 13px; font-weight: 600; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg); color: var(--text); line-height: 1.6; }
+
+        /* Header Navigation */
+        .header {
+            padding: 20px; background: #fff; display: flex; align-items: center;
+            border-bottom: 1.5px solid var(--border); position: sticky; top: 0; z-index: 1000;
+        }
+        .header i { font-size: 30px; cursor: pointer; margin-right: 15px; color: var(--text); }
+        .header h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+
+        .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
+
+        /* Brand Identity Section */
+        .brand-box { text-align: center; padding-bottom: 45px; }
+        .logo-display { 
+            width: 85px; height: 85px; background: var(--emerald); 
+            border-radius: 24px; margin: 0 auto 20px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 42px; font-weight: 800;
+            box-shadow: 0 12px 30px rgba(80, 200, 120, 0.25);
+        }
+        .brand-box h2 { font-size: 32px; font-weight: 800; color: var(--text); }
+        .brand-box p { color: #888; font-weight: 600; font-size: 16px; margin-top: 5px; }
+
+        /* Menu Sections (The "Bhag" or Categories) */
+        .category-label { 
+            font-size: 14px; font-weight: 800; color: #aaa; 
+            text-transform: uppercase; letter-spacing: 1px; 
+            margin: 25px 0 15px 10px; 
+        }
+
+        .menu-list { display: flex; flex-direction: column; gap: 12px; }
+        .menu-card {
+            display: flex; align-items: center; padding: 22px;
+            background: #fff; border: 1.5px solid var(--border);
+            border-radius: 22px; text-decoration: none; 
+            color: var(--text); transition: all 0.3s ease;
+        }
+        .menu-card:active { transform: scale(0.97); background: #f8fafc; }
+        
+        .icon-wrapper {
+            width: 52px; height: 52px; border-radius: 15px;
+            background: #f0fff4; color: var(--emerald);
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 18px; font-size: 28px; flex-shrink: 0;
+        }
+        
+        .menu-info { flex-grow: 1; }
+        .menu-info b { font-size: 18px; display: block; margin-bottom: 2px; }
+        .menu-info span { font-size: 14px; color: #888; font-weight: 500; }
+        
+        .arrow-icon { color: #d1d5db; font-size: 22px; }
+
+        /* Footer Branding */
+        .footer { text-align: center; margin-top: 70px; padding-bottom: 40px; }
+        .footer-logo-text { font-size: 14px; font-weight: 700; color: #bbb; letter-spacing: 2px; }
+        .footer-version { font-size: 12px; color: #ccc; margin-top: 8px; font-weight: 600; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <i class="material-icons-outlined" onclick="window.history.back()">arrow_back</i>
-        <h1>About</h1>
+        <h1>About MingleJoys</h1>
     </div>
 
     <div class="container">
         <div class="brand-box">
-            <div class="logo">MJ</div>
+            <div class="logo-display">MJ</div>
             <h2>MingleJoys</h2>
-            <p style="color:#888; font-weight:600;">Building a Trustworthy Space</p>
+            <p>Digital Integrity Hub</p>
         </div>
 
-        <div class="menu-section">
-            <a href="vision.html" class="menu-item">
-                <i class="material-icons-outlined icon">auto_awesome</i>
-                <div>
+        <div class="category-label">Discovery</div>
+        <div class="menu-list">
+            <a href="vision.html" class="menu-card">
+                <div class="icon-wrapper"><i class="material-icons-outlined">auto_awesome</i></div>
+                <div class="menu-info">
                     <b>Our Vision & Story</b>
-                    <span>আমাদের উদ্দেশ্য ও লক্ষ্য</span>
+                    <span>Our mission for a safer community</span>
                 </div>
-                <i class="material-icons-outlined arrow">chevron_right</i>
+                <i class="material-icons-outlined arrow-icon">chevron_right</i>
             </a>
+        </div>
 
-            <a href="credits.html" class="menu-item">
-                <i class="material-icons-outlined icon">code</i>
-                <div>
+        <div class="category-label">Technical & Legal</div>
+        <div class="menu-list">
+            <a href="credits.html" class="menu-card">
+                <div class="icon-wrapper"><i class="material-icons-outlined">code</i></div>
+                <div class="menu-info">
                     <b>Open Source Credits</b>
-                    <span>ব্যবহৃত টেকনোলজি ও লাইব্রেরি</span>
+                    <span>Third-party libraries & fonts used</span>
                 </div>
-                <i class="material-icons-outlined arrow">chevron_right</i>
+                <i class="material-icons-outlined arrow-icon">chevron_right</i>
             </a>
 
-            <a href="terms.html" class="menu-item">
-                <i class="material-icons-outlined icon">description</i>
-                <div>
+            <a href="terms.html" class="menu-card">
+                <div class="icon-wrapper"><i class="material-icons-outlined">gavel</i></div>
+                <div class="menu-info">
                     <b>Terms of Service</b>
-                    <span>ব্যবহারকারীর জন্য নিয়মাবলি</span>
+                    <span>Guidelines for using our platform</span>
                 </div>
-                <i class="material-icons-outlined arrow">chevron_right</i>
+                <i class="material-icons-outlined arrow-icon">chevron_right</i>
             </a>
         </div>
 
         <div class="footer">
-            MINGLEJOYS PROJECT © 2026
+            <div class="footer-logo-text">MINGLEJOYS PROJECT</div>
+            <div class="footer-version">RELEASE 2026.03.01</div>
         </div>
     </div>
 
