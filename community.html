@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MingleJoys | Community Standards (Official)</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --emerald: #50C878;
+            --bg: #ffffff;
+            --text: #050505;
+            --sub-text: #4b4b4b;
+            --border: #eef0f2;
+            --f-bg: #f8fafc;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg); color: var(--text); line-height: 1.8; scroll-behavior: smooth; }
+
+        /* 🆕 Navigation Header with Back and Menu Button */
+        .nav-header {
+            padding: 15px 20px; 
+            background: #fff; 
+            border-bottom: 1px solid var(--border);
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            position: sticky; 
+            top: 0; 
+            z-index: 1000;
+        }
+        .nav-left { display: flex; align-items: center; }
+        .nav-left i { font-size: 28px; cursor: pointer; color: var(--text); margin-right: 15px; }
+        .nav-header b { font-size: 22px; color: var(--emerald); letter-spacing: -1px; }
+        .nav-right i { font-size: 28px; cursor: pointer; color: var(--text); }
+
+        .container { max-width: 850px; margin: 0 auto; padding: 40px 20px; }
+
+        /* Hero Section */
+        .hero h1 { font-size: 38px; font-weight: 800; letter-spacing: -1.5px; line-height: 1.2; margin-bottom: 20px; }
+        .hero p { font-size: 18px; color: var(--sub-text); margin-bottom: 30px; }
+
+        /* Images */
+        .policy-img-full { 
+            width: 100%; height: auto; border-radius: 24px; 
+            margin: 35px 0 10px; object-fit: cover;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+        .img-caption { text-align: center; font-size: 14px; color: var(--sub-text); margin-bottom: 40px; font-style: italic; font-weight: 600; }
+
+        /* Accordion Style Rules */
+        .section-label { font-size: 26px; font-weight: 800; margin: 60px 0 25px; color: var(--text); border-left: 6px solid var(--emerald); padding-left: 15px; }
+
+        .rule-card { border: 1px solid var(--border); border-radius: 20px; margin-bottom: 15px; transition: 0.3s; background: #fff; }
+        .rule-header { padding: 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .rule-header b { font-size: 18px; font-weight: 800; }
+        .rule-content { max-height: 0; overflow: hidden; transition: all 0.5s ease; background: var(--f-bg); border-radius: 0 0 20px 20px; }
+        .rule-inner-text { padding: 30px; color: var(--sub-text); font-size: 16px; text-align: justify; }
+
+        .rule-card.active { border-color: var(--emerald); box-shadow: 0 10px 30px rgba(80, 200, 120, 0.1); }
+        .rule-card.active .rule-content { max-height: 2000px; }
+        .rule-card.active .rule-header i { transform: rotate(180deg); color: var(--emerald); }
+
+        .warning-tag { display: inline-block; background: #fff1f0; color: #cf1322; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 800; margin-bottom: 15px; }
+
+        /* 🔒 NO COPY BRAND SECTION */
+        .brand-footer {
+            margin-top: 80px; padding: 60px 20px; text-align: center; border-top: 1px solid var(--border);
+            background: #fff; user-select: none; -webkit-user-select: none;
+        }
+        .footer-logo { width: 55px; height: 55px; margin-bottom: 15px; pointer-events: none; }
+        .brand-name { font-size: 24px; font-weight: 800; color: var(--text); display: block; }
+        .copyright { font-size: 13px; color: #999; margin-top: 10px; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <nav class="nav-header">
+        <div class="nav-left">
+            <a href="javascript:history.back()" style="color: inherit; text-decoration: none;">
+                <i class="material-icons-outlined">arrow_back</i>
+            </a>
+            <b>MingleJoys</b>
+        </div>
+        <div class="nav-right">
+            <i class="material-icons-outlined">menu</i>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h1>Community Standards</h1>
+            <p>আমাদের রুলসগুলো সবার জন্য একটি নিরাপদ, সম্মানজনক এবং নৈতিক ডিজিটাল পরিবেশ নিশ্চিত করতে সাহায্য করে।</p>
+        </div>
+
+        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200" class="policy-img-full">
+        <p class="img-caption">Fostering a culture of responsibility and mutual respect.</p>
+
+        <div class="section-label">Content Regulation & Integrity</div>
+
+        <div class="rule-card" onclick="toggleRule(this)">
+            <div class="rule-header"><b>Content Regulation & Anti-Harassment</b><i class="material-icons-outlined">expand_more</i></div>
+            <div class="rule-content">
+                <div class="rule-inner-text">
+                    MingleJoys strictly regulates all uploaded content to prevent the spread of hate speech, harassment, and cyberbullying. We do not allow any content that targets individuals or groups with the intent to intimidate or silence them. Sharing indecent or obscene materials that violate communal standards is also strictly prohibited. Our regulation system is designed to identify and remove harmful interactions, ensuring that every user can engage without fear.
+                </div>
+            </div>
+        </div>
+
+        <div class="rule-card" onclick="toggleRule(this)">
+            <div class="rule-header"><b>Combating Fake News & Misinformation</b><i class="material-icons-outlined">expand_more</i></div>
+            <div class="rule-content">
+                <div class="rule-inner-text">
+                    Maintaining the truth is essential for a healthy community. We require users to share only verified and accurate information. Intentionally spreading fake news, rumors, or unverified reports that could cause panic or misinformation is a violation of our standards. Users are encouraged to refrain from sharing sensationalist content without checking its source.
+                </div>
+            </div>
+        </div>
+
+        <div class="section-label">Privacy & Intellectual Property</div>
+
+        <div class="rule-card" onclick="toggleRule(this)">
+            <div class="rule-header"><b>Privacy Protection & Data Safety</b><i class="material-icons-outlined">expand_more</i></div>
+            <div class="rule-content">
+                <div class="rule-inner-text">
+                    Your privacy is your right. We urge all users to protect their personal information and respect the privacy of others. Sharing private phone numbers, addresses, or confidential documents—whether your own or someone else's—is prohibited. We recommend users regularly review their privacy settings to control who can see their content.
+                </div>
+            </div>
+        </div>
+
+        <div class="rule-card" onclick="toggleRule(this)">
+            <div class="rule-header"><b>Respecting Intellectual Property</b><i class="material-icons-outlined">expand_more</i></div>
+            <div class="rule-content">
+                <div class="rule-inner-text">
+                    We value the hard work of creators. Users must not use images, videos, or written content created by others without obtaining explicit permission. Posting copyrighted material as your own or without authorization may lead to content removal and account penalties. Always give credit where it is due.
+                </div>
+            </div>
+        </div>
+
+        <div class="section-label">Legal & Social Responsibility</div>
+
+        <div class="rule-card" onclick="toggleRule(this)">
+            <div class="rule-header"><b>Legal Compliance & Cyber Laws</b><i class="material-icons-outlined">expand_more</i></div>
+            <div class="rule-content">
+                <div class="rule-inner-text">
+                    All users must comply with local cyber laws, IT acts, and government guidelines. Any activity that facilitates illegal acts, violates national security, or breaches digital regulations will be reported to the respective law enforcement agencies. We strictly enforce compliance to maintain a lawful and orderly community.
+                </div>
+            </div>
+        </div>
+
+        <div class="rule-card" onclick="toggleRule(this)">
+            <div class="rule-header"><b>Mindful Sharing & Respectful Interaction</b><i class="material-icons-outlined">expand_more</i></div>
+            <div class="rule-content">
+                <div class="rule-inner-text">
+                    Before you post, take a moment to think. We discourage users from sharing content driven by temporary emotions or anger that could lead to regret or conflict. Every user should be respectful of others' opinions, even when they disagree. Fostering a culture of empathy is key to the MingleJoys experience.
+                </div>
+            </div>
+        </div>
+
+        <div class="section-label">Religious & Cyber Integrity</div>
+
+        <div class="rule-card" onclick="toggleRule(this)">
+            <div class="rule-header"><b>Religious Sanctity & Decency</b><i class="material-icons-outlined">expand_more</i></div>
+            <div class="rule-content">
+                <div class="rule-inner-text">
+                    <span class="warning-tag">ZERO TOLERANCE</span><br>
+                    MingleJoys strictly prohibits mockery or insults directed towards Islam or any religious faith. We do not allow content that spreads misinformation about religious scriptures or promotes ideologies that go against fundamental values. Ridiculing faith in any form will result in an immediate and permanent account termination.
+                </div>
+            </div>
+        </div>
+
+        <div class="rule-card" onclick="toggleRule(this)">
+            <div class="rule-header"><b>Hacking & Fraud Prevention</b><i class="material-icons-outlined">expand_more</i></div>
+            <div class="rule-content">
+                <div class="rule-inner-text">
+                    Any attempt to hack accounts, phish for credentials, or use technical vulnerabilities to exploit users will result in severe consequences. This includes identity theft or creating fake profiles to defraud others. Protecting your digital presence is our highest priority.
+                </div>
+            </div>
+        </div>
+
+        <footer class="brand-footer" oncontextmenu="return false;">
+            <img src="logo.png" alt="MingleJoys" class="footer-logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/747/747376.png'">
+            <span class="brand-name">MingleJoys</span>
+            <p style="font-size: 14px; color: var(--sub-text); font-weight: 600; margin-top: 5px;">A Standard of Moral & Digital Joy</p>
+            <p class="copyright">© 2026 MingleJoys Transparency Center. <br>All Rights Reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleRule(element) {
+            const isActive = element.classList.contains('active');
+            // Close all other open rule cards
+            document.querySelectorAll('.rule-card').forEach(card => card.classList.remove('active'));
+            
+            // If the clicked one wasn't active, open it
+            if (!isActive) {
+                element.classList.add('active');
+                // Smooth scroll into view
+                setTimeout(() => {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 300);
+            }
+        }
+    </script>
+</body>
+</html>
