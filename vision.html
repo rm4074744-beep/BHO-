@@ -3,118 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Vision | MingleJoys</title>
+    <title>Vision | MingleJoys</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
     <style>
         :root { 
             --emerald: #50C878; 
             --bg: #ffffff; 
             --text: #050505; 
             --sub-text: #4b4b4b;
-            --border: #f0f2f5;
+            --border: #f8f9fa;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: var(--text); line-height: 1.8; }
+        body { background: var(--bg); color: var(--text); line-height: 1.8; -webkit-tap-highlight-color: transparent; }
 
+        /* Navigation Header */
         .header { 
-            padding: 20px; 
-            background: #fff; 
-            display: flex; 
-            align-items: center; 
-            border-bottom: 1px solid var(--border); 
-            position: sticky; 
-            top: 0; 
-            z-index: 100;
+            padding: 15px 20px; background: #fff; display: flex; align-items: center; 
+            border-bottom: 1px solid #f0f0f0; position: sticky; top: 0; z-index: 100;
         }
-        .header i { font-size: 28px; cursor: pointer; margin-right: 15px; }
-        .header h1 { font-size: 20px; font-weight: 800; }
+        .header i { font-size: 28px; cursor: pointer; margin-right: 15px; color: var(--text); }
+        .header h1 { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
 
-        .container { max-width: 650px; margin: 0 auto; padding: 40px 20px; }
+        .container { max-width: 700px; margin: 0 auto; padding: 0 20px 40px; }
         
-        .hero-title { font-size: 32px; font-weight: 800; color: var(--emerald); margin-bottom: 25px; letter-spacing: -1px; }
-        
-        .vision-card { 
-            background: #f8fafc; 
-            padding: 30px; 
-            border-radius: 24px; 
-            border: 1px solid var(--border);
-            margin-bottom: 30px;
+        /* 🎨 Welcome Section with Background Logo */
+        .welcome-title { 
+            text-align: center; margin-bottom: 30px; 
+            position: relative; 
+            padding: 50px 0 30px;
         }
-        
-        .vision-card p { font-size: 18px; color: var(--sub-text); margin-bottom: 20px; text-align: justify; font-weight: 500; }
-        .vision-card p:last-child { margin-bottom: 0; }
-
-        .section-label { font-size: 22px; font-weight: 800; margin: 40px 0 20px; display: flex; align-items: center; }
-        .section-label i { margin-right: 10px; color: var(--emerald); }
-
-        .core-value {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 25px;
+        .background-logo {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px; height: 140px;
+            opacity: 0.08; /* লোগোটি একদম আবছা রাখা হয়েছে */
+            z-index: 0;
+            pointer-events: none;
         }
-        .value-icon {
-            width: 45px; height: 45px; background: #f0fff4; border-radius: 12px;
+        .welcome-title h2 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 38px; 
+            font-style: italic;
+            color: var(--emerald); 
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+        }
+
+        /* 📝 Expanded Purpose Content */
+        .purpose-content { margin-bottom: 50px; }
+        .purpose-content h3 { font-size: 24px; font-weight: 800; margin-bottom: 20px; color: var(--text); }
+        .purpose-content p { font-size: 16.5px; color: var(--sub-text); margin-bottom: 22px; text-align: justify; font-weight: 500; }
+
+        /* 🔒 Invisible/Tiny Founder Credits */
+        .founder-line { text-align: center; margin: 40px 0; }
+        .founder-line span { font-size: 8px; color: #e0e0e0; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+        .founder-line b { font-size: 9px; color: #dcdcdc; font-weight: 800; margin-left: 5px; }
+
+        /* 👤 Avatar & Verified Icon */
+        .avatar-wrap { text-align: center; margin-top: 40px; }
+        .founder-label { font-size: 10px; color: #ccc; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; display: block; }
+
+        .avatar-frame {
+            width: 180px; height: 180px; margin: 0 auto 15px;
+            position: relative; padding: 7px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FFA500); /* Golden Edel Look */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        .avatar-frame img { 
+            width: 100%; height: 100%; object-fit: cover; 
+            border-radius: 50%; border: 4px solid #fff;
+        }
+        .verified-icon {
+            position: absolute; bottom: 10px; right: 10px;
+            background: #fff; color: #1DA1F2;
+            width: 32px; height: 32px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: var(--emerald); margin-right: 15px; flex-shrink: 0;
+            font-size: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-        .value-text b { font-size: 18px; display: block; margin-bottom: 5px; }
-        .value-text span { font-size: 15px; color: var(--sub-text); font-weight: 500; }
 
-        .footer-note { text-align: center; margin-top: 60px; padding: 20px; border-top: 1px solid var(--border); color: #aaa; font-size: 14px; font-weight: 600; }
+        /* 📜 Stylish Join Quote */
+        .join-quote { 
+            font-size: 13px; color: #999; font-weight: 600; 
+            font-style: italic; margin-top: 10px; letter-spacing: 0.3px;
+        }
+
+        /* 📉 Ultra-Minimal Footer */
+        .footer-commit { 
+            text-align: center; margin-top: 70px; padding: 30px 10px; 
+            border-top: 1px solid #f9f9f9; color: #e0e0e0; 
+            font-size: 8.5px; font-weight: 700; letter-spacing: 2.5px; 
+            line-height: 1.8; text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
 
     <div class="header">
         <i class="material-icons-outlined" onclick="window.history.back()">arrow_back</i>
-        <h1>Our Vision</h1>
+        <h1>Vision</h1>
     </div>
 
     <div class="container">
-        <h2 class="hero-title">A Journey Towards Integrity</h2>
         
-        <div class="vision-card">
+        <div class="welcome-title">
+            <img src="1000041275.png" alt="MingleJoys Logo" class="background-logo">
+            <h2>Welcome to MingleJoys</h2>
+        </div>
+
+        <div class="purpose-content">
+            <h3>Our Purpose</h3>
             <p>
-                MingleJoys was born out of a simple yet powerful dream: to create a digital space where connection is built on mutual respect and shared values. 
+                MingleJoys was established with a profound mission: to fix the broken landscape of modern social networking. We believe that a digital platform should be more than just a place to scroll; it should be a community that fosters growth, respect, and authentic happiness.
             </p>
             <p>
-                In a world full of digital noise, we aim to provide a sanctuary where your faith is honored, your privacy is protected, and your interactions are meaningful. We believe the internet can be a beautiful place if we all choose to be responsible.
+                Our primary objective is to create a "Sanctuary of Integrity." In an era where online platforms are often filled with toxicity and misinformation, MingleJoys stands as a lighthouse for those seeking a cleaner, safer, and more meaningful experience. We prioritize the mental well-being and moral values of our users above all else.
+            </p>
+            <p>
+                We have a zero-tolerance policy towards any form of harassment, religious disrespect, or harmful content. By integrating strict ethical guidelines with modern technology, we ensure that your time spent here is productive and joyful. MingleJoys is not just an app; it is a movement towards a more responsible digital future.
+            </p>
+            <p>
+                Every feature we build and every policy we write is designed with one goal in mind—to protect you. We invite you to join us in this journey of building a community where everyone can mingle with joy and peace of mind.
             </p>
         </div>
 
-        <div class="section-label">
-            <i class="material-icons-outlined">stars</i>
-            Our Core Values
+        <div class="founder-line">
+            <span>FOUNDER:</span> <b>RUHUL AMIN</b> <span style="margin: 0 8px;">•</span> 
+            <span>SUB-FOUNDER:</span> <b>SAHIL</b>
         </div>
 
-        <div class="core-value">
-            <div class="value-icon"><i class="material-icons-outlined">verified</i></div>
-            <div class="value-text">
-                <b>Authentic Joy</b>
-                <span>Fostering interactions that bring true happiness without compromising on ethics.</span>
+        <div class="avatar-wrap">
+            <span class="founder-label">A Vision for Our Community</span>
+            <div class="avatar-frame">
+                <img src="1771540274072.png" alt="Ruhul Amin">
+                <div class="verified-icon">
+                    <i class="material-icons-outlined">verified</i>
+                </div>
             </div>
+            <p class="join-quote">"Join us in creating a brighter digital future."</p>
         </div>
 
-        <div class="core-value">
-            <div class="value-icon"><i class="material-icons-outlined">security</i></div>
-            <div class="core-value">
-            <div class="value-text">
-                <b>Digital Safety</b>
-                <span>Zero tolerance for harassment, ensuring a safe haven for every community member.</span>
-            </div>
-        </div>
-
-        <div class="core-value">
-            <div class="value-icon"><i class="material-icons-outlined">volunteer_activism</i></div>
-            <div class="value-text">
-                <b>Social Responsibility</b>
-                <span>Protecting religious sanctity and promoting truth over misinformation.</span>
-            </div>
-        </div>
-
-        <div class="footer-note">
-            MingleJoys: For a Brighter Digital Future.
+        <div class="footer-commit">
+            DIGITAL ACCOUNTABILITY & INTEGRITY <br> MINGLEJOYS PROJECT © 2026
         </div>
     </div>
 
