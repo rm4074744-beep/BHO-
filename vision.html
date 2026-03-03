@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Vision | MingleJoys</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --emerald: #50C878; 
+            --bg: #ffffff; 
+            --text: #050505; 
+            --sub-text: #4b4b4b;
+            --border: #f0f2f5;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg); color: var(--text); line-height: 1.8; }
+
+        .header { 
+            padding: 20px; 
+            background: #fff; 
+            display: flex; 
+            align-items: center; 
+            border-bottom: 1px solid var(--border); 
+            position: sticky; 
+            top: 0; 
+            z-index: 100;
+        }
+        .header i { font-size: 28px; cursor: pointer; margin-right: 15px; }
+        .header h1 { font-size: 20px; font-weight: 800; }
+
+        .container { max-width: 650px; margin: 0 auto; padding: 40px 20px; }
+        
+        .hero-title { font-size: 32px; font-weight: 800; color: var(--emerald); margin-bottom: 25px; letter-spacing: -1px; }
+        
+        .vision-card { 
+            background: #f8fafc; 
+            padding: 30px; 
+            border-radius: 24px; 
+            border: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+        
+        .vision-card p { font-size: 18px; color: var(--sub-text); margin-bottom: 20px; text-align: justify; font-weight: 500; }
+        .vision-card p:last-child { margin-bottom: 0; }
+
+        .section-label { font-size: 22px; font-weight: 800; margin: 40px 0 20px; display: flex; align-items: center; }
+        .section-label i { margin-right: 10px; color: var(--emerald); }
+
+        .core-value {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        .value-icon {
+            width: 45px; height: 45px; background: #f0fff4; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--emerald); margin-right: 15px; flex-shrink: 0;
+        }
+        .value-text b { font-size: 18px; display: block; margin-bottom: 5px; }
+        .value-text span { font-size: 15px; color: var(--sub-text); font-weight: 500; }
+
+        .footer-note { text-align: center; margin-top: 60px; padding: 20px; border-top: 1px solid var(--border); color: #aaa; font-size: 14px; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <i class="material-icons-outlined" onclick="window.history.back()">arrow_back</i>
+        <h1>Our Vision</h1>
+    </div>
+
+    <div class="container">
+        <h2 class="hero-title">A Journey Towards Integrity</h2>
+        
+        <div class="vision-card">
+            <p>
+                MingleJoys was born out of a simple yet powerful dream: to create a digital space where connection is built on mutual respect and shared values. 
+            </p>
+            <p>
+                In a world full of digital noise, we aim to provide a sanctuary where your faith is honored, your privacy is protected, and your interactions are meaningful. We believe the internet can be a beautiful place if we all choose to be responsible.
+            </p>
+        </div>
+
+        <div class="section-label">
+            <i class="material-icons-outlined">stars</i>
+            Our Core Values
+        </div>
+
+        <div class="core-value">
+            <div class="value-icon"><i class="material-icons-outlined">verified</i></div>
+            <div class="value-text">
+                <b>Authentic Joy</b>
+                <span>Fostering interactions that bring true happiness without compromising on ethics.</span>
+            </div>
+        </div>
+
+        <div class="core-value">
+            <div class="value-icon"><i class="material-icons-outlined">security</i></div>
+            <div class="core-value">
+            <div class="value-text">
+                <b>Digital Safety</b>
+                <span>Zero tolerance for harassment, ensuring a safe haven for every community member.</span>
+            </div>
+        </div>
+
+        <div class="core-value">
+            <div class="value-icon"><i class="material-icons-outlined">volunteer_activism</i></div>
+            <div class="value-text">
+                <b>Social Responsibility</b>
+                <span>Protecting religious sanctity and promoting truth over misinformation.</span>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            MingleJoys: For a Brighter Digital Future.
+        </div>
+    </div>
+
+</body>
+</html>
