@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About MingleJoys</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --emerald: #50C878; --bg: #ffffff; --text: #050505; --border: #f0f2f5; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg); color: var(--text); }
+
+        .header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; position: sticky; top: 0; background: #fff; z-index: 10; }
+        .header i { font-size: 28px; cursor: pointer; margin-right: 15px; }
+        .header h1 { font-size: 20px; font-weight: 800; }
+
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+
+        .brand-box { text-align: center; padding: 40px 0; }
+        .logo { width: 75px; height: 75px; background: var(--emerald); border-radius: 22px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 35px; font-weight: 800; }
+        
+        /* 📂 মেনু বা ভাগগুলো */
+        .menu-section { margin-top: 10px; }
+        .menu-item {
+            display: flex; align-items: center; padding: 20px;
+            background: #fff; border: 1.5px solid var(--border);
+            border-radius: 20px; margin-bottom: 12px;
+            text-decoration: none; color: var(--text); transition: 0.2s;
+        }
+        .menu-item:active { background: #f8fafc; transform: scale(0.98); }
+        .menu-item i.icon { font-size: 28px; color: var(--emerald); margin-right: 15px; }
+        .menu-item div { flex-grow: 1; }
+        .menu-item b { font-size: 17px; display: block; }
+        .menu-item span { font-size: 13px; color: #888; }
+        .menu-item i.arrow { color: #ccc; }
+
+        .footer { text-align: center; margin-top: 50px; padding: 30px; color: #aaa; font-size: 13px; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <i class="material-icons-outlined" onclick="window.history.back()">arrow_back</i>
+        <h1>About</h1>
+    </div>
+
+    <div class="container">
+        <div class="brand-box">
+            <div class="logo">MJ</div>
+            <h2>MingleJoys</h2>
+            <p style="color:#888; font-weight:600;">Building a Trustworthy Space</p>
+        </div>
+
+        <div class="menu-section">
+            <a href="vision.html" class="menu-item">
+                <i class="material-icons-outlined icon">auto_awesome</i>
+                <div>
+                    <b>Our Vision & Story</b>
+                    <span>আমাদের উদ্দেশ্য ও লক্ষ্য</span>
+                </div>
+                <i class="material-icons-outlined arrow">chevron_right</i>
+            </a>
+
+            <a href="credits.html" class="menu-item">
+                <i class="material-icons-outlined icon">code</i>
+                <div>
+                    <b>Open Source Credits</b>
+                    <span>ব্যবহৃত টেকনোলজি ও লাইব্রেরি</span>
+                </div>
+                <i class="material-icons-outlined arrow">chevron_right</i>
+            </a>
+
+            <a href="terms.html" class="menu-item">
+                <i class="material-icons-outlined icon">description</i>
+                <div>
+                    <b>Terms of Service</b>
+                    <span>ব্যবহারকারীর জন্য নিয়মাবলি</span>
+                </div>
+                <i class="material-icons-outlined arrow">chevron_right</i>
+            </a>
+        </div>
+
+        <div class="footer">
+            MINGLEJOYS PROJECT © 2026
+        </div>
+    </div>
+
+</body>
+</html>
