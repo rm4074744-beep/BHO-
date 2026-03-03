@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MingleJoys Final Settings</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --emerald: #50C878;
+            --bg: #ffffff;
+            --text: #050505;
+            --sub-text: #65676b;
+            --border: #e4e6eb;
+            --f-bg: #f0f2f5;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg); color: var(--text); padding-bottom: 20px; }
+
+        /* হেডার */
+        .header { 
+            padding: 12px 16px; background: var(--bg); display: flex; 
+            align-items: center; position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+        .header h2 { font-size: 24px; font-weight: 800; flex-grow: 1; margin-left: 12px; letter-spacing: -0.8px; }
+
+        /* সার্চ বক্স */
+        .search-area { padding: 10px 16px; }
+        .search-box {
+            background: var(--f-bg); border-radius: 50px; padding: 12px 18px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .search-box input {
+            border: none; background: transparent; outline: none;
+            width: 100%; font-size: 16px; font-weight: 700; color: var(--text);
+        }
+
+        /* আইডেন্টিটি হাব */
+        .identity-hub { 
+            margin: 16px; padding: 20px; background: var(--bg); border-radius: 12px; 
+            border: 1.5px solid var(--border);
+        }
+        .hub-label { color: var(--emerald); font-weight: 800; font-size: 13px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; }
+        .hub-title { font-size: 19px; font-weight: 800; margin: 8px 0; letter-spacing: -0.4px; }
+        .hub-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; color: var(--text); text-decoration: none; border-bottom: 1px solid var(--f-bg); font-weight: 700; }
+
+        .section-label { padding: 20px 16px 10px; font-size: 18px; font-weight: 800; color: var(--text); }
+
+        /* লিস্ট সেকশন */
+        .list-container { margin: 16px; }
+        .row { display: flex; align-items: center; gap: 16px; padding: 15px 0; text-decoration: none; color: var(--text); border-bottom: 1px solid var(--f-bg); }
+        .row i { font-size: 28px; color: var(--text); }
+        .row b { font-size: 17px; font-weight: 800; flex-grow: 1; }
+
+        /* কার্ড গ্রিড (Core Protection) */
+        .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 16px; }
+        .card { 
+            background: var(--bg); padding: 16px; border-radius: 14px; border: 1.5px solid var(--border);
+            display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;
+        }
+        .card i { font-size: 26px; color: var(--emerald); }
+        .card b { font-size: 14px; font-weight: 800; color: var(--text); }
+
+        /* তলার আবাউট */
+        .footer-minimal {
+            margin-top: 30px;
+            padding: 20px 16px 40px;
+            border-top: 1px solid var(--border);
+        }
+        .footer-logo-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+        .footer-logo-row img {
+            width: 35px;
+            height: 35px;
+            filter: grayscale(100%);
+            object-fit: contain;
+        }
+        .footer-logo-row b {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="index.html" style="text-decoration:none; color:black;"><i class="material-icons-outlined" style="font-size:30px">arrow_back</i></a>
+        <h2>Settings & Privacy</h2>
+    </div>
+
+    <div class="search-area">
+        <div class="search-box">
+            <i class="material-icons-outlined" style="color:var(--sub-text)">search</i>
+            <input type="text" id="searchBar" onkeyup="filterFn()" placeholder="Search settings">
+        </div>
+    </div>
+
+    <div class="identity-hub">
+        <div class="hub-label"><i class="material-icons-outlined" style="font-size:16px">hub</i> Mingle Identity</div>
+        <div class="hub-title">Identity Central</div>
+        <a href="account.html" class="hub-item"><i class="material-icons-outlined">person</i> Personal Records</a>
+        <a href="security.html" class="hub-item"><i class="material-icons-outlined">shield</i> Access & Encryption</a>
+        <a href="verify.html" class="hub-item" style="border:none"><i class="material-icons-outlined">verified</i> Official Status</a>
+   
+    </div>
+
+    <div class="section-label">Core Protection</div>
+    <div class="card-grid">
+        <a href="safety.html" class="card"><i class="material-icons-outlined">gpp_good</i><b>Safety Shield</b></a>
+        <a href="privacy.html" class="card"><i class="material-icons-outlined">lock_reset</i><b>Privacy Guard</b></a>
+        <a href="activity.html" class="card"><i class="material-icons-outlined">history</i><b>Action Log</b></a>
+        <a href="status.html" class="card"><i class="material-icons-outlined">visibility</i><b>Live Status</b></a>
+        <a href="youth.html" class="card"><i class="material-icons-outlined">child_care</i><b>Youth Safety</b></a>
+        <a href="filter.html" class="card"><i class="material-icons-outlined">block</i><b>Filtered List</b></a>
+         </div>
+
+    <div class="section-label">Orders & Marketplace</div>
+    <div class="list-container">
+        <a href="order.html" class="row"><i class="material-icons-outlined">shopping_bag</i><b>Order History</b></a>
+        <a href="cart.html" class="row"><i class="material-icons-outlined">shopping_cart</i><b>My Cart</b></a>
+        <a href="payment.html" class="row"><i class="material-icons-outlined">payments</i><b>Payments & Payouts</b></a>
+        <a href="address.html" class="row" style="border:none"><i class="material-icons-outlined">place</i><b>Shipping Addresses</b></a>
+    </div>
+
+    <div class="section-label">Preferences</div>
+    <div class="list-container">
+        <a href="notif.html" class="row"><i class="material-icons-outlined">notifications</i><b>Alert Flow</b></a>
+        <a href="dark.html" class="row"><i class="material-icons-outlined">dark_mode</i><b>Visual Mode</b></a>
+        <a href="terms.html" class="row"><i class="material-icons-outlined">description</i><b>Terms of Service</b></a>
+        <a href="community.html" class="row" style="border:none"><i class="material-icons-outlined">groups</i><b>Community Standards</b></a>
+    </div>
+        <a href="about.html" class="footer-logo-row">
+            <img src="logo.png" alt="MingleJoys" onerror="this.src='https://cdn-icons-png.flaticon.com/512/747/747376.png'">
+            <b>About</b>
+        </a>
+    </div>
+
+    <script>
+        function filterFn() {
+            let input = document.getElementById('searchBar').value.toLowerCase();
+            let items = document.querySelectorAll('.card, .row, .hub-item');
+            items.forEach(item => {
+                let text = item.innerText.toLowerCase();
+                item.style.display = text.includes(input) ? "flex" : "none";
+            });
+        }
+    </script>
+</body>
+</html>
