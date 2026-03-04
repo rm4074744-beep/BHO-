@@ -3,156 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MingleJoys | Smart Delivery Map</title>
+    <title>MingleJoys | Address Final</title>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
     
     <style>
-        :root { --emerald: #50C878; --dark: #1A1A1A; }
+        :root { --panna-shobuz: #00A36C; --bg: #F1F3F6; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { height: 100vh; display: flex; flex-direction: column; overflow: hidden; background: #fff; }
+        body { background: var(--bg); overflow: hidden; }
 
-        /* Search Bar Wrapper */
-        .search-wrapper {
-            position: absolute; top: 20px; left: 15px; right: 15px;
-            z-index: 1100; background: white; border-radius: 18px;
-            display: flex; align-items: center; padding: 5px 15px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12); border: 1px solid #eee;
-        }
-        .search-input {
-            flex: 1; border: none; padding: 12px; outline: none; font-size: 14px; font-weight: 600;
-        }
-
-        #map { flex: 1; width: 100%; z-index: 1; background: #f8f9fa; }
-
-        /* Professional Center Pin */
-        .center-marker {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -100%);
-            z-index: 1000; pointer-events: none;
-            display: flex; flex-direction: column; align-items: center;
-        }
-        .pin-shadow {
-            width: 15px; height: 5px; background: rgba(0,0,0,0.1);
-            border-radius: 50%; margin-top: -5px; filter: blur(2px);
-        }
-
-        /* Bottom Glass Sheet */
-        .bottom-sheet {
-            background: rgba(255, 255, 255, 0.98); padding: 25px 20px;
-            border-radius: 35px 35px 0 0; box-shadow: 0 -15px 45px rgba(0,0,0,0.1);
-            z-index: 1001; margin-top: -35px; border-top: 1px solid rgba(0,0,0,0.05);
-        }
+        /* --- স্ক্রিন ১: সেভ করা অ্যাড্রেস --- */
+        #saved-screen { padding: 20px; display: block; height: 100vh; overflow-y: auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .btn-add-main { background: var(--panna-shobuz); color: white; padding: 10px 18px; border-radius: 10px; font-weight: 700; cursor: pointer; border: none; }
         
-        /* Address Label Styling */
-        .address-box {
-            text-align: center; margin-bottom: 20px; padding: 0 10px;
-        }
-        .address-label {
-            font-size: 11px; font-weight: 800; color: var(--emerald);
-            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; display: block;
-        }
-        #address-text {
-            font-size: 15px; color: var(--dark); font-weight: 700;
-            line-height: 1.4; display: block; min-height: 42px;
-        }
+        .address-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-start; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .card-content { flex: 1; }
+        .card-menu { position: relative; cursor: pointer; padding: 5px; }
+        .menu-options { display: none; position: absolute; right: 0; top: 30px; background: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 100; min-width: 100px; }
+        .menu-options div { padding: 10px 15px; font-size: 14px; font-weight: 600; border-bottom: 1px solid #eee; }
+        .menu-options div:last-child { border: none; color: red; }
 
-        .btn-confirm {
-            background: linear-gradient(135deg, #50C878, #3fb364);
-            color: white; width: 100%; padding: 18px;
-            border-radius: 22px; border: none; font-size: 16px; font-weight: 800;
-            cursor: pointer; box-shadow: 0 10px 25px rgba(80, 200, 120, 0.3);
-            transition: 0.3s;
-        }
-        .btn-confirm:active { transform: scale(0.97); }
+        /* --- ম্যাপ স্ক্রিন --- */
+        #map-screen { display: none; height: 100vh; position: relative; }
+        #map { height: 100%; width: 100%; }
+        
+        /* সার্চ বক্স ও বাটন */
+        .search-container { position: absolute; top: 15px; left: 10px; right: 10px; z-index: 1000; display: flex; gap: 8px; }
+        .search-bar { flex: 1; background: white; border-radius: 10px; padding: 12px 15px; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .search-bar input { border: none; outline: none; width: 100%; font-size: 14px; margin-left: 10px; }
+        .btn-search { background: var(--panna-shobuz); color: white; border: none; border-radius: 10px; padding: 0 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+        /* দৌড়ানো পিন এনিমেশন */
+        .brand-pin { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 1050; pointer-events: none; }
+        .running-pin { animation: jump 0.4s ease-in-out infinite alternate; }
+        @keyframes jump { from { transform: translate(-50%, -100%); } to { transform: translate(-50%, -120%); } }
+
+        .bottom-sheet { background: white; border-radius: 25px 25px 0 0; padding: 20px; position: absolute; bottom: 0; width: 100%; z-index: 1100; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); }
+
+        /* ফর্ম স্ক্রিন */
+        #form-screen { display: none; padding: 20px; background: white; height: 100vh; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { font-size: 11px; font-weight: 700; color: #999; }
+        .input-group input, .input-group textarea { width: 100%; border: none; border-bottom: 2px solid #eee; padding: 10px 0; outline: none; font-weight: 600; }
+        .btn-green { background: var(--panna-shobuz); color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-size: 16px; font-weight: 800; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="search-wrapper">
-        <i class="material-icons-outlined" style="color: var(--emerald);">search</i>
-        <input type="text" id="searchInput" class="search-input" placeholder="Search store, ghona, basirhat...">
+    <div id="saved-screen">
+        <div class="header">
+            <h3>Addresses</h3>
+            <button class="btn-add-main" onclick="showChoice()">+ New</button>
+        </div>
+        <div id="address-list"></div>
     </div>
 
-    <div id="map">
-        <div class="center-marker">
-            <i class="material-icons-outlined" style="font-size: 52px; color: var(--emerald); filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">location_on</i>
-            <div class="pin-shadow"></div>
+    <div id="choice-screen" style="display:none; padding:40px 20px; text-align:center; background:white; height:100vh;">
+        <h3 style="margin-bottom:30px;">How to add?</h3>
+        <button class="btn-green" onclick="showForm('manual')">Write Address</button>
+        <button class="btn-green" style="background:#eee; color:#333; margin-top:15px;" onclick="showMap()">Find on Map</button>
+        <p onclick="resetUI()" style="margin-top:20px; color:red; cursor:pointer;">Cancel</p>
+    </div>
+
+    <div id="map-screen">
+        <div class="search-container">
+            <div class="search-bar">
+                <i class="material-icons-outlined">search</i>
+                <input type="text" id="map-search-input" placeholder="Search area, street...">
+            </div>
+            <button class="btn-search" onclick="searchLoc()">
+                <i class="material-icons-outlined">arrow_forward</i>
+            </button>
+        </div>
+        <div id="map"></div>
+        <div class="brand-pin" id="main-pin">
+            <i class="material-icons-outlined" style="font-size: 50px; color: var(--panna-shobuz);">location_on</i>
+        </div>
+        <div class="bottom-sheet">
+            <p id="m-full" style="font-size:12px; color:#666; margin-bottom:15px;">Locating...</p>
+            <button class="btn-green" onclick="showForm('map')">Select This Location</button>
         </div>
     </div>
 
-    <div class="bottom-sheet">
-        <div class="address-box">
-            <span class="address-label">Confirm Delivery Point</span>
-            <span id="address-text">📍 Drag map to select location...</span>
-        </div>
-        <button class="btn-confirm">Confirm & Save Address</button>
+    <div id="form-screen">
+        <h3>Enter Details</h3>
+        <div class="input-group"><label>NAME</label><input type="text" id="f-name"></div>
+        <div class="input-group"><label>ADDRESS</label><textarea id="f-addr" rows="3"></textarea></div>
+        <div class="input-group"><label>PHONE</label><input type="number" id="f-phone"></div>
+        <button class="btn-green" onclick="saveAddress()">Save</button>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // আপনার LocationIQ টোকেন
-        const token = 'pk.68eadc86fd456ee554e3699e4c52e557';
-        
-        // ম্যাপ সেটআপ
-        var map = L.map('map', { zoomControl: false }).setView([22.6541, 88.8471], 17);
+        let map, selectedAddr = "", editingId = null;
+        let addresses = [];
 
-        // HD স্ট্রিট ম্যাপ লেয়ার
-        L.tileLayer(`https://{s}.tile.locationiq.com/v3/streets/r/{z}/{x}/{y}.png?key=${token}`, {
-            maxZoom: 20
-        }).addTo(map);
-
-        // অক্ষাংশ থেকে নাম (Address) বের করার ফাংশন
-        function getReadableAddress(lat, lon) {
-            const addrElement = document.getElementById('address-text');
-            addrElement.style.opacity = "0.5";
-
-            fetch(`https://us1.locationiq.com/v1/reverse.php?key=${token}&lat=${lat}&lon=${lon}&format=json`)
-                .then(res => res.json())
-                .then(data => {
-                    if(data.display_name) {
-                        // ঠিকানাকে ছোট এবং সুন্দর করা
-                        let parts = data.display_name.split(',');
-                        let shortAddr = parts.slice(0, 4).join(',');
-                        addrElement.innerText = shortAddr;
-                    }
-                    addrElement.style.opacity = "1";
-                })
-                .catch(() => {
-                    addrElement.innerText = "Location: " + lat.toFixed(5) + ", " + lon.toFixed(5);
-                    addrElement.style.opacity = "1";
-                });
+        function showChoice() {
+            document.getElementById('saved-screen').style.display = 'none';
+            document.getElementById('choice-screen').style.display = 'block';
         }
 
-        // সার্চ লজিক
-        document.getElementById('searchInput').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                let query = this.value;
-                fetch(`https://us1.locationiq.com/v1/search.php?key=${token}&q=${query}&format=json`)
-                    .then(res => res.json())
-                    .then(data => {
-                        if(data.length > 0) {
-                            let pos = [data[0].lat, data[0].lon];
-                            map.setView(pos, 18);
-                            // সার্চ করা জায়গায় একটি ট্যাগ বসানো
-                            L.marker(pos).addTo(map).bindPopup(`<b>${query}</b>`).openPopup();
-                        }
+        function showMap() {
+            document.getElementById('choice-screen').style.display = 'none';
+            document.getElementById('map-screen').style.display = 'block';
+            if(!map) {
+                map = L.map('map', { zoomControl: false }).setView([22.6541, 88.8471], 15);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                
+                map.on('movestart', () => document.getElementById('main-pin').classList.add('running-pin'));
+                map.on('moveend', () => {
+                    document.getElementById('main-pin').classList.remove('running-pin');
+                    let c = map.getCenter();
+                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${c.lat}&lon=${c.lng}`)
+                    .then(r => r.json()).then(data => {
+                        selectedAddr = data.display_name;
+                        document.getElementById('m-full').innerText = selectedAddr;
                     });
+                });
             }
-        });
+        }
 
-        // ম্যাপ নাড়ানো শেষ হলে ঠিকানা আপডেট হবে
-        map.on('moveend', function() {
-            let center = map.getCenter();
-            getReadableAddress(center.lat, center.lng);
-        });
+        function searchLoc() {
+            let q = document.getElementById('map-search-input').value;
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${q}`)
+            .then(r => r.json()).then(data => {
+                if(data.length > 0) map.flyTo([data[0].lat, data[0].lon], 16);
+            });
+        }
 
-        // GitHub Pages রেন্ডারিং ফিক্স
-        window.onload = function() {
-            setTimeout(() => { map.invalidateSize(); }, 500);
-        };
+        function showForm(type) {
+            document.getElementById('map-screen').style.display = 'none';
+            document.getElementById('choice-screen').style.display = 'none';
+            document.getElementById('form-screen').style.display = 'block';
+            if(type === 'map') document.getElementById('f-addr').value = selectedAddr;
+        }
+
+        function saveAddress() {
+            const data = {
+                id: editingId || Date.now(),
+                name: document.getElementById('f-name').value,
+                addr: document.getElementById('f-addr').value,
+                phone: document.getElementById('f-phone').value
+            };
+            if(editingId) addresses = addresses.map(a => a.id === editingId ? data : a);
+            else addresses.push(data);
+            
+            renderCards();
+            resetUI();
+        }
+
+        function renderCards() {
+            const list = document.getElementById('address-list');
+            list.innerHTML = addresses.map(a => `
+                <div class="address-card">
+                    <div class="card-content">
+                        <strong>${a.name}</strong>
+                        <p style="font-size:12px; color:#666;">${a.addr}</p>
+                    </div>
+                    <div class="card-menu" onclick="toggleMenu(${a.id})">
+                        <i class="material-icons-outlined">more_vert</i>
+                        <div id="menu-${a.id}" class="menu-options">
+                            <div onclick="editAddr(${a.id})">Edit</div>
+                            <div onclick="deleteAddr(${a.id})">Delete</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleMenu(id) {
+            let m = document.getElementById(`menu-${id}`);
+            m.style.display = m.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function deleteAddr(id) {
+            addresses = addresses.filter(a => a.id !== id);
+            renderCards();
+        }
+
+        function editAddr(id) {
+            let a = addresses.find(x => x.id === id);
+            editingId = id;
+            document.getElementById('f-name').value = a.name;
+            document.getElementById('f-addr').value = a.addr;
+            document.getElementById('f-phone').value = a.phone;
+            showForm('manual');
+        }
+
+        function resetUI() {
+            editingId = null;
+            document.querySelectorAll('body > div').forEach(d => d.style.display = 'none');
+            document.getElementById('saved-screen').style.display = 'block';
+            document.getElementById('f-name').value = '';
+            document.getElementById('f-addr').value = '';
+            document.getElementById('f-phone').value = '';
+        }
     </script>
 </body>
 </html>
