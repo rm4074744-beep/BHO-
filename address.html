@@ -3,52 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MingleJoys | Address Final</title>
+    <title>MingleJoys | Address Master</title>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
     
     <style>
-        :root { --panna-shobuz: #00A36C; --bg: #F1F3F6; }
+        :root { --panna-shobuz: #00A36C; --bg: #F8FAFC; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); overflow: hidden; }
+        body { background: var(--bg); color: #333; overflow: hidden; }
 
-        /* --- স্ক্রিন ১: সেভ করা অ্যাড্রেস --- */
+        /* স্ক্রিন ১: সেভ করা অ্যাড্রেস লিস্ট */
         #saved-screen { padding: 20px; display: block; height: 100vh; overflow-y: auto; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .btn-add-main { background: var(--panna-shobuz); color: white; padding: 10px 18px; border-radius: 10px; font-weight: 700; cursor: pointer; border: none; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .btn-new { background: var(--panna-shobuz); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 800; cursor: pointer; }
         
-        .address-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-start; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .card-content { flex: 1; }
-        .card-menu { position: relative; cursor: pointer; padding: 5px; }
-        .menu-options { display: none; position: absolute; right: 0; top: 30px; background: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 100; min-width: 100px; }
-        .menu-options div { padding: 10px 15px; font-size: 14px; font-weight: 600; border-bottom: 1px solid #eee; }
-        .menu-options div:last-child { border: none; color: red; }
+        #empty-state { text-align: center; margin-top: 100px; display: block; }
+        #empty-state i { font-size: 80px; color: #ddd; }
 
-        /* --- ম্যাপ স্ক্রিন --- */
+        .address-card { background: white; padding: 18px; border-radius: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid #f0f0f0; }
+        .card-info strong { font-size: 16px; color: #1A1A1A; }
+        .card-info p { font-size: 13px; color: #666; margin-top: 4px; }
+        
+        .dot-menu { cursor: pointer; position: relative; padding: 8px; color: #999; }
+        .menu-dropdown { display: none; position: absolute; right: 0; top: 35px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 100; min-width: 120px; border: 1px solid #eee; overflow: hidden;}
+        .menu-dropdown div { padding: 12px 18px; font-size: 14px; font-weight: 700; border-bottom: 1px solid #f5f5f5; }
+
+        /* স্ক্রিন ২: চয়েস স্ক্রিন */
+        #choice-screen { display: none; padding: 30px 20px; text-align: center; height: 100vh; background: white; flex-direction: column; justify-content: center; align-items: center;}
+        .choice-card { width: 100%; border: 2.5px solid #F1F3F6; padding: 25px; border-radius: 20px; margin-bottom: 20px; cursor: pointer; transition: 0.3s; }
+        .choice-card:active { border-color: var(--panna-shobuz); background: #f0fdf4; }
+        .choice-card i { font-size: 45px; color: var(--panna-shobuz); margin-bottom: 10px; }
+
+        /* স্ক্রিন ৩: ম্যাপ */
         #map-screen { display: none; height: 100vh; position: relative; }
         #map { height: 100%; width: 100%; }
+        .search-box { position: absolute; top: 20px; left: 15px; right: 15px; z-index: 1000; display: flex; gap: 10px; }
+        .search-box input { flex: 1; padding: 15px; border: none; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); outline: none; font-weight: 600; }
+        .btn-go { background: var(--panna-shobuz); color: white; border: none; border-radius: 15px; width: 55px; cursor: pointer; }
         
-        /* সার্চ বক্স ও বাটন */
-        .search-container { position: absolute; top: 15px; left: 10px; right: 10px; z-index: 1000; display: flex; gap: 8px; }
-        .search-bar { flex: 1; background: white; border-radius: 10px; padding: 12px 15px; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .search-bar input { border: none; outline: none; width: 100%; font-size: 14px; margin-left: 10px; }
-        .btn-search { background: var(--panna-shobuz); color: white; border: none; border-radius: 10px; padding: 0 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .brand-pin { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 1050; pointer-events: none; transition: 0.3s; }
+        .map-bottom { background: white; border-radius: 30px 30px 0 0; padding: 25px; position: absolute; bottom: 0; width: 100%; z-index: 1100; box-shadow: 0 -10px 30px rgba(0,0,0,0.08); }
 
-        /* দৌড়ানো পিন এনিমেশন */
-        .brand-pin { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 1050; pointer-events: none; }
-        .running-pin { animation: jump 0.4s ease-in-out infinite alternate; }
-        @keyframes jump { from { transform: translate(-50%, -100%); } to { transform: translate(-50%, -120%); } }
-
-        .bottom-sheet { background: white; border-radius: 25px 25px 0 0; padding: 20px; position: absolute; bottom: 0; width: 100%; z-index: 1100; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); }
-
-        /* ফর্ম স্ক্রিন */
-        #form-screen { display: none; padding: 20px; background: white; height: 100vh; }
-        .input-group { margin-bottom: 15px; }
-        .input-group label { font-size: 11px; font-weight: 700; color: #999; }
-        .input-group input, .input-group textarea { width: 100%; border: none; border-bottom: 2px solid #eee; padding: 10px 0; outline: none; font-weight: 600; }
-        .btn-green { background: var(--panna-shobuz); color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-size: 16px; font-weight: 800; margin-top: 10px; }
+        /* স্ক্রিন ৪: ফর্ম */
+        #form-screen { display: none; padding: 20px; background: white; height: 100vh; overflow-y: auto; }
+        .form-header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
+        .input-group { margin-bottom: 25px; }
+        .input-group label { font-size: 11px; font-weight: 800; color: #A0AEC0; text-transform: uppercase; }
+        .input-group input, .input-group textarea { width: 100%; border: none; border-bottom: 2px solid #EDF2F7; padding: 12px 0; outline: none; font-weight: 700; font-size: 16px; }
+        .btn-save { background: var(--panna-shobuz); color: white; border: none; padding: 20px; width: 100%; border-radius: 18px; font-size: 16px; font-weight: 800; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -56,150 +60,163 @@
     <div id="saved-screen">
         <div class="header">
             <h3>Addresses</h3>
-            <button class="btn-add-main" onclick="showChoice()">+ New</button>
+            <button class="btn-new" onclick="openChoice()">+ New</button>
+        </div>
+        <div id="empty-state">
+            <i class="material-icons-outlined">location_off</i>
+            <p style="color:#888; margin-top:10px; font-weight:600;">No address saved yet</p>
         </div>
         <div id="address-list"></div>
     </div>
 
-    <div id="choice-screen" style="display:none; padding:40px 20px; text-align:center; background:white; height:100vh;">
-        <h3 style="margin-bottom:30px;">How to add?</h3>
-        <button class="btn-green" onclick="showForm('manual')">Write Address</button>
-        <button class="btn-green" style="background:#eee; color:#333; margin-top:15px;" onclick="showMap()">Find on Map</button>
-        <p onclick="resetUI()" style="margin-top:20px; color:red; cursor:pointer;">Cancel</p>
+    <div id="choice-screen">
+        <h2 style="margin-bottom:40px;">Add New Address</h2>
+        <div class="choice-card" onclick="openForm('manual')">
+            <i class="material-icons-outlined">edit_note</i>
+            <h3>Write Your Address</h3>
+            <p style="font-size:12px; color:#777;">Type address details manually</p>
+        </div>
+        <div class="choice-card" onclick="openMap()">
+            <i class="material-icons-outlined">map</i>
+            <h3>Find Your Address</h3>
+            <p style="font-size:12px; color:#777;">Select location from map</p>
+        </div>
+        <p onclick="goHome()" style="color:red; font-weight:800; margin-top:20px; cursor:pointer;">Cancel</p>
     </div>
 
     <div id="map-screen">
-        <div class="search-container">
-            <div class="search-bar">
-                <i class="material-icons-outlined">search</i>
-                <input type="text" id="map-search-input" placeholder="Search area, street...">
-            </div>
-            <button class="btn-search" onclick="searchLoc()">
-                <i class="material-icons-outlined">arrow_forward</i>
-            </button>
+        <div class="search-box">
+            <input type="text" id="map-search" placeholder="Search area...">
+            <button class="btn-go" onclick="doSearch()"><i class="material-icons-outlined">search</i></button>
         </div>
         <div id="map"></div>
-        <div class="brand-pin" id="main-pin">
+        <div class="brand-pin" id="pin-icon">
             <i class="material-icons-outlined" style="font-size: 50px; color: var(--panna-shobuz);">location_on</i>
         </div>
-        <div class="bottom-sheet">
-            <p id="m-full" style="font-size:12px; color:#666; margin-bottom:15px;">Locating...</p>
-            <button class="btn-green" onclick="showForm('map')">Select This Location</button>
+        <div class="map-bottom">
+            <p id="addr-text" style="font-size:14px; font-weight:700; margin-bottom:20px;">Locating...</p>
+            <button class="btn-save" onclick="openForm('map')">Use This Address</button>
+            <p onclick="openChoice()" style="text-align:center; margin-top:20px; color:red; font-weight:800; cursor:pointer;">Back</p>
         </div>
     </div>
 
     <div id="form-screen">
-        <h3>Enter Details</h3>
-        <div class="input-group"><label>NAME</label><input type="text" id="f-name"></div>
-        <div class="input-group"><label>ADDRESS</label><textarea id="f-addr" rows="3"></textarea></div>
-        <div class="input-group"><label>PHONE</label><input type="number" id="f-phone"></div>
-        <button class="btn-green" onclick="saveAddress()">Save</button>
+        <div class="form-header">
+            <i class="material-icons-outlined" onclick="goHome()" style="cursor:pointer; font-size:30px;">arrow_back</i>
+            <h3 id="form-title">Address Details</h3>
+        </div>
+        <div class="input-group"><label>Full Name</label><input type="text" id="f-name"></div>
+        <div class="input-group"><label>House / Landmark</label><input type="text" id="f-house"></div>
+        <div class="input-group"><label>Phone Number</label><input type="number" id="f-phone"></div>
+        <div class="input-group"><label>Full Address</label><textarea id="f-addr" rows="3" style="resize:none; font-family:inherit;"></textarea></div>
+        <button class="btn-save" onclick="saveFinal()">Save Address</button>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         let map, selectedAddr = "", editingId = null;
-        let addresses = [];
+        let db = [];
 
-        function showChoice() {
-            document.getElementById('saved-screen').style.display = 'none';
-            document.getElementById('choice-screen').style.display = 'block';
+        function openChoice() {
+            hideAll();
+            document.getElementById('choice-screen').style.display = 'flex';
         }
 
-        function showMap() {
-            document.getElementById('choice-screen').style.display = 'none';
+        function openMap() {
+            hideAll();
             document.getElementById('map-screen').style.display = 'block';
             if(!map) {
                 map = L.map('map', { zoomControl: false }).setView([22.6541, 88.8471], 15);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-                
-                map.on('movestart', () => document.getElementById('main-pin').classList.add('running-pin'));
+                map.on('movestart', () => document.getElementById('pin-icon').style.transform = 'translate(-50%, -130%)');
                 map.on('moveend', () => {
-                    document.getElementById('main-pin').classList.remove('running-pin');
+                    document.getElementById('pin-icon').style.transform = 'translate(-50%, -100%)';
                     let c = map.getCenter();
                     fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${c.lat}&lon=${c.lng}`)
                     .then(r => r.json()).then(data => {
                         selectedAddr = data.display_name;
-                        document.getElementById('m-full').innerText = selectedAddr;
+                        document.getElementById('addr-text').innerText = data.display_name.substring(0, 50) + "...";
                     });
                 });
             }
         }
 
-        function searchLoc() {
-            let q = document.getElementById('map-search-input').value;
+        function doSearch() {
+            let q = document.getElementById('map-search').value;
             fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${q}`)
             .then(r => r.json()).then(data => {
-                if(data.length > 0) map.flyTo([data[0].lat, data[0].lon], 16);
+                if(data.length > 0) map.flyTo([data[0].lat, data[0].lon], 17, {animate:true, duration:1.5});
             });
         }
 
-        function showForm(type) {
-            document.getElementById('map-screen').style.display = 'none';
-            document.getElementById('choice-screen').style.display = 'none';
+        function openForm(type) {
+            hideAll();
             document.getElementById('form-screen').style.display = 'block';
             if(type === 'map') document.getElementById('f-addr').value = selectedAddr;
         }
 
-        function saveAddress() {
-            const data = {
+        function saveFinal() {
+            let data = {
                 id: editingId || Date.now(),
                 name: document.getElementById('f-name').value,
-                addr: document.getElementById('f-addr').value,
-                phone: document.getElementById('f-phone').value
+                house: document.getElementById('f-house').value,
+                phone: document.getElementById('f-phone').value,
+                full: document.getElementById('f-addr').value
             };
-            if(editingId) addresses = addresses.map(a => a.id === editingId ? data : a);
-            else addresses.push(data);
+            if(!data.name || !data.phone) return alert("Please fill Name & Phone");
+            
+            if(editingId) db = db.map(x => x.id === editingId ? data : x);
+            else db.push(data);
             
             renderCards();
-            resetUI();
+            goHome();
         }
 
         function renderCards() {
             const list = document.getElementById('address-list');
-            list.innerHTML = addresses.map(a => `
+            const empty = document.getElementById('empty-state');
+            if(db.length === 0) { empty.style.display = 'block'; list.innerHTML = ""; return; }
+            empty.style.display = 'none';
+            list.innerHTML = db.map(x => `
                 <div class="address-card">
-                    <div class="card-content">
-                        <strong>${a.name}</strong>
-                        <p style="font-size:12px; color:#666;">${a.addr}</p>
+                    <div class="card-info">
+                        <strong>${x.name}</strong>
+                        <p>${x.house}, ${x.full.substring(0, 30)}...</p>
+                        <p style="color:var(--panna-shobuz); font-weight:800; margin-top:5px;">${x.phone}</p>
                     </div>
-                    <div class="card-menu" onclick="toggleMenu(${a.id})">
+                    <div class="dot-menu" onclick="toggleMenu(${x.id})">
                         <i class="material-icons-outlined">more_vert</i>
-                        <div id="menu-${a.id}" class="menu-options">
-                            <div onclick="editAddr(${a.id})">Edit</div>
-                            <div onclick="deleteAddr(${a.id})">Delete</div>
+                        <div id="menu-${x.id}" class="menu-dropdown">
+                            <div onclick="editItem(${x.id})">Edit</div>
+                            <div onclick="deleteItem(${x.id})" style="color:red">Delete</div>
                         </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        function toggleMenu(id) {
-            let m = document.getElementById(`menu-${id}`);
-            m.style.display = m.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function deleteAddr(id) {
-            addresses = addresses.filter(a => a.id !== id);
-            renderCards();
-        }
-
-        function editAddr(id) {
-            let a = addresses.find(x => x.id === id);
+        function editItem(id) {
+            let x = db.find(a => a.id === id);
             editingId = id;
-            document.getElementById('f-name').value = a.name;
-            document.getElementById('f-addr').value = a.addr;
-            document.getElementById('f-phone').value = a.phone;
-            showForm('manual');
+            document.getElementById('f-name').value = x.name;
+            document.getElementById('f-house').value = x.house;
+            document.getElementById('f-phone').value = x.phone;
+            document.getElementById('f-addr').value = x.full;
+            hideAll();
+            document.getElementById('form-screen').style.display = 'block';
         }
 
-        function resetUI() {
-            editingId = null;
-            document.querySelectorAll('body > div').forEach(d => d.style.display = 'none');
-            document.getElementById('saved-screen').style.display = 'block';
-            document.getElementById('f-name').value = '';
-            document.getElementById('f-addr').value = '';
-            document.getElementById('f-phone').value = '';
+        function deleteItem(id) { db = db.filter(x => x.id !== id); renderCards(); }
+        function toggleMenu(id) {
+            document.querySelectorAll('.menu-dropdown').forEach(m => m.style.display = 'none');
+            document.getElementById(`menu-${id}`).style.display = 'block';
+        }
+        function hideAll() { document.querySelectorAll('body > div').forEach(d => d.style.display = 'none'); }
+        function goHome() { 
+            hideAll(); 
+            document.getElementById('saved-screen').style.display = 'block'; 
+            editingId = null; 
+            document.querySelectorAll('input, textarea').forEach(i => i.value = '');
         }
     </script>
 </body>
