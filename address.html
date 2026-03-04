@@ -3,82 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MingleJoys | Smart Shipping</title>
+    <title>MingleJoys | Smart Delivery Map</title>
+    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
     
     <style>
-        :root { --emerald: #50C878; --emerald-soft: #f0faf4; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-        
-        body { background: #fff; height: 100vh; display: flex; flex-direction: column; }
-        
-        /* App Bar */
-        .app-bar { padding: 18px; display: flex; align-items: center; border-bottom: 1px solid #eee; background: #fff; }
-        .app-bar h1 { font-size: 19px; font-weight: 800; flex: 1; text-align: center; margin-right: 32px; }
+        :root { --emerald: #50C878; --dark: #1A1A1A; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { height: 100vh; display: flex; flex-direction: column; overflow: hidden; background: #fff; }
 
-        /* Map - এটি ঠিকমতো না দেখালে ম্যাপ আসে না */
-        #map { flex: 1; width: 100%; position: relative; z-index: 1; background: #f0f0f0; }
-        
-        /* Floating Center Pin */
-        .map-center-pin {
+        /* Search Bar Wrapper */
+        .search-wrapper {
+            position: absolute; top: 20px; left: 15px; right: 15px;
+            z-index: 1100; background: white; border-radius: 18px;
+            display: flex; align-items: center; padding: 5px 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12); border: 1px solid #eee;
+        }
+        .search-input {
+            flex: 1; border: none; padding: 12px; outline: none; font-size: 14px; font-weight: 600;
+        }
+
+        #map { flex: 1; width: 100%; z-index: 1; background: #f8f9fa; }
+
+        /* Professional Center Pin */
+        .center-marker {
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -100%);
             z-index: 1000; pointer-events: none;
             display: flex; flex-direction: column; align-items: center;
         }
-        .pin-tooltip { background: #333; color: #fff; padding: 5px 12px; border-radius: 6px; font-size: 11px; margin-bottom: 4px; }
-
-        /* Bottom Sheet */
-        .delivery-sheet {
-            background: #fff; border-radius: 30px 30px 0 0;
-            padding: 25px; box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
-            z-index: 1001; margin-top: -30px;
+        .pin-shadow {
+            width: 15px; height: 5px; background: rgba(0,0,0,0.1);
+            border-radius: 50%; margin-top: -5px; filter: blur(2px);
         }
-        .loc-details { background: var(--emerald-soft); padding: 15px; border-radius: 18px; margin-bottom: 20px; border: 1px dashed var(--emerald); }
-        .loc-details p { font-size: 13px; font-weight: 600; color: #444; }
 
-        .btn-main { background: var(--emerald); color: #fff; width: 100%; padding: 18px; border-radius: 18px; border: none; font-size: 16px; font-weight: 800; cursor: pointer; }
+        /* Bottom Glass Sheet */
+        .bottom-sheet {
+            background: rgba(255, 255, 255, 0.98); padding: 25px 20px;
+            border-radius: 35px 35px 0 0; box-shadow: 0 -15px 45px rgba(0,0,0,0.1);
+            z-index: 1001; margin-top: -35px; border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        /* Address Label Styling */
+        .address-box {
+            text-align: center; margin-bottom: 20px; padding: 0 10px;
+        }
+        .address-label {
+            font-size: 11px; font-weight: 800; color: var(--emerald);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; display: block;
+        }
+        #address-text {
+            font-size: 15px; color: var(--dark); font-weight: 700;
+            line-height: 1.4; display: block; min-height: 42px;
+        }
+
+        .btn-confirm {
+            background: linear-gradient(135deg, #50C878, #3fb364);
+            color: white; width: 100%; padding: 18px;
+            border-radius: 22px; border: none; font-size: 16px; font-weight: 800;
+            cursor: pointer; box-shadow: 0 10px 25px rgba(80, 200, 120, 0.3);
+            transition: 0.3s;
+        }
+        .btn-confirm:active { transform: scale(0.97); }
     </style>
 </head>
 <body>
 
-    <div class="app-bar"><i class="material-icons-outlined">arrow_back</i><h1>Select Location</h1></div>
-    
+    <div class="search-wrapper">
+        <i class="material-icons-outlined" style="color: var(--emerald);">search</i>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search store, ghona, basirhat...">
+    </div>
+
     <div id="map">
-        <div class="map-center-pin">
-            <div class="pin-tooltip">Deliver here</div>
-            <i class="material-icons-outlined" style="font-size: 45px; color: var(--emerald);">location_on</i>
+        <div class="center-marker">
+            <i class="material-icons-outlined" style="font-size: 52px; color: var(--emerald); filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">location_on</i>
+            <div class="pin-shadow"></div>
         </div>
     </div>
 
-    <div class="delivery-sheet">
-        <div class="loc-details">
-            <p id="coords">📍 Loading real map data...</p>
+    <div class="bottom-sheet">
+        <div class="address-box">
+            <span class="address-label">Confirm Delivery Point</span>
+            <span id="address-text">📍 Drag map to select location...</span>
         </div>
-        <button class="btn-main">Confirm Location</button>
+        <button class="btn-confirm">Confirm & Save Address</button>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // আপনার সচল টোকেন
-        var token = 'pk.68eadc86fd456ee554e3699e4c52e557';
-
+        // আপনার LocationIQ টোকেন
+        const token = 'pk.68eadc86fd456ee554e3699e4c52e557';
+        
         // ম্যাপ সেটআপ
-        var map = L.map('map', { zoomControl: false }).setView([22.6541, 88.8471], 15);
+        var map = L.map('map', { zoomControl: false }).setView([22.6541, 88.8471], 17);
 
-        // রিয়েল ম্যাপ লেয়ার - এটিই ম্যাপের ছবি আনে
-        L.tileLayer('https://{s}.tile.locationiq.com/v3/streets/r/{z}/{x}/{y}.png?key=' + token, {
-            maxZoom: 18,
-            attribution: '© LocationIQ'
+        // HD স্ট্রিট ম্যাপ লেয়ার
+        L.tileLayer(`https://{s}.tile.locationiq.com/v3/streets/r/{z}/{x}/{y}.png?key=${token}`, {
+            maxZoom: 20
         }).addTo(map);
 
-        // লোকেশন আপডেট ফাংশন
-        map.on('move', function() {
-            var center = map.getCenter();
-            document.getElementById('coords').innerText = center.lat.toFixed(5) + ", " + center.lng.toFixed(5);
+        // অক্ষাংশ থেকে নাম (Address) বের করার ফাংশন
+        function getReadableAddress(lat, lon) {
+            const addrElement = document.getElementById('address-text');
+            addrElement.style.opacity = "0.5";
+
+            fetch(`https://us1.locationiq.com/v1/reverse.php?key=${token}&lat=${lat}&lon=${lon}&format=json`)
+                .then(res => res.json())
+                .then(data => {
+                    if(data.display_name) {
+                        // ঠিকানাকে ছোট এবং সুন্দর করা
+                        let parts = data.display_name.split(',');
+                        let shortAddr = parts.slice(0, 4).join(',');
+                        addrElement.innerText = shortAddr;
+                    }
+                    addrElement.style.opacity = "1";
+                })
+                .catch(() => {
+                    addrElement.innerText = "Location: " + lat.toFixed(5) + ", " + lon.toFixed(5);
+                    addrElement.style.opacity = "1";
+                });
+        }
+
+        // সার্চ লজিক
+        document.getElementById('searchInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                let query = this.value;
+                fetch(`https://us1.locationiq.com/v1/search.php?key=${token}&q=${query}&format=json`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if(data.length > 0) {
+                            let pos = [data[0].lat, data[0].lon];
+                            map.setView(pos, 18);
+                            // সার্চ করা জায়গায় একটি ট্যাগ বসানো
+                            L.marker(pos).addTo(map).bindPopup(`<b>${query}</b>`).openPopup();
+                        }
+                    });
+            }
         });
+
+        // ম্যাপ নাড়ানো শেষ হলে ঠিকানা আপডেট হবে
+        map.on('moveend', function() {
+            let center = map.getCenter();
+            getReadableAddress(center.lat, center.lng);
+        });
+
+        // GitHub Pages রেন্ডারিং ফিক্স
+        window.onload = function() {
+            setTimeout(() => { map.invalidateSize(); }, 500);
+        };
     </script>
 </body>
 </html>
