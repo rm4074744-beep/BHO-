@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MingleJoys | Smart Shipping</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --emerald: #50C878; 
+            --emerald-soft: #f0faf4;
+            --text-dark: #121212;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: #fff; color: var(--text-dark); overflow-x: hidden; }
+
+        .screen { display: none; min-height: 100vh; flex-direction: column; }
+        .screen.active { display: flex; animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .app-bar { 
+            padding: 18px; display: flex; align-items: center; 
+            background: #fff; border-bottom: 1px solid #eee;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .app-bar h1 { font-size: 19px; font-weight: 800; flex: 1; text-align: center; margin-right: 32px; }
+
+        /* Map Container */
+        #map { flex: 1; position: relative; width: 100%; z-index: 1; }
+        
+        /* Floating Center Pin */
+        .map-center-pin {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -100%);
+            z-index: 1000; pointer-events: none;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .pin-tooltip {
+            background: #333; color: #fff; padding: 5px 12px;
+            border-radius: 6px; font-size: 11px; font-weight: 700;
+            margin-bottom: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .delivery-sheet {
+            background: #fff; border-radius: 30px 30px 0 0;
+            padding: 25px; box-shadow: 0 -10px 30px rgba(0,0,0,0.06);
+            z-index: 1001; margin-top: -30px;
+        }
+        .loc-details {
+            background: var(--emerald-soft); padding: 15px;
+            border-radius: 18px; margin-bottom: 20px;
+            border: 1px dashed var(--emerald);
+        }
+        .loc-details h4 { font-size: 12px; color: var(--emerald); margin-bottom: 4px; text-transform: uppercase; }
+        .loc-details p { font-size: 13px; font-weight: 600; color: #444; }
+
+        .btn-emerald-main {
+            background: var(--emerald); color: #fff; width: 100%;
+            padding: 18px; border-radius: 18px; border: none;
+            font-size: 16px; font-weight: 800; cursor: pointer;
+            box-shadow: 0 8px 20px rgba(80, 200, 120, 0.3);
+        }
+
+        /* Form Styling */
+        .form-wrap { padding: 25px; }
+        .field { margin-bottom: 20px; }
+        .field label { font-size: 11px; font-weight: 800; color: #999; margin-bottom: 8px; display: block; text-transform: uppercase; }
+        .field input {
+            width: 100%; padding: 15px; border-radius: 14px;
+            border: 1.5px solid #eee; background: #fafafa; font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="map-screen" class="screen active">
+        <div class="app-bar">
+            <i class="material-icons-outlined">arrow_back</i>
+            <h1>Select Location</h1>
+        </div>
+        
+        <div id="map">
+            <div class="map-center-pin">
+                <div class="pin-tooltip">Deliver here</div>
+                <i class="material-icons-outlined" style="font-size: 45px; color: var(--emerald);">location_on</i>
+            </div>
+        </div>
+
+        <div class="delivery-sheet">
+            <div class="loc-details">
+                <h4><i class="material-icons-outlined" style="font-size: 14px; vertical-align: middle;">my_location</i> Selected Coordinates</h4>
+                <p id="coords">Detecting your location...</p>
+            </div>
+            <button class="btn-emerald-main" onclick="openForm()">Confirm Location</button>
+        </div>
+    </div>
+
+    <div id="form-screen" class="screen">
+        <div class="app-bar">
+            <i class="material-icons-outlined" onclick="backToMap()" style="cursor:pointer">arrow_back</i>
+            <h1>Delivery Details</h1>
+        </div>
+        <div class="form-wrap">
+            <div class="field"><label>Flat / House Name *</label><input type="text" placeholder="Ex: 402, Green Villa"></div>
+            <div class="field"><label>Full Name *</label><input type="text" placeholder="Your Name"></div>
+            <div class="field"><label>Mobile Number *</label><input type="tel" placeholder="017XXXXXXXX"></div>
+            <button class="btn-emerald-main" onclick="saveAddress()">Save Shipping Address</button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // আপনার LocationIQ টোকেন
+        var token = 'pk.68eadc86fd456ee554e3699e4c52e557';
+
+        // ম্যাপ সেটআপ (বশিরহাট এরিয়া দিয়ে শুরু)
+        var map = L.map('map', { zoomControl: false }).setView([22.6541, 88.8471], 15);
+
+        // LocationIQ এর রিয়েল ম্যাপ লেয়ার যোগ করা
+        L.tileLayer('https://{s}.tile.locationiq.com/v3/streets/r/{z}/{x}/{y}.png?key=' + token, {
+            maxZoom: 18,
+        }).addTo(map);
+
+        // ম্যাপ নাড়ালে কোঅর্ডিনেট আপডেট হবে
+        map.on('moveend', function() {
+            var center = map.getCenter();
+            document.getElementById('coords').innerText = center.lat.toFixed(5) + ", " + center.lng.toFixed(5);
+        });
+
+        // নেভিগেশন ফাংশন
+        function openForm() {
+            document.getElementById('map-screen').classList.remove('active');
+            document.getElementById('form-screen').classList.add('active');
+        }
+        function backToMap() {
+            document.getElementById('form-screen').classList.remove('active');
+            document.getElementById('map-screen').classList.add('active');
+        }
+        function saveAddress() {
+            alert("Address Saved for MingleJoys!");
+        }
+    </script>
+</body>
+</html>
