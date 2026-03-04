@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MingleJoys | Address Master</title>
+    <title>MingleJoys | Final Fixed</title>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
@@ -14,7 +14,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background: var(--bg); color: #333; overflow: hidden; }
 
-        /* স্ক্রিন ১: সেভ করা অ্যাড্রেস লিস্ট */
+        /* স্ক্রিন ১: সেভ করা লিস্ট */
         #saved-screen { padding: 20px; display: block; height: 100vh; overflow-y: auto; }
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
         .btn-new { background: var(--panna-shobuz); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 800; cursor: pointer; }
@@ -23,27 +23,24 @@
         #empty-state i { font-size: 80px; color: #ddd; }
 
         .address-card { background: white; padding: 18px; border-radius: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid #f0f0f0; }
-        .card-info strong { font-size: 16px; color: #1A1A1A; }
+        .card-info strong { font-size: 16px; display: block; }
         .card-info p { font-size: 13px; color: #666; margin-top: 4px; }
         
-        .dot-menu { cursor: pointer; position: relative; padding: 8px; color: #999; }
-        .menu-dropdown { display: none; position: absolute; right: 0; top: 35px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 100; min-width: 120px; border: 1px solid #eee; overflow: hidden;}
-        .menu-dropdown div { padding: 12px 18px; font-size: 14px; font-weight: 700; border-bottom: 1px solid #f5f5f5; }
+        .dot-menu { cursor: pointer; padding: 8px; color: #999; }
 
         /* স্ক্রিন ২: চয়েস স্ক্রিন */
         #choice-screen { display: none; padding: 30px 20px; text-align: center; height: 100vh; background: white; flex-direction: column; justify-content: center; align-items: center;}
-        .choice-card { width: 100%; border: 2.5px solid #F1F3F6; padding: 25px; border-radius: 20px; margin-bottom: 20px; cursor: pointer; transition: 0.3s; }
-        .choice-card:active { border-color: var(--panna-shobuz); background: #f0fdf4; }
+        .choice-card { width: 100%; border: 2.5px solid #F1F3F6; padding: 25px; border-radius: 20px; margin-bottom: 20px; cursor: pointer; }
         .choice-card i { font-size: 45px; color: var(--panna-shobuz); margin-bottom: 10px; }
 
         /* স্ক্রিন ৩: ম্যাপ */
         #map-screen { display: none; height: 100vh; position: relative; }
         #map { height: 100%; width: 100%; }
         .search-box { position: absolute; top: 20px; left: 15px; right: 15px; z-index: 1000; display: flex; gap: 10px; }
-        .search-box input { flex: 1; padding: 15px; border: none; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); outline: none; font-weight: 600; }
+        .search-box input { flex: 1; padding: 15px; border: none; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); outline: none; }
         .btn-go { background: var(--panna-shobuz); color: white; border: none; border-radius: 15px; width: 55px; cursor: pointer; }
         
-        .brand-pin { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 1050; pointer-events: none; transition: 0.3s; }
+        .brand-pin { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 1050; pointer-events: none; }
         .map-bottom { background: white; border-radius: 30px 30px 0 0; padding: 25px; position: absolute; bottom: 0; width: 100%; z-index: 1100; box-shadow: 0 -10px 30px rgba(0,0,0,0.08); }
 
         /* স্ক্রিন ৪: ফর্ম */
@@ -58,29 +55,15 @@
 <body>
 
     <div id="saved-screen">
-        <div class="header">
-            <h3>Addresses</h3>
-            <button class="btn-new" onclick="openChoice()">+ New</button>
-        </div>
-        <div id="empty-state">
-            <i class="material-icons-outlined">location_off</i>
-            <p style="color:#888; margin-top:10px; font-weight:600;">No address saved yet</p>
-        </div>
+        <div class="header"><h3>Addresses</h3><button class="btn-new" onclick="openChoice()">+ New</button></div>
+        <div id="empty-state"><i class="material-icons-outlined">location_off</i><p style="color:#888; margin-top:10px;">No address saved yet</p></div>
         <div id="address-list"></div>
     </div>
 
     <div id="choice-screen">
         <h2 style="margin-bottom:40px;">Add New Address</h2>
-        <div class="choice-card" onclick="openForm('manual')">
-            <i class="material-icons-outlined">edit_note</i>
-            <h3>Write Your Address</h3>
-            <p style="font-size:12px; color:#777;">Type address details manually</p>
-        </div>
-        <div class="choice-card" onclick="openMap()">
-            <i class="material-icons-outlined">map</i>
-            <h3>Find Your Address</h3>
-            <p style="font-size:12px; color:#777;">Select location from map</p>
-        </div>
+        <div class="choice-card" onclick="openForm('manual')"><i class="material-icons-outlined">edit_note</i><h3>Write Your Address</h3></div>
+        <div class="choice-card" onclick="openMap()"><i class="material-icons-outlined">map</i><h3>Find Your Address</h3></div>
         <p onclick="goHome()" style="color:red; font-weight:800; margin-top:20px; cursor:pointer;">Cancel</p>
     </div>
 
@@ -90,9 +73,7 @@
             <button class="btn-go" onclick="doSearch()"><i class="material-icons-outlined">search</i></button>
         </div>
         <div id="map"></div>
-        <div class="brand-pin" id="pin-icon">
-            <i class="material-icons-outlined" style="font-size: 50px; color: var(--panna-shobuz);">location_on</i>
-        </div>
+        <div class="brand-pin"><i class="material-icons-outlined" style="font-size: 50px; color: var(--panna-shobuz);">location_on</i></div>
         <div class="map-bottom">
             <p id="addr-text" style="font-size:14px; font-weight:700; margin-bottom:20px;">Locating...</p>
             <button class="btn-save" onclick="openForm('map')">Use This Address</button>
@@ -101,26 +82,22 @@
     </div>
 
     <div id="form-screen">
-        <div class="form-header">
-            <i class="material-icons-outlined" onclick="goHome()" style="cursor:pointer; font-size:30px;">arrow_back</i>
-            <h3 id="form-title">Address Details</h3>
-        </div>
+        <div class="form-header"><i class="material-icons-outlined" onclick="goHome()" style="cursor:pointer; font-size:30px;">arrow_back</i><h3>Details</h3></div>
         <div class="input-group"><label>Full Name</label><input type="text" id="f-name"></div>
         <div class="input-group"><label>House / Landmark</label><input type="text" id="f-house"></div>
         <div class="input-group"><label>Phone Number</label><input type="number" id="f-phone"></div>
-        <div class="input-group"><label>Full Address</label><textarea id="f-addr" rows="3" style="resize:none; font-family:inherit;"></textarea></div>
+        <div class="input-group"><label>Full Address</label><textarea id="f-addr" rows="3" style="resize:none;"></textarea></div>
         <button class="btn-save" onclick="saveFinal()">Save Address</button>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        let map, selectedAddr = "", editingId = null;
+        let map, currentMapAddr = "", editingId = null;
         let db = [];
 
-        function openChoice() {
-            hideAll();
-            document.getElementById('choice-screen').style.display = 'flex';
-        }
+        function openChoice() { hideAll(); document.getElementById('choice-screen').style.display = 'flex'; }
+        function goHome() { hideAll(); document.getElementById('saved-screen').style.display = 'block'; }
+        function hideAll() { document.querySelectorAll('body > div').forEach(d => d.style.display = 'none'); }
 
         function openMap() {
             hideAll();
@@ -128,13 +105,11 @@
             if(!map) {
                 map = L.map('map', { zoomControl: false }).setView([22.6541, 88.8471], 15);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-                map.on('movestart', () => document.getElementById('pin-icon').style.transform = 'translate(-50%, -130%)');
                 map.on('moveend', () => {
-                    document.getElementById('pin-icon').style.transform = 'translate(-50%, -100%)';
                     let c = map.getCenter();
                     fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${c.lat}&lon=${c.lng}`)
                     .then(r => r.json()).then(data => {
-                        selectedAddr = data.display_name;
+                        currentMapAddr = data.display_name; // এখানে অ্যাড্রেস সেভ হচ্ছে
                         document.getElementById('addr-text').innerText = data.display_name.substring(0, 50) + "...";
                     });
                 });
@@ -144,15 +119,16 @@
         function doSearch() {
             let q = document.getElementById('map-search').value;
             fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${q}`)
-            .then(r => r.json()).then(data => {
-                if(data.length > 0) map.flyTo([data[0].lat, data[0].lon], 17, {animate:true, duration:1.5});
-            });
+            .then(r => r.json()).then(data => { if(data.length > 0) map.flyTo([data[0].lat, data[0].lon], 17); });
         }
 
         function openForm(type) {
             hideAll();
             document.getElementById('form-screen').style.display = 'block';
-            if(type === 'map') document.getElementById('f-addr').value = selectedAddr;
+            // ম্যাপ থেকে আসলে অ্যাড্রেসটি ইনপুট ফিল্ডে বসিয়ে দিচ্ছি
+            if(type === 'map') {
+                document.getElementById('f-addr').value = currentMapAddr;
+            }
         }
 
         function saveFinal() {
@@ -163,34 +139,23 @@
                 phone: document.getElementById('f-phone').value,
                 full: document.getElementById('f-addr').value
             };
-            if(!data.name || !data.phone) return alert("Please fill Name & Phone");
-            
+            if(!data.name || !data.phone) return alert("Fill Name & Phone");
             if(editingId) db = db.map(x => x.id === editingId ? data : x);
             else db.push(data);
-            
             renderCards();
             goHome();
+            // Clear inputs
+            document.querySelectorAll('input, textarea').forEach(i => i.value = '');
+            editingId = null;
         }
 
         function renderCards() {
             const list = document.getElementById('address-list');
-            const empty = document.getElementById('empty-state');
-            if(db.length === 0) { empty.style.display = 'block'; list.innerHTML = ""; return; }
-            empty.style.display = 'none';
+            document.getElementById('empty-state').style.display = db.length === 0 ? 'block' : 'none';
             list.innerHTML = db.map(x => `
                 <div class="address-card">
-                    <div class="card-info">
-                        <strong>${x.name}</strong>
-                        <p>${x.house}, ${x.full.substring(0, 30)}...</p>
-                        <p style="color:var(--panna-shobuz); font-weight:800; margin-top:5px;">${x.phone}</p>
-                    </div>
-                    <div class="dot-menu" onclick="toggleMenu(${x.id})">
-                        <i class="material-icons-outlined">more_vert</i>
-                        <div id="menu-${x.id}" class="menu-dropdown">
-                            <div onclick="editItem(${x.id})">Edit</div>
-                            <div onclick="deleteItem(${x.id})" style="color:red">Delete</div>
-                        </div>
-                    </div>
+                    <div class="card-info"><strong>${x.name}</strong><p>${x.house}, ${x.full.substring(0, 30)}...</p></div>
+                    <div class="dot-menu" onclick="editItem(${x.id})"><i class="material-icons-outlined">edit</i></div>
                 </div>
             `).join('');
         }
@@ -204,19 +169,6 @@
             document.getElementById('f-addr').value = x.full;
             hideAll();
             document.getElementById('form-screen').style.display = 'block';
-        }
-
-        function deleteItem(id) { db = db.filter(x => x.id !== id); renderCards(); }
-        function toggleMenu(id) {
-            document.querySelectorAll('.menu-dropdown').forEach(m => m.style.display = 'none');
-            document.getElementById(`menu-${id}`).style.display = 'block';
-        }
-        function hideAll() { document.querySelectorAll('body > div').forEach(d => d.style.display = 'none'); }
-        function goHome() { 
-            hideAll(); 
-            document.getElementById('saved-screen').style.display = 'block'; 
-            editingId = null; 
-            document.querySelectorAll('input, textarea').forEach(i => i.value = '');
         }
     </script>
 </body>
