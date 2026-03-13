@@ -13,58 +13,61 @@
             --text-main: #1c1e21;
             --text-sub: #64748b;
             --border-color: #e2e8f0;
-            --primary-green: #22c55e;
+            --primary-green: #00A36C; /* পান্না সবুজ */
             --modal-overlay: rgba(0, 0, 0, 0.4);
         }
 
-        /* ডার্ক মোড ভেরিয়েবল */
         body.dark-mode {
             --bg-color: #0f172a;
             --card-bg: #1e293b;
             --text-main: #f8fafc;
             --text-sub: #94a3b8;
             --border-color: #334155;
-            --modal-overlay: rgba(0, 0, 0, 0.7);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-user-select: none; user-select: none; }
         body { background-color: var(--bg-color); color: var(--text-main); transition: 0.3s; padding-bottom: 40px; }
 
-        /* হেডার */
         .header { 
             display: flex; align-items: center; padding: 15px 20px; 
             background: var(--card-bg); border-bottom: 1px solid var(--border-color); 
             position: sticky; top: 0; z-index: 100;
         }
-        .back-btn, .search-link { text-decoration: none; color: var(--text-main); display: flex; align-items: center; }
-        .header h2 { font-size: 20px; font-weight: 800; flex-grow: 1; margin-left: 10px; }
+        .header h2 { font-size: 20px; font-weight: 800; flex-grow: 1; margin-left: 10px; color: var(--text-main); }
 
-        /* প্রোফাইল কার্ড */
-        .profile-card-link { text-decoration: none; color: inherit; display: block; margin: 15px; }
+        /* প্রোফাইল বক্স */
+        .profile-container { margin: 15px; }
         .premium-profile-box { 
-            padding: 18px; background: var(--card-bg); 
-            border-radius: 50px 10px 50px 10px; border: 1px solid var(--border-color);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 12px;
+            padding: 15px; background: var(--card-bg); 
+            border-radius: 20px; border: 1.5px solid var(--border-color);
+            display: flex; align-items: center; gap: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
         }
-        .premium-profile-box img { width: 50px; height: 50px; border-radius: 15px; border: 2px solid var(--primary-green); padding: 2px; }
+        .premium-profile-box img.avatar { width: 52px; height: 52px; border-radius: 14px; border: 2.5px solid var(--primary-green); padding: 2px; }
+        .profile-info { flex-grow: 1; }
+        
+        /* আপনার দেওয়া সুইচ আইকন */
+        .switch-icon-img { width: 28px; height: 28px; object-fit: contain; cursor: pointer; }
 
-        /* মেনু গ্রিড - বড় কার্ভ */
-        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; }
+        /* মেনু গ্রিড - ছবি ছাড়া শুধু সবুজ আইকন */
+        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 5px 15px 15px; }
         .menu-card {
-            background: var(--card-bg); padding: 18px 15px; display: flex; flex-direction: column; 
-            align-items: flex-start; gap: 8px; text-decoration: none; color: var(--text-main); 
-            border: 1px solid var(--border-color); border-radius: 40px 5px 40px 5px; 
+            background: var(--card-bg); padding: 20px 15px; display: flex; flex-direction: column; 
+            align-items: flex-start; gap: 10px; text-decoration: none; color: var(--text-main); 
+            border: 1.5px solid var(--border-color); border-radius: 22px;
+            transition: 0.2s;
         }
-        .menu-card span { font-size: 13px; font-weight: 700; }
+        .menu-card i { font-size: 28px; color: var(--primary-green); }
+        .menu-card span { font-size: 14px; font-weight: 700; }
 
         /* ফুটার লিস্ট */
-        .footer-list { background: var(--card-bg); margin-top: 10px; border-radius: 25px 25px 0 0; overflow: hidden; border-top: 1px solid var(--border-color); }
+        .footer-list { background: var(--card-bg); margin-top: 10px; border-radius: 25px 25px 0 0; border-top: 1px solid var(--border-color); overflow: hidden; }
         .list-item { 
-            display: flex; align-items: center; gap: 15px; padding: 14px 20px; 
+            display: flex; align-items: center; gap: 15px; padding: 15px 20px; 
             text-decoration: none; color: var(--text-sub); border-bottom: 1px solid var(--border-color); 
-            font-weight: 600; font-size: 14px; cursor: pointer;
+            font-weight: 700; font-size: 14px; cursor: pointer;
         }
-        .join-item { background: rgba(34, 197, 94, 0.05); border-left: 5px solid var(--primary-green); }
+        .join-item { background: rgba(0, 163, 108, 0.05); border-left: 5px solid var(--primary-green); color: var(--text-main); }
 
         /* মডাল */
         .modal-overlay {
@@ -74,10 +77,10 @@
         }
         .modal-box {
             background: var(--card-bg); width: 85%; max-width: 320px; padding: 25px;
-            border-radius: 40px 10px 40px 10px; text-align: center; color: var(--text-main);
+            border-radius: 30px 10px 30px 10px; text-align: center;
         }
         .modal-btns { display: flex; gap: 10px; margin-top: 20px; }
-        .btn { flex: 1; padding: 12px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; }
+        .btn { flex: 1; padding: 12px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; }
         .btn-yes { background: var(--primary-green); color: white; }
         .btn-no { background: var(--border-color); color: var(--text-sub); }
     </style>
@@ -85,44 +88,50 @@
 <body oncontextmenu="return false;">
 
     <div class="header">
-        <a href="javascript:history.back()" class="back-btn"><span class="material-icons-outlined">arrow_back</span></a>
+        <span class="material-icons-outlined" onclick="history.back()">arrow_back</span>
         <h2>Menu</h2>
-        <a href="search.html" class="search-link"><span class="material-icons-outlined">search</span></a>
+        <a href="search.html" style="color: inherit; margin-left: auto;"><span class="material-icons-outlined">search</span></a>
     </div>
 
-    <a href="profile.html" class="profile-card-link">
+    <div class="profile-container">
         <div class="premium-profile-box">
-            <img src="https://i.pravatar.cc/150?img=32" alt="Afrin">
-            <div><b>Afrin Faza</b><br><span style="font-size: 11px; color: var(--text-sub);">Personal Account</span></div>
+            <img src="https://i.pravatar.cc/150?img=32" class="avatar" alt="Afrin">
+            <div class="profile-info">
+                <b>Afrin Faza</b><br>
+                <span style="font-size: 11px; color: var(--text-sub);">Personal Account</span>
+            </div>
+            <img src="https://i.ibb.co/VWV0pWf/switch-icon.png" class="switch-icon-img" onclick="confirmPopup('join')" alt="Switch">
         </div>
-    </a>
+    </div>
 
     <div class="menu-grid">
-        <a href="messages.html" class="menu-card"><img src="https://img.icons8.com/fluency/48/messenger.png"><span>Messages</span></a>
-        <a href="friends.html" class="menu-card"><img src="https://img.icons8.com/fluency/48/group.png"><span>Friends</span></a>
-        <a href="reels.html" class="menu-card"><img src="https://img.Screenshot_2026_0227_025416.png"><span>Reels</span></a>
-        <a href="store.html" class="menu-card"><img src="https://img.icons8.com/fluency/48/shop.png"><span>Mingle Store</span></a>
-        <a href="orders.html" class="menu-card"><img src="https://img.icons8.com/fluency/48/box.png"><span>My Orders</span></a>
-        <a href="seller.html" class="menu-card"><img src="https://img.icons8.com/fluency/48/manager.png"><span>Become Seller</span></a>
-        <a href="saved.html" class="menu-card"><img src="https://img.icons8.com/fluency/48/bookmark.png"><span>Saved</span></a>
-        <a href="wallet.html" class="menu-card"><img src="https://img.icons8.com/fluency/48/wallet.png"><span>Payments</span></a>
+        <a href="messages.html" class="menu-card"><i class="material-icons-outlined">chat_bubble_outline</i><span>Messages</span></a>
+        <a href="friends.html" class="menu-card"><i class="material-icons-outlined">people_outline</i><span>Friends</span></a>
+        <a href="reels.html" class="menu-card"><i class="material-icons-outlined">movie_filter</i><span>Reels</span></a>
+        <a href="store.html" class="menu-card"><i class="material-icons-outlined">shopping_bag</i><span>Mingle Store</span></a>
+        <a href="orders.html" class="menu-card"><i class="material-icons-outlined">local_shipping</i><span>My Orders</span></a>
+        <a href="seller.html" class="menu-card"><i class="material-icons-outlined">storefront</i><span>Become Seller</span></a>
+        <a href="saved.html" class="menu-card"><i class="material-icons-outlined">bookmark_border</i><span>Saved</span></a>
+        <a href="wallet.html" class="menu-card"><i class="material-icons-outlined">account_balance_wallet</i><span>Payments</span></a>
     </div>
 
     <div class="footer-list">
-        <a href="setting.html" class="list-item"><span class="material-icons-outlined">settings</span> Settings & privacy</a>
-        <a href="support.html" class="list-item"><span class="material-icons-outlined">help_center</span> Support Center</a>
+        <a href="setting.html" class="list-item"><i class="material-icons-outlined">settings</i> Settings & privacy</a>
+        <a href="support.html" class="list-item"><i class="material-icons-outlined">help_outline</i> Support Center</a>
+        
         <div class="list-item join-item" onclick="confirmPopup('join')">
-            <span class="material-icons-outlined" style="color: var(--primary-green);">person_add_alt</span>
-            <b style="color: var(--text-main);">Join New Identity</b>
+            <img src="https://i.ibb.co/VWV0pWf/switch-icon.png" class="switch-icon-img" alt="Switch">
+            <b>Join New Identity</b>
         </div>
+
         <div class="list-item" onclick="confirmPopup('logout')" style="color: #ef4444; border-bottom: none;">
-            <span class="material-icons-outlined">power_settings_new</span> Logout
+            <i class="material-icons-outlined">logout</i> Logout
         </div>
     </div>
 
     <div class="modal-overlay" id="modal">
         <div class="modal-box">
-            <h3 id="mTitle">Are you sure?</h3>
+            <h3 id="mTitle" style="margin-bottom: 10px;">Are you sure?</h3>
             <div class="modal-btns">
                 <button class="btn btn-no" onclick="closePopup()">No</button>
                 <button class="btn btn-yes" id="mYes">Yes</button>
@@ -131,14 +140,6 @@
     </div>
 
     <script>
-        // ডার্ক মোড লজিক: আপনার প্রোফাইল সেটিংস থেকে সেভ করা ডাটা চেক করবে
-        window.onload = function() {
-            const darkModeStatus = localStorage.getItem("darkMode");
-            if (darkModeStatus === "enabled") {
-                document.body.classList.add("dark-mode");
-            }
-        };
-
         function confirmPopup(type) {
             const modal = document.getElementById('modal');
             const title = document.getElementById('mTitle');
@@ -152,7 +153,6 @@
             }
             modal.style.display = "flex";
         }
-
         function closePopup() { document.getElementById('modal').style.display = "none"; }
     </script>
 </body>
