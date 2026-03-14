@@ -13,82 +13,72 @@
             --text-main: #1c1e21;
             --text-sub: #64748b;
             --border-color: #e2e8f0;
-            --primary-green: #00A36C; /* পান্না সবুজ */
-            --modal-overlay: rgba(0, 0, 0, 0.4);
-        }
-
-        body.dark-mode {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-sub: #94a3b8;
-            --border-color: #334155;
+            --primary-green: #00A36C;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-user-select: none; user-select: none; }
-        body { background-color: var(--bg-color); color: var(--text-main); transition: 0.3s; padding-bottom: 40px; }
+        body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 40px; }
 
+        /* হেডার ও আপনার ছবির মতো ব্যাক বাটন */
         .header { 
             display: flex; align-items: center; padding: 15px 20px; 
             background: var(--card-bg); border-bottom: 1px solid var(--border-color); 
             position: sticky; top: 0; z-index: 100;
         }
-        .header h2 { font-size: 20px; font-weight: 800; flex-grow: 1; margin-left: 10px; color: var(--text-main); }
+        .back-btn { 
+            cursor: pointer; margin-right: 15px; display: flex; align-items: center;
+        }
+        .back-btn i { font-size: 28px; font-weight: bold; color: #000; }
+        .header h2 { font-size: 20px; font-weight: 800; flex-grow: 1; }
 
-        /* প্রোফাইল বক্স */
+        /* প্রোফাইল সেকশন */
         .profile-container { margin: 15px; }
         .premium-profile-box { 
-            padding: 15px; background: var(--card-bg); 
-            border-radius: 20px; border: 1.5px solid var(--border-color);
+            padding: 15px; background: var(--card-bg); border-radius: 20px; border: 1.5px solid var(--border-color);
             display: flex; align-items: center; gap: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
         }
-        .premium-profile-box img.avatar { width: 52px; height: 52px; border-radius: 14px; border: 2.5px solid var(--primary-green); padding: 2px; }
-        .profile-info { flex-grow: 1; }
+        .premium-profile-box img.avatar { width: 50px; height: 50px; border-radius: 12px; border: 2px solid var(--primary-green); padding: 2px; }
         
-        /* আপনার দেওয়া সুইচ আইকন */
-        .switch-icon-img { width: 28px; height: 28px; object-fit: contain; cursor: pointer; }
-
-        /* মেনু গ্রিড - ছবি ছাড়া শুধু সবুজ আইকন */
+        /* মেনু গ্রিড ও কার্ড (26px আইকন সাইজ) */
         .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 5px 15px 15px; }
         .menu-card {
-            background: var(--card-bg); padding: 20px 15px; display: flex; flex-direction: column; 
-            align-items: flex-start; gap: 10px; text-decoration: none; color: var(--text-main); 
-            border: 1.5px solid var(--border-color); border-radius: 22px;
+            background: var(--card-bg); 
+            padding: 18px 15px; 
+            display: flex; flex-direction: column;
+            align-items: flex-start; gap: 8px; text-decoration: none; color: var(--text-main); 
+            border: 1.5px solid var(--border-color); border-radius: 20px;
             transition: 0.2s;
         }
-        .menu-card i { font-size: 28px; color: var(--primary-green); }
+        .menu-card i { font-size: 26px; color: var(--primary-green); } /* আপনার বলা ২৬ পিক্সেল */
         .menu-card span { font-size: 14px; font-weight: 700; }
+
+        .section-title { font-size: 17px; font-weight: 800; padding: 10px 15px 5px; }
+
+        /* See More বাটন */
+        .see-btn {
+            grid-column: span 2; background: #eef2f2; padding: 12px; border-radius: 15px;
+            text-align: center; font-weight: 700; cursor: pointer; display: flex; align-items: center; 
+            justify-content: center; gap: 6px; color: var(--text-sub); border: none; font-size: 14px;
+        }
+
+        .hidden-items { display: none; }
 
         /* ফুটার লিস্ট */
         .footer-list { background: var(--card-bg); margin-top: 10px; border-radius: 25px 25px 0 0; border-top: 1px solid var(--border-color); overflow: hidden; }
         .list-item { 
             display: flex; align-items: center; gap: 15px; padding: 15px 20px; 
             text-decoration: none; color: var(--text-sub); border-bottom: 1px solid var(--border-color); 
-            font-weight: 700; font-size: 14px; cursor: pointer;
+            font-weight: 700; font-size: 14px;
         }
-        .join-item { background: rgba(0, 163, 108, 0.05); border-left: 5px solid var(--primary-green); color: var(--text-main); }
-
-        /* মডাল */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--modal-overlay); backdrop-filter: blur(5px);
-            display: none; align-items: center; justify-content: center; z-index: 1000;
-        }
-        .modal-box {
-            background: var(--card-bg); width: 85%; max-width: 320px; padding: 25px;
-            border-radius: 30px 10px 30px 10px; text-align: center;
-        }
-        .modal-btns { display: flex; gap: 10px; margin-top: 20px; }
-        .btn { flex: 1; padding: 12px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; }
-        .btn-yes { background: var(--primary-green); color: white; }
-        .btn-no { background: var(--border-color); color: var(--text-sub); }
+        .join-item { color: var(--text-main); }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
     <div class="header">
-        <span class="material-icons-outlined" onclick="history.back()">arrow_back</span>
+        <div class="back-btn" onclick="window.history.back()">
+            <i class="material-icons-outlined">chevron_left</i>
+        </div>
         <h2>Menu</h2>
         <a href="search.html" style="color: inherit; margin-left: auto;"><span class="material-icons-outlined">search</span></a>
     </div>
@@ -96,11 +86,11 @@
     <div class="profile-container">
         <div class="premium-profile-box">
             <img src="https://i.pravatar.cc/150?img=32" class="avatar" alt="Afrin">
-            <div class="profile-info">
+            <div style="flex-grow: 1;">
                 <b>Afrin Faza</b><br>
                 <span style="font-size: 11px; color: var(--text-sub);">Personal Account</span>
             </div>
-            <img src="Screenshot_20260314_021541.jpg" class="switch-icon-img" onclick="confirmPopup('join')" alt="Switch">
+            <i class="material-icons-outlined" style="color: var(--text-sub); cursor: pointer; font-size: 28px;">swap_horiz</i>
         </div>
     </div>
 
@@ -109,52 +99,48 @@
         <a href="friends.html" class="menu-card"><i class="material-icons-outlined">people_outline</i><span>Friends</span></a>
         <a href="reels.html" class="menu-card"><i class="material-icons-outlined">movie_filter</i><span>Reels</span></a>
         <a href="store.html" class="menu-card"><i class="material-icons-outlined">shopping_bag</i><span>Mingle Store</span></a>
-        <a href="orders.html" class="menu-card"><i class="material-icons-outlined">local_shipping</i><span>My Orders</span></a>
-        <a href="seller.html" class="menu-card"><i class="material-icons-outlined">storefront</i><span>Become Seller</span></a>
-        <a href="saved.html" class="menu-card"><i class="material-icons-outlined">bookmark_border</i><span>Saved</span></a>
-        <a href="wallet.html" class="menu-card"><i class="material-icons-outlined">account_balance_wallet</i><span>Payments</span></a>
+        
+        <a href="orders.html" class="menu-card main-hide hidden-items"><i class="material-icons-outlined">local_shipping</i><span>My Orders</span></a>
+        <a href="seller.html" class="menu-card main-hide hidden-items"><i class="material-icons-outlined">storefront</i><span>Become Seller</span></a>
+        <a href="saved.html" class="menu-card main-hide hidden-items"><i class="material-icons-outlined">bookmark_border</i><span>Saved</span></a>
+        <a href="wallet.html" class="menu-card main-hide hidden-items"><i class="material-icons-outlined">account_balance_wallet</i><span>Payments</span></a>
+
+        <button class="see-btn" id="mainBtn" onclick="toggleItems('main-hide', 'mainBtn')">
+            <span>See more</span> <i class="material-icons-outlined">expand_more</i>
+        </button>
+    </div>
+
+    <h3 class="section-title">Core Protection</h3>
+    <div class="menu-grid">
+        <a href="safety.html" class="menu-card"><i class="material-icons-outlined">gpp_good</i><span>Safety Shield</span></a>
+        <a href="privacy.html" class="menu-card"><i class="material-icons-outlined">published_with_changes</i><span>Privacy Guard</span></a>
+        
+        <a href="logs.html" class="menu-card core-hide hidden-items"><i class="material-icons-outlined">history_toggle_off</i><span>Action Log</span></a>
+        <a href="live.html" class="menu-card core-hide hidden-items"><i class="material-icons-outlined">visibility</i><span>Live Status</span></a>
+
+        <button class="see-btn" id="coreBtn" onclick="toggleItems('core-hide', 'coreBtn')">
+            <span>See more</span> <i class="material-icons-outlined">expand_more</i>
+        </button>
     </div>
 
     <div class="footer-list">
-        <a href="setting.html" class="list-item"><i class="material-icons-outlined">settings</i> Settings & privacy</a>
+        <a href="settings.html" class="list-item"><i class="material-icons-outlined">settings</i> Settings & privacy</a>
         <a href="support.html" class="list-item"><i class="material-icons-outlined">help_outline</i> Support Center</a>
-        
-        <div class="list-item join-item" onclick="confirmPopup('join')">
-            <img src="Screenshot_20260314_015055.jpg
-                " class="switch-icon-img" alt="Switch">
-            <b>Join New Identity</b>
-        </div>
-
-        <div class="list-item" onclick="confirmPopup('logout')" style="color: #ef4444; border-bottom: none;">
-            <i class="material-icons-outlined">logout</i> Logout
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="modal">
-        <div class="modal-box">
-            <h3 id="mTitle" style="margin-bottom: 10px;">Are you sure?</h3>
-            <div class="modal-btns">
-                <button class="btn btn-no" onclick="closePopup()">No</button>
-                <button class="btn btn-yes" id="mYes">Yes</button>
-            </div>
-        </div>
+        <a href="join.html" class="list-item join-item">
+            <i class="material-icons-outlined">person_add_alt</i> <b>Join New Identity</b>
+        </a>
+        <a href="logout.html" class="list-item" style="color: #ef4444; border-bottom: none;"><i class="material-icons-outlined">logout</i> Logout</a>
     </div>
 
     <script>
-        function confirmPopup(type) {
-            const modal = document.getElementById('modal');
-            const title = document.getElementById('mTitle');
-            const yesBtn = document.getElementById('mYes');
-            if(type === 'join') {
-                title.innerText = "Join New Identity?";
-                yesBtn.onclick = () => window.location.href = "add-account.html";
-            } else {
-                title.innerText = "Log out of account?";
-                yesBtn.onclick = () => window.location.href = "index.html";
-            }
-            modal.style.display = "flex";
+        function toggleItems(className, btnId) {
+            const items = document.querySelectorAll('.' + className);
+            const btn = document.getElementById(btnId);
+            const isHidden = items[0].style.display === "none" || items[0].style.display === "";
+            
+            items.forEach(i => i.style.display = isHidden ? "flex" : "none");
+            btn.innerHTML = isHidden ? '<span>See less</span> <i class="material-icons-outlined">expand_less</i>' : '<span>See more</span> <i class="material-icons-outlined">expand_more</i>';
         }
-        function closePopup() { document.getElementById('modal').style.display = "none"; }
     </script>
 </body>
 </html>
