@@ -3,168 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mingle Search & AI</title>
+    <title>MingleJoys AI & Search</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     
     <style>
-        :root { --p-green: #00A36C; --text-dark: #0f172a; }
-        body { font-family: sans-serif; margin: 0; background: #fff; overflow-x: hidden; }
+        :root { --emerald: #00A36C; --bg-gray: #f8fafc; }
+        body { font-family: sans-serif; margin: 0; background: #fff; }
 
         /* হেডার ও সার্চ বার */
-        .header { background: #fff; padding: 12px 15px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #f1f5f9; }
-        .search-row { display: flex; align-items: center; gap: 12px; }
-        .back-icon { font-size: 20px; color: #000; cursor: pointer; }
-        .search-box { flex: 1; display: flex; align-items: center; background: #f1f5f9; border-radius: 25px; padding: 8px 15px; border: 1px solid #e2e8f0; }
-        .search-box input { border: none; background: transparent; outline: none; width: 100%; font-size: 16px; margin: 0 8px; }
+        .header { background: #fff; padding: 12px 15px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #e2e8f0; }
+        .search-box { display: flex; align-items: center; background: #fff; border-radius: 25px; padding: 5px 15px; border: 1.5px solid #ddd; }
+        .search-box input { border: none; background: transparent; outline: none; width: 100%; margin: 0 10px; font-size: 16px; padding: 8px; }
 
-        /* ইউটিউব স্টাইল উজ্জ্বল ফিল্টার মেনু */
-        .filter-nav {
-            display: flex; overflow-x: auto; white-space: nowrap; padding: 15px;
-            gap: 12px; background: #fff; border-bottom: 1px solid #f1f5f9;
-            scrollbar-width: none;
+        /* স্থায়ী এবং উজ্জ্বল ফিল্টার মেনু */
+        .filter-wrapper {
+            display: flex; overflow-x: auto; white-space: nowrap; padding: 12px; gap: 10px;
+            background: #fff; border-bottom: 1px solid #e2e8f0; scrollbar-width: none;
         }
-        .filter-nav::-webkit-scrollbar { display: none; }
-
-        .chip {
-            padding: 10px 22px; border-radius: 12px; font-size: 15px; font-weight: 800;
-            color: #475569; background: #f8fafc; cursor: pointer; border: 1.5px solid #cbd5e1;
-            transition: 0.2s all ease;
+        .filter-wrapper::-webkit-scrollbar { display: none; }
+        .filter-item {
+            padding: 8px 18px; border-radius: 8px; font-size: 14px; font-weight: 700;
+            color: #475569; background: #fff; cursor: pointer; border: 1.5px solid #ddd;
         }
-        /* একটিভ ফিল্টারের উজ্জ্বল রঙ */
-        .chip.active { background: var(--p-green) !important; color: #fff !important; border-color: var(--p-green) !important; box-shadow: 0 4px 12px rgba(0, 163, 108, 0.25); }
+        .filter-item.active { background: var(--emerald) !important; color: white !important; border-color: var(--emerald) !important; }
 
-        /* এআই চ্যাট ইন্টারফেস (QuillBot Style) */
-        #ai-container {
+        /* এআই চ্যাট ইন্টারফেস */
+        #ai-page {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #fff; z-index: 200; display: none; flex-direction: column;
+            background: white; z-index: 200; display: none; flex-direction: column;
         }
-        .ai-top { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
-        .chat-area { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; background: #fcfdfe; }
+        .chat-header { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
+        .chat-flow { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
         
-        /* মেসেজ বাবল ডিজাইন */
-        .msg { max-width: 85%; padding: 12px 18px; border-radius: 20px; font-size: 16px; line-height: 1.5; font-weight: 500; }
-        .user { align-self: flex-end; background: var(--p-green); color: #fff; border-bottom-right-radius: 4px; }
-        .bot { align-self: flex-start; background: #f1f5f9; color: #1e293b; border: 1px solid #e2e8f0; border-bottom-left-radius: 4px; }
+        /* মেসেজ বাবল */
+        .msg { max-width: 80%; padding: 12px 16px; border-radius: 18px; font-size: 15px; }
+        .user-msg { align-self: flex-end; background: var(--emerald); color: white; border-bottom-right-radius: 4px; }
+        .ai-msg { align-self: flex-start; background: #f1f5f9; color: #1e293b; border-bottom-left-radius: 4px; border: 1px solid #e2e8f0; }
 
         /* ইনপুট বক্স */
-        .bottom-input { padding: 15px; background: #fff; }
-        .input-pill { border: 2px solid var(--p-green); border-radius: 25px; padding: 12px 18px; background: #fff; box-shadow: 0 -2px 10px rgba(0,0,0,0.02); }
-        .input-pill input { width: 100%; border: none; outline: none; font-size: 16px; margin-bottom: 10px; font-weight: 500; }
-        .actions { display: flex; justify-content: space-between; align-items: center; }
-        .send-btn { background: var(--p-green); color: #fff; width: 42px; height: 42px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; }
+        .input-area { padding: 20px; border-top: 1px solid #eee; }
+        .input-pill { border: 2px solid var(--emerald); border-radius: 20px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .input-pill input { width: 100%; border: none; outline: none; font-size: 16px; margin-bottom: 10px; }
+        .send-btn { background: var(--emerald); color: white; width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
 
-    <div id="search-interface">
+    <div id="main-page">
         <div class="header">
-            <div class="search-row">
-                <i class="fas fa-arrow-left back-icon" onclick="history.back()"></i>
-                <div class="search-box">
-                    <input type="text" placeholder="Search MingleJoys...">
-                    <i class="fas fa-search" style="color: #64748b;"></i>
-                </div>
+            <div class="search-box">
+                <i class="fas fa-arrow-left" style="cursor: pointer;"></i>
+                <input type="text" placeholder="Search MingleJoys...">
+                <i class="fas fa-search"></i>
             </div>
         </div>
-
-        <div class="filter-nav">
-            <div class="chip active" onclick="selectChip(this)">All</div>
-            <div class="chip" onclick="selectChip(this)">Mingle</div>
-            <div class="chip" onclick="selectChip(this)">Store</div>
-            <div class="chip" onclick="selectChip(this)">Gifts</div>
-            <div class="chip" onclick="selectChip(this)">Photos</div>
-            <div class="chip" onclick="selectChip(this)">Videos</div>
-            <div class="chip" onclick="openAI()" style="color: var(--p-green); border-color: var(--p-green);">MJ-AI ✨</div>
-            <div class="chip" onclick="alert('Feedback Clicked')" style="color: #ef4444; border-color: #fecaca;">Send Feedback</div>
-        </div>
-        
-        <div style="padding: 100px 20px; text-align: center; color: #94a3b8;">
-            <p>ফিল্টার সিলেক্ট করে সার্চ শুরু করুন।</p>
+        <div class="filter-wrapper">
+            <div class="filter-item active" onclick="setAct(this)">All</div>
+            <div class="filter-item" onclick="setAct(this)">People</div>
+            <div class="filter-item" onclick="setAct(this)">Store</div>
+            <div class="filter-item" onclick="setAct(this)">Gifts</div>
+            <div class="filter-item" onclick="openAI()" style="color: var(--emerald); border-color: var(--emerald);">MJ-AI ✨</div>
+            <div class="filter-item" onclick="alert('Feedback sent!')" style="color: #ef4444;">Feedback</div>
         </div>
     </div>
 
-    <div id="ai-container">
-        <div class="ai-top">
-            <i class="fas fa-chevron-left back-icon" style="font-size: 24px;" onclick="closeAI()"></i>
-            <b style="margin-left: 15px; font-size: 20px; font-weight: 800;">Mingle AI</b>
+    <div id="ai-page">
+        <div class="chat-header">
+            <i class="fas fa-chevron-left" style="font-size: 20px; cursor: pointer;" onclick="closeAI()"></i>
+            <b style="margin-left: 15px;">Mingle AI</b>
         </div>
-
-        <div class="chat-area" id="chatWindow">
-            <div id="welcome-msg" style="text-align: center; margin-top: 50px;">
-                <h1 style="font-size: 32px; font-weight: 900;">How can I help?</h1>
-                <p style="color: #64748b;">Mingle AI সবসময় আপনার সেবায়।</p>
+        <div class="chat-flow" id="chatFlow">
+            <div id="hero" style="text-align: center; margin-top: 50px;">
+                <h1 style="font-size: 32px;">How can I help?</h1>
+                <p style="color: #64748b;">MingleJoys এআই আপনার সব প্রশ্নের উত্তর দিতে প্রস্তুত।</p>
             </div>
         </div>
-
-        <div class="bottom-input">
+        <div class="input-area">
             <div class="input-pill">
-                <input type="text" id="aiMsg" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter') sendMsg()">
-                <div class="actions">
-                    <div style="display: flex; gap: 18px; color: #64748b;">
+                <input type="text" id="userInput" placeholder="Ask me anything...">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; gap: 15px; color: #64748b; font-weight: bold;">
                         <span class="material-icons-outlined">attach_file</span>
-                        <div style="display: flex; align-items: center; gap: 6px; color: #1e293b; font-weight: 800;">
-                            <span class="material-icons-outlined" style="font-size: 20px;">auto_awesome</span> Tools
-                        </div>
+                        <span><i class="fas fa-magic"></i> Tools</span>
                     </div>
-                    <button class="send-btn" id="sendBtn" onclick="sendMsg()"><i class="fas fa-arrow-right"></i></button>
+                    <button class="send-btn" onclick="askGroq()"><i class="fas fa-arrow-right"></i></button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        function selectChip(el) {
-            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        const GROQ_KEY = "Gsk_j3e9g91uXpn93Jy70hOOWGdyb3FYdf7HiCGJnQ6qoN4zj2U0iMSE";
+
+        function setAct(el) {
+            document.querySelectorAll('.filter-item').forEach(i => i.classList.remove('active'));
             el.classList.add('active');
         }
 
-        function openAI() { document.getElementById('ai-container').style.display = 'flex'; }
-        function closeAI() { document.getElementById('ai-container').style.display = 'none'; }
+        function openAI() { document.getElementById('ai-page').style.display = 'flex'; }
+        function closeAI() { document.getElementById('ai-page').style.display = 'none'; }
 
-        async function sendMsg() {
-            const input = document.getElementById('aiMsg');
-            const chatWindow = document.getElementById('chatWindow');
-            const welcome = document.getElementById('welcome-msg');
-            const query = input.value.trim();
-            if(!query) return;
+        async function askGroq() {
+            const inp = document.getElementById('userInput');
+            const flow = document.getElementById('chatFlow');
+            const text = inp.value.trim();
+            if(!text) return;
 
-            if(welcome) welcome.style.display = 'none';
-            addBubble('user', query);
-            input.value = '';
+            document.getElementById('hero').style.display = 'none';
+            addMessage('user-msg', text);
+            inp.value = '';
 
-            const botBubble = addBubble('bot', 'MJ-AI ভাবছে...');
+            const botMsg = addMessage('ai-msg', 'MJ-AI টাইপ করছে...');
 
             try {
-                // API URL এবং Key ঠিকমতো চেক করুন
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyAaS_qlmPBdabKOlpgXXRCDzPr5zkrRlDE`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: query }] }] })
+                const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${GROQ_KEY}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        "model": "llama3-8b-8192",
+                        "messages": [
+                            { "role": "system", "content": "তুমি MingleJoys-এর MJ-AI। ইউজারদের লেনদেন, গিফট এবং স্টোর নিয়ে সাহায্য করো।" },
+                            { "role": "user", "content": text }
+                        ]
+                    })
                 });
-                
-                const data = await res.json();
-                
-                if (data.candidates && data.candidates[0].content.parts[0].text) {
-                    botBubble.innerText = data.candidates[0].content.parts[0].text;
-                } else {
-                    botBubble.innerText = "দুঃখিত, আমি বুঝতে পারিনি। আবার চেষ্টা করুন।";
-                }
-            } catch (e) {
-                botBubble.innerText = "কানেকশন এরর! আপনার ইন্টারনেট বা এপিআই কি চেক করুন।";
-                console.error(e);
+                const data = await response.json();
+                botMsg.innerText = data.choices[0].message.content;
+            } catch (err) {
+                botMsg.innerText = "দুঃখিত, কোনো সমস্যা হয়েছে। আবার চেষ্টা করুন।";
             }
-            chatWindow.scrollTop = chatWindow.scrollHeight;
         }
 
-        function addBubble(type, text) {
-            const win = document.getElementById('chatWindow');
-            const d = document.createElement('div');
-            d.className = `msg ${type}`;
-            d.innerText = text;
-            win.appendChild(d);
-            win.scrollTop = win.scrollHeight;
-            return d;
+        function addMessage(type, txt) {
+            const div = document.createElement('div');
+            div.className = 'msg ' + type;
+            div.innerText = txt;
+            document.getElementById('chatFlow').appendChild(div);
+            document.getElementById('chatFlow').scrollTop = document.getElementById('chatFlow').scrollHeight;
+            return div;
         }
     </script>
 </body>
