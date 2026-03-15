@@ -3,250 +3,101 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MingleJoys - Login</title>
+<title>MingleJoys - Welcome</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap" rel="stylesheet">
 
 <style>
-  /* ১. নিরাপত্তা ও বেসিক সেটআপ */
-  * {
-    font-family: 'Inter', sans-serif !important;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-user-select: none;
-    user-select: none;
-  }
-
-  input { -webkit-user-select: text; user-select: text; }
-
   body {
     margin: 0; padding: 0;
     background-color: #ffffff;
-    display: flex; flex-direction: column; align-items: center;
-    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    height: 100vh; overflow: hidden;
+    font-family: 'Inter', sans-serif;
   }
 
-  /* থ্রি ডট মেনু ও ড্রপডাউন */
-  .header-actions {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    padding: 15px 20px;
+  /* অ্যানিমেশন কন্টেইনার */
+  .loader-container {
     position: relative;
-  }
-  
-  .more-dots {
-    cursor: pointer;
-    font-size: 26px;
-    font-weight: bold;
-    color: #555;
-    letter-spacing: 2px;
-  }
-
-  .dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 55px; right: 20px;
-    background: white;
-    box-shadow: 0 4px 25px rgba(0,0,0,0.1);
-    border-radius: 12px;
-    z-index: 1000;
-    width: 200px;
-    border: 1px solid #f0f0f0;
-    overflow: hidden;
-  }
-
-  .dropdown-item {
-    padding: 14px 16px;
-    font-size: 15px;
-    color: #333;
-    cursor: pointer;
-    border-bottom: 1px solid #f5f5f5;
-  }
-  .dropdown-item:hover { background-color: #f9f9f9; }
-
-  /* লোগো সেকশন - একদম ক্লিন */
-  .logo-section { 
-    margin-top: 40px; 
-    margin-bottom: 10px;
+    width: 250px;
+    height: 250px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
   }
 
-  .logo-img { 
-    width: 85px; 
-    height: 85px; 
-    object-fit: contain; 
-    pointer-events: none;
-    background: transparent;
-    border: none !important;
-    box-shadow: none !important; /* ছাই রঙ দূর করার জন্য */
+  .layer {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
-  h1 { 
-    font-size: 36px; 
-    font-weight: 800; 
-    margin: 5px 0 40px 0; 
-    color: #111827; 
-    text-align: center;
-    letter-spacing: -1.5px;
+  /* ১. মাঝখানের স্থির লোগো (Static Center) */
+  .center-logo {
+    width: 100px;
+    height: 100px;
+    z-index: 10;
+    background-image: url('1000043340.jpg');
   }
 
-  /* ফর্ম ডিজাইন */
-  .form-box { width: 90%; max-width: 400px; }
-  .input-group { position: relative; width: 100%; margin-bottom: 15px; }
-  
-  input {
-    width: 100%; padding: 18px; border: 1.5px solid #e5e7eb; border-radius: 16px;
-    font-size: 16px; outline: none; background: #f9fafb;
-    transition: all 0.3s ease;
-  }
-  input:focus { border-color: #059669; background: #fff; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.08); }
-
-  .eye-icon-img {
-    position: absolute; right: 18px; top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer; width: 24px; opacity: 0.4;
+  /* ২. মোটা কক্ষপথ (Thick Outer Ring) - ঘড়ির কাঁটার দিকে */
+  .thick-orbit {
+    width: 165px;
+    height: 165px;
+    background-image: url('1000043341.jpg');
+    animation: rotateCW 2s infinite linear;
+    z-index: 5;
   }
 
-  /* বাটন ডিজাইন */
-  .login-btn {
-    width: 100%; padding: 16px;
-    background: #059669; 
-    color: white; border: none; border-radius: 35px; 
-    font-size: 18px; font-weight: 700; cursor: pointer;
-    display: flex; justify-content: center; align-items: center; gap: 10px;
-    margin-top: 10px;
+  /* ৩. সরু কক্ষপথ (Thin Outer Ring) - উল্টো দিকে */
+  .thin-orbit {
+    width: 220px;
+    height: 220px;
+    background-image: url('1000043346.jpg');
+    animation: rotateCCW 2.5s infinite linear;
+    z-index: 1;
+    opacity: 0.7;
   }
 
-  .create-btn {
-    width: 90%; padding: 14px;
-    background: none; color: #059669;
-    border: 2px solid #059669; 
-    border-radius: 35px;
-    font-size: 16px; font-weight: 700; 
-    margin: 0 auto 30px auto;
-    display: flex; justify-content: center; align-items: center;
-    cursor: pointer;
+  /* রোটেশন অ্যানিমেশন */
+  @keyframes rotateCW {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 
-  /* ফাস্ট স্পিনার */
-  .spinner {
-    width: 20px; height: 20px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-top: 3px solid #ffffff;
-    border-radius: 50%;
-    display: none;
-    animation: spin 0.4s linear infinite;
+  @keyframes rotateCCW {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
   }
-  .spinner-green { border: 3px solid rgba(5, 150, 105, 0.2); border-top: 3px solid #059669; }
 
-  @keyframes spin { 100% { transform: rotate(360deg); } }
-  .bottom-section { width: 100%; max-width: 400px; margin-top: auto; padding-bottom: 30px; text-align: center; }
-  .disabled { opacity: 0.6; pointer-events: none; }
-  .show { display: block !important; }
+  /* ব্র্যান্ডের নাম */
+  .brand-text {
+    margin-top: 50px;
+    font-size: 20px;
+    font-weight: 800;
+    color: #059669;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+  }
 </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
-  <div class="header-actions">
-    <div class="more-dots" onclick="toggleMenu(event)">...</div>
-    <div class="dropdown-menu" id="mainMenu">
-      <div class="dropdown-item" id="help-text">Help Center</div>
-      <div class="dropdown-item" onclick="changeLang('en')">English</div>
-      <div class="dropdown-item" onclick="changeLang('bn')">বাংলা</div>
-      <div class="dropdown-item" onclick="changeLang('hi')">हिन्दी</div>
-    </div>
+  <div class="loader-container">
+    <div class="layer thin-orbit"></div>
+    <div class="layer thick-orbit"></div>
+    <div class="layer center-logo"></div>
   </div>
 
-  <div class="logo-section">
-    <img src="Screenshot_2026_0301_144814.png" class="logo-img">
-  </div>
-  <h1 id="page-brand">MingleJoys</h1>
+  <div class="brand-text">MINGLEJOYS</div>
 
-  <div class="form-box">
-    <div class="input-group">
-      <input type="text" id="userInput" placeholder="Mobile number or email">
-    </div>
-    <div class="input-group">
-      <input type="password" id="passInput" placeholder="Password">
-      <img src="Screenshot_2026_0224_015913.png" id="eyeIcon" class="eye-icon-img" onclick="togglePass()">
-    </div>
-    
-    <button class="login-btn" id="login-btn" onclick="handleLogin()">
-      <span id="login-btn-text">Log In</span>
-      <div class="spinner" id="login-spinner"></div>
-    </button>
-  </div>
+  <script>
+    // ২ সেকেন্ড পর home.html পেজে অটোমেটিক নিয়ে যাবে
+    setTimeout(function() {
+      window.location.href = "home.html";
+    }, 2000);
+  </script>
 
-  <div class="bottom-section">
-    <button class="create-btn" id="create-btn" onclick="handleCreateAccount()">
-      <span id="create-btn-text">Create new account</span>
-      <div class="spinner spinner-green" id="create-spinner"></div>
-    </button>
-    <p style="font-size: 13px; color: #6b7280; margin-bottom: 5px;" id="slogan-text">Connect. Share. Enjoy.</p>
-    <p style="font-size: 14px; font-weight: 800; color: #4b5563; margin: 0; letter-spacing: 1px;">MINGLEJOYS</p>
-  </div>
-
-<script>
-  // ভাষার ডাটা সেটআপ
-  const languages = {
-    'en': { user: "Mobile number or email", pass: "Password", login: "Log In", create: "Create new account", slogan: "Connect. Share. Enjoy.", help: "Help Center" },
-    'bn': { user: "মোবাইল নম্বর বা ইমেল", pass: "পাসওয়ার্ড", login: "লগ ইন", create: "নতুন অ্যাকাউন্ট তৈরি করুন", slogan: "যুক্ত হন। শেয়ার করুন। আনন্দ করুন।", help: "সহায়তা কেন্দ্র" },
-    'hi': { user: "मोबाइल नंबर या ईमेल", pass: "पासवर्ड", login: "लॉग इन", create: "नया अकाउंट बनाएँ", slogan: "जुड़ें। साझा करें। आनंद लें।", help: "सहायता केंद्र" }
-  };
-
-  function changeLang(lang) {
-    const data = languages[lang];
-    document.getElementById("userInput").placeholder = data.user;
-    document.getElementById("passInput").placeholder = data.pass;
-    document.getElementById("login-btn-text").innerText = data.login;
-    document.getElementById("create-btn-text").innerText = data.create;
-    document.getElementById("slogan-text").innerText = data.slogan;
-    document.getElementById("help-text").innerText = data.help;
-    document.getElementById("mainMenu").classList.remove("show");
-  }
-
-  // লগইন: ০.০৫২ সেকেন্ড পর ট্রান্সফার
-  function handleLogin() {
-    const btnText = document.getElementById("login-btn-text");
-    const spinner = document.getElementById("login-spinner");
-    const btn = document.getElementById("login-btn");
-
-    btnText.style.display = "none";
-    spinner.style.display = "block";
-    btn.classList.add("disabled");
-
-    setTimeout(() => { window.location.href = "account_list.html"; }, 52);
-  }
-
-  // ক্রিয়েট অ্যাকাউন্ট: ০.০৬৭ সেকেন্ড পর ট্রান্সফার
-  function handleCreateAccount() {
-    const btnText = document.getElementById("create-btn-text");
-    const spinner = document.getElementById("create-spinner");
-    const btn = document.getElementById("create-btn");
-
-    btnText.style.display = "none";
-    spinner.style.display = "block";
-    btn.classList.add("disabled");
-
-    setTimeout(() => { window.location.href = "join.html"; }, 67);
-  }
-
-  function togglePass() {
-    const input = document.getElementById("passInput");
-    const icon = document.getElementById("eyeIcon");
-    input.type = (input.type === "password") ? "text" : "password";
-    icon.src = (input.type === "password") ? "Screenshot_2026_0224_015913.png" : "Screenshot_2026_0224_020024.png";
-  }
-
-  function toggleMenu(e) {
-    e.stopPropagation();
-    document.getElementById("mainMenu").classList.toggle("show");
-  }
-
-  window.onclick = function() { document.getElementById("mainMenu").classList.remove("show"); }
-</script>
 </body>
 </html>
