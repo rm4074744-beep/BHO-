@@ -10,17 +10,16 @@
 <style>
   body {
     margin: 0; padding: 0;
-    background-color: #ffffff;
+    background-color: #ffffff; /* পিওর সাদা ব্যাকগ্রাউন্ড */
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     height: 100vh; overflow: hidden;
     font-family: 'Inter', sans-serif;
   }
 
-  /* লোগো কন্টেইনার - ফ্লেক্স দিয়ে একদম মাঝখানে রাখা হয়েছে */
   .loader-container {
     position: relative;
-    width: 250px;
-    height: 250px;
+    width: 280px;
+    height: 280px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -31,11 +30,11 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    /* নিচের লাইনটি সাদা ব্যাকগ্রাউন্ড রিমুভ করতে সাহায্য করবে */
+    /* এই লাইনটি সাদা ব্যাকগ্রাউন্ড রিমুভ করে ছবিকে স্বচ্ছ দেখাবে */
     mix-blend-mode: multiply; 
   }
 
-  /* ১. মাঝখানের স্থির লোগো (Static Center) */
+  /* ১. মাঝখানের স্থির লোগো */
   .center-logo {
     width: 90px;
     height: 90px;
@@ -43,26 +42,24 @@
     background-image: url('InShot_20260316_031149836.jpg');
   }
 
-  /* ২. মোটা কক্ষপথ (Thick Ring) - ঘড়ির কাঁটার দিকে */
+  /* ২. মোটা কক্ষপথ - ঘড়ির কাঁটার দিকে */
   .thick-orbit {
-    width: 155px;
-    height: 155px;
+    width: 160px;
+    height: 160px;
     background-image: url('InShot_20260316_032058941.jpg');
     animation: rotateCW 3s infinite linear;
     z-index: 5;
   }
 
-  /* ৩. সরু কক্ষপথ (Thin Ring) - উল্টো দিকে */
+  /* ৩. সরু কক্ষপথ - উল্টো দিকে */
   .thin-orbit {
-    width: 210px;
-    height: 210px;
+    width: 220px;
+    height: 220px;
     background-image: url('InShot_20260316_041510763.jpg');
     animation: rotateCCW 4s infinite linear;
     z-index: 1;
-    opacity: 0.8;
   }
 
-  /* রোটেশন অ্যানিমেশন */
   @keyframes rotateCW {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
@@ -73,10 +70,9 @@
     to { transform: rotate(-360deg); }
   }
 
-  /* ব্র্যান্ডের নাম */
   .brand-text {
-    margin-top: 40px;
-    font-size: 20px;
+    margin-top: 50px;
+    font-size: 22px;
     font-weight: 800;
     color: #059669;
     letter-spacing: 6px;
@@ -95,7 +91,7 @@
   <div class="brand-text">MINGLEJOYS</div>
 
   <script>
-    // ২.৫ সেকেন্ড পর home.html পেজে নিয়ে যাবে
+    // ২.৫ সেকেন্ড পর লগইন পেজে নিয়ে যাবে
     setTimeout(function() {
       window.location.href = "home.html";
     }, 2500);
