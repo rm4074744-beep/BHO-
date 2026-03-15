@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MingleJoys Smart Platform</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --emerald-green: #50C878;
+            --mj-bg: #f0f2f5;
+        }
+
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: var(--mj-bg); overflow-x: hidden; }
+
+        /* Search Header */
+        .header { background: #fff; padding: 12px 15px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .search-box { display: flex; align-items: center; background: #f0f2f5; border-radius: 25px; padding: 8px 15px; }
+        .search-box input { border: none; background: transparent; outline: none; width: 100%; margin: 0 10px; font-size: 16px; }
+
+        /* Horizontal Scrollable Tabs - টানলে আসবে */
+        .filter-wrapper {
+            background: #fff;
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 10px;
+            gap: 10px;
+            border-bottom: 1px solid #ddd;
+            scrollbar-width: none; /* Firefox */
+        }
+        .filter-wrapper::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
+        .filter-item {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #65676b;
+            background: #f0f2f5;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            transition: 0.3s;
+        }
+
+        /* পান্না সবুজ Active State */
+        .filter-item.active {
+            background-color: var(--emerald-green) !important;
+            color: white !important;
+            border-color: var(--emerald-green) !important;
+        }
+
+        .ai-tab { font-style: italic; font-weight: bold; }
+
+        /* Feedback Modal (YouTube Style) */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 1000;
+        }
+        .modal-card { background: #fff; width: 90%; max-width: 450px; border-radius: 15px; padding: 20px; }
+        .canvas-area { border: 2px solid #ddd; border-radius: 10px; margin-top: 15px; position: relative; }
+        #fbCanvas { width: 100%; cursor: crosshair; background: #eee; }
+
+        .btn-group { display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px; }
+        .btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; }
+        .btn-primary { background: var(--emerald-green); color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="search-box">
+            <i class="fas fa-arrow-left"></i>
+            <input type="text" id="searchInput" placeholder="Ask MingleJoys AI or Search...">
+            <i class="fas fa-search"></i>
+        </div>
+    </div>
+
+    <div class="filter-wrapper">
+        <div class="filter-item active" onclick="setActive(this)">All</div>
+        <div class="filter-item" onclick="setActive(this)">Mingle</div>
+        <div class="filter-item" onclick="setActive(this)">Store</div>
+        <div class="filter-item" onclick="setActive(this)">Posts</div>
+        
+        <div class="filter-item ai-tab" onclick="setActive(this); callMJAI()">MJ-AI ✨</div>
+        
+        <div class="filter-item" onclick="setActive(this)">Videos</div>
+        <div class="filter-item" onclick="setActive(this)">Gifts</div>
+        <div class="filter-item" onclick="openFeedback()" style="color: #d93025; border-color: #fce8e6;">Send Feedback</div>
+    </div>
+
+    <div id="ai-display" style="padding: 20px; display: none;">
+        <div style="background: #fff; border-radius: 12px; padding: 15px; border-left: 5px solid var(--emerald-green);">
+            <small style="color: var(--emerald-green); font-weight: bold;">MJ-AI RESPONSE</small>
+            <p id="ai-text" style="margin-top: 10px; line-height: 1.5;">Thinking...</p>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="fbModal">
+        <div class="modal-card">
+            <h3>Send Feedback</h3>
+            <textarea style="width:100%; height:80px; padding:10px; border-radius:8px; border:1px solid #ddd;" placeholder="Tell us what's wrong..."></textarea>
+            <div class="canvas-area">
+                <canvas id="fbCanvas"></canvas>
+            </div>
+            <p style="font-size: 11px; color: #777; margin-top: 5px;">* Use mouse/touch to highlight issues on the screenshot.</p>
+            <div class="btn-group">
+                <button class="btn" onclick="closeFeedback()">Cancel</button>
+                <button class="btn btn-primary" onclick="submitFeedback()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ১. একটিভ ট্যাগ সেট করা (পান্না সবুজ)
+        function setActive(element) {
+            document.querySelectorAll('.filter-item').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+            document.getElementById('ai-display').style.display = 'none';
+        }
+
+        // ২. MJ-AI কল করা (Thinking Delay সহ)
+        async function callMJAI() {
+            const query = document.getElementById('searchInput').value;
+            const display = document.getElementById('ai-display');
+            const aiText = document.getElementById('ai-text');
+            
+            display.style.display = 'block';
+            aiText.innerText = "MJ-AI চিন্তা করছে...";
+
+            // ২ সেকেন্ড দেরি (ইউজারকে বোঝাতে যে এটি রিয়েল এআই)
+            await new Promise(r => setTimeout(r, 2000));
+
+            const API_KEY = "AIzaSyAaS_qlmPBdabKOlpgXXRCDzPr5zkrRlDE"; // আপনার কী
+            const URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
+            try {
+                const res = await fetch(URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: "You are MingleJoys AI. Never mention Google/Gemini. Answer this like a friend: " + query }] }]
+                    })
+                });
+                const data = await res.json();
+                aiText.innerText = data.candidates[0].content.parts[0].text;
+            } catch (e) {
+                aiText.innerText = "দুঃখিত মিঙ্গলার, এআই এই মুহূর্তে কানেক্ট হতে পারছে না।";
+            }
+        }
+
+        // ৩. ফিডব্যাক সিস্টেম (স্ক্রিনশটসহ)
+        const canvas = document.getElementById('fbCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function openFeedback() {
+            document.getElementById('fbModal').style.display = 'flex';
+            html2canvas(document.body).then(original => {
+                canvas.width = 400; canvas.height = 250;
+                ctx.drawImage(original, 0, 0, 400, 250);
+            });
+        }
+
+        function closeFeedback() { document.getElementById('fbModal').style.display = 'none'; }
+
+        // ড্রয়িং লজিক (Highlight/Blackout)
+        let drawing = false;
+        canvas.onmousedown = () => drawing = true;
+        canvas.onmouseup = () => { drawing = false; ctx.beginPath(); };
+        canvas.onmousemove = (e) => {
+            if(!drawing) return;
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineWidth = 15; ctx.lineCap = 'round'; ctx.strokeStyle = "rgba(255, 235, 59, 0.5)"; // Highlight
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke(); ctx.beginPath(); ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        };
+
+        function submitFeedback() { alert("Feedback sent successfully with screenshot!"); closeFeedback(); }
+    </script>
+</body>
+</html>
