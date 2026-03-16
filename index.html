@@ -10,77 +10,43 @@
 <style>
   body {
     margin: 0; padding: 0;
-    background-color: #ffffff;
+    background-color: #ffffff; /* পিওর সাদা ব্যাকগ্রাউন্ড */
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     height: 100vh; overflow: hidden;
     font-family: 'Inter', sans-serif;
   }
 
-  .loader-container {
-    position: relative;
-    width: 300px;
-    height: 300px;
+  /* লোগো কন্টেইনার - স্ক্রিনের মাঝখানে রাখার জন্য */
+  .logo-container {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 250px; /* লোগোর সাইজ */
+    height: 250px;
   }
 
-  .layer {
-    position: absolute;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    mix-blend-mode: multiply; 
+  /* লোগো ইমেজ */
+  .logo-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* ছবির অনুপাত ঠিক রাখবে */
   }
 
-  /* ১. মাঝখানের লোগো (স্থির থাকবে) */
-  .center-logo {
-    width: 130px; 
-    height: 130px;
-    z-index: 10;
-    background-image: url('1000043340-removebg-preview (1).png');
-  }
-
-  /* ২. মোটা দাগ (ঘুরবে না, শুধু ভেসে উঠবে ও ডুবে যাবে) */
-  .thick-orbit {
-    width: 160px; 
-    height: 160px;
-    background-image: url('1000043341-removebg-preview.png');
-    animation: fadeEffect 3s infinite ease-in-out; /* শুধু ফেড অ্যানিমেশন */
-    z-index: 5;
-  }
-
-  /* ৩. সরু দাগ (ঘুরবে না, শুধু ভেসে উঠবে ও ডুবে যাবে) */
-  .thin-orbit {
-    width: 200px; 
-    height: 200px;
-    background-image: url('1000043346-removebg-preview.png');
-    animation: fadeEffect 4s infinite ease-in-out; /* একটু ভিন্ন সময়ে ফেড হবে */
-    z-index: 1;
-  }
-
-  /* ভেসে ওঠা ও ডুবে যাওয়ার এনিমেশন (Fade In/Out) */
-  @keyframes fadeEffect {
-    0%, 100% { opacity: 0; }  /* শুরুতে এবং শেষে অদৃশ্য */
-    50% { opacity: 1; }       /* মাঝখানে পুরোপুরি দেখা যাবে */
-  }
-
+  /* ব্র্যান্ডের নাম */
   .brand-text {
     margin-top: 40px;
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 800;
-    color: #059669;
-    letter-spacing: 6px;
+    color: #059669; /* আপনার লোগোর সবুজ রঙ */
+    letter-spacing: 5px;
     text-transform: uppercase;
   }
 </style>
 </head>
 <body>
 
-  <div class="loader-container">
-    <div class="layer thin-orbit"></div>
-    <div class="layer thick-orbit"></div>
-    <div class="layer center-logo"></div>
+  <div class="logo-container">
+    <img src="1000043340-removebg-preview (1).png" alt="MingleJoys Logo">
   </div>
 
   <div class="brand-text">MINGLEJOYS</div>
