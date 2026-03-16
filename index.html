@@ -16,7 +16,6 @@
     font-family: 'Inter', sans-serif;
   }
 
-  /* লোগো কন্টেইনার - যা স্ক্রিনের মাঝখানে থাকবে */
   .loader-container {
     position: relative;
     width: 300px;
@@ -34,7 +33,7 @@
     mix-blend-mode: multiply; 
   }
 
-  /* ১. মাঝখানের লোগো (বড় করা হয়েছে) */
+  /* ১. মাঝখানের লোগো (স্থির থাকবে) */
   .center-logo {
     width: 130px; 
     height: 130px;
@@ -42,41 +41,28 @@
     background-image: url('1000043340-removebg-preview (1).png');
   }
 
-  /* ২. মোটা কক্ষপথ (ছোট ও ফেডিং ইফেক্টসহ) */
+  /* ২. মোটা দাগ (ঘুরবে না, শুধু ভেসে উঠবে ও ডুবে যাবে) */
   .thick-orbit {
     width: 160px; 
     height: 160px;
     background-image: url('1000043341-removebg-preview.png');
-    /* রোটেশন ও ভেসে ওঠার এনিমেশন একসাথে */
-    animation: rotateCW 3s infinite linear, fadeEffect 3s infinite ease-in-out;
+    animation: fadeEffect 3s infinite ease-in-out; /* শুধু ফেড অ্যানিমেশন */
     z-index: 5;
   }
 
-  /* ৩. সরু কক্ষপথ (ছোট ও ফেডিং ইফেক্টসহ) */
+  /* ৩. সরু দাগ (ঘুরবে না, শুধু ভেসে উঠবে ও ডুবে যাবে) */
   .thin-orbit {
     width: 200px; 
     height: 200px;
     background-image: url('1000043346-removebg-preview.png');
-    /* রোটেশন ও ভেসে ওঠার এনিমেশন একসাথে */
-    animation: rotateCCW 4s infinite linear, fadeEffect 4s infinite ease-in-out;
+    animation: fadeEffect 4s infinite ease-in-out; /* একটু ভিন্ন সময়ে ফেড হবে */
     z-index: 1;
-  }
-
-  /* রোটেশন এনিমেশন */
-  @keyframes rotateCW {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  @keyframes rotateCCW {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(-360deg); }
   }
 
   /* ভেসে ওঠা ও ডুবে যাওয়ার এনিমেশন (Fade In/Out) */
   @keyframes fadeEffect {
-    0%, 100% { opacity: 0; }
-    50% { opacity: 1; }
+    0%, 100% { opacity: 0; }  /* শুরুতে এবং শেষে অদৃশ্য */
+    50% { opacity: 1; }       /* মাঝখানে পুরোপুরি দেখা যাবে */
   }
 
   .brand-text {
@@ -100,7 +86,7 @@
   <div class="brand-text">MINGLEJOYS</div>
 
   <script>
-    // ৪ সেকেন্ড সময় দিলাম যাতে এনিমেশনটি কয়েকবার ভেসে ওঠার সুযোগ পায়
+    // ৪ সেকেন্ড পর রিডাইরেক্ট হবে
     setTimeout(function() {
       window.location.href = "home.html";
     }, 4000);
