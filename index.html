@@ -10,16 +10,17 @@
 <style>
   body {
     margin: 0; padding: 0;
-    background-color: #ffffff; /* পিওর সাদা ব্যাকগ্রাউন্ড */
+    background-color: #ffffff;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     height: 100vh; overflow: hidden;
     font-family: 'Inter', sans-serif;
   }
 
+  /* লোগো কন্টেইনার - যা স্ক্রিনের মাঝখানে থাকবে */
   .loader-container {
     position: relative;
-    width: 280px;
-    height: 280px;
+    width: 300px;
+    height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -30,36 +31,38 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    /* এই লাইনটি সাদা ব্যাকগ্রাউন্ড রিমুভ করে ছবিকে স্বচ্ছ দেখাবে */
     mix-blend-mode: multiply; 
   }
 
-  /* ১. মাঝখানের স্থির লোগো */
+  /* ১. মাঝখানের লোগো (বড় করা হয়েছে) */
   .center-logo {
-    width: 90px;
-    height: 90px;
+    width: 130px; 
+    height: 130px;
     z-index: 10;
     background-image: url('1000043340-removebg-preview (1).png');
   }
 
-  /* ২. মোটা কক্ষপথ - ঘড়ির কাঁটার দিকে */
+  /* ২. মোটা কক্ষপথ (ছোট ও ফেডিং ইফেক্টসহ) */
   .thick-orbit {
-    width: 160px;
+    width: 160px; 
     height: 160px;
     background-image: url('1000043341-removebg-preview.png');
-    animation: rotateCW 3s infinite linear;
+    /* রোটেশন ও ভেসে ওঠার এনিমেশন একসাথে */
+    animation: rotateCW 3s infinite linear, fadeEffect 3s infinite ease-in-out;
     z-index: 5;
   }
 
-  /* ৩. সরু কক্ষপথ - উল্টো দিকে */
+  /* ৩. সরু কক্ষপথ (ছোট ও ফেডিং ইফেক্টসহ) */
   .thin-orbit {
-    width: 220px;
-    height: 220px;
+    width: 200px; 
+    height: 200px;
     background-image: url('1000043346-removebg-preview.png');
-    animation: rotateCCW 4s infinite linear;
+    /* রোটেশন ও ভেসে ওঠার এনিমেশন একসাথে */
+    animation: rotateCCW 4s infinite linear, fadeEffect 4s infinite ease-in-out;
     z-index: 1;
   }
 
+  /* রোটেশন এনিমেশন */
   @keyframes rotateCW {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
@@ -70,8 +73,14 @@
     to { transform: rotate(-360deg); }
   }
 
+  /* ভেসে ওঠা ও ডুবে যাওয়ার এনিমেশন (Fade In/Out) */
+  @keyframes fadeEffect {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+
   .brand-text {
-    margin-top: 50px;
+    margin-top: 40px;
     font-size: 22px;
     font-weight: 800;
     color: #059669;
@@ -91,10 +100,10 @@
   <div class="brand-text">MINGLEJOYS</div>
 
   <script>
-    // ২.৫ সেকেন্ড পর লগইন পেজে নিয়ে যাবে
+    // ৪ সেকেন্ড সময় দিলাম যাতে এনিমেশনটি কয়েকবার ভেসে ওঠার সুযোগ পায়
     setTimeout(function() {
       window.location.href = "home.html";
-    }, 2500);
+    }, 4000);
   </script>
 
 </body>
