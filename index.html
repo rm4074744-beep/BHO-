@@ -3,98 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MingleJoys Splash</title>
 <style>
-  /* ১. কন্টেইনার এবং ব্যাকগ্রাউন্ড */
+  /* ১. গ্লোবাল সেটিংস */
   body, html {
     margin: 0; padding: 0; width: 100%; height: 100%;
-    display: flex; justify-content: center; align-items: center;
-    background-color: #ffffff;
+    background-color: #ffffff; /* ক্লিন হোয়াইট */
+    font-family: 'Segoe UI', Roboto, sans-serif;
     overflow: hidden;
-  }
-
-  .splash-container {
-    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  /* ২. লোগো অ্যানিমেশন (Fade-in + Zoom + Blur) */
+  /* ২. লোগো ও ডট গ্রুপ (স্ক্রিনের ওপরের অর্ধেক অংশে পজিশন) */
+  .main-group {
+    position: absolute;
+    top: 42%; /* ফোনের মাঝখানের দাগের ঠিক উপরে রাখার জন্য */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+  }
+
+  /* ৩. লোগো অ্যানিমেশন (Blur -> Zoom -> Glow) */
   .logo-box {
     opacity: 0;
     filter: blur(10px);
-    transform: scale(0.8);
-    animation: logoReveal 1.2s ease-out forwards;
+    transform: scale(0.85);
+    animation: logoReveal 1.5s ease-out forwards;
   }
 
   .logo-img {
-    width: 140px; /* আপনার লোগোর সাইজ */
+    width: 120px; /* প্রিমিয়াম সাইজ */
     height: auto;
-    animation: logoGlow 2.5s infinite alternate 1.2s;
+    /* লোগো রিভীল হওয়ার পর হালকা গ্লো শুরু হবে */
+    animation: logoGlow 2s infinite alternate 1.5s;
   }
 
   @keyframes logoReveal {
-    to {
-      opacity: 1;
-      filter: blur(0);
-      transform: scale(1);
-    }
+    to { opacity: 1; filter: blur(0); transform: scale(1); }
   }
 
   @keyframes logoGlow {
-    to {
-      filter: drop-shadow(0 0 15px rgba(5, 150, 105, 0.4)); /* ব্র্যান্ড সবুজ গ্লো */
-    }
+    to { filter: drop-shadow(0 0 15px rgba(5, 150, 105, 0.3)); }
   }
 
-  /* ৩. ৫টি ডট অ্যানিমেশন (Sequential Pulse) */
-  .dot-container {
-    margin-top: 40px;
+  /* ৪. ৫টি ডট অ্যানিমেশন (ফেসবুক স্টাইল সিকোয়েন্সিয়াল) */
+  .dot-loader {
+    margin-top: 35px; /* লোগো থেকে স্ট্যান্ডার্ড গ্যাপ */
     display: flex;
+    justify-content: center;
     gap: 12px;
     opacity: 0;
-    animation: fadeIn 0.5s ease-in forwards 0.8s;
+    animation: fadeIn 0.8s forwards 1s;
   }
 
   .dot {
-    width: 10px;
-    height: 10px;
-    background-color: #059669;
+    width: 8px; height: 8px;
+    background-color: #f0f3f5; /* ফেসবুকের মতো শুরুতে হালকা ধূসর */
     border-radius: 50%;
-    transform: scale(0.6);
-    opacity: 0.3;
-    animation: dotPulse 1.4s infinite ease-in-out;
+    transform: scale(0.8);
+    animation: fbFlow 1.6s infinite ease-in-out;
   }
 
-  /* ডটগুলোর সিকোয়েন্স */
+  /* ডট সিকোয়েন্স (Left to Right) */
   .dot:nth-child(1) { animation-delay: 0s; }
   .dot:nth-child(2) { animation-delay: 0.2s; }
   .dot:nth-child(3) { animation-delay: 0.4s; }
   .dot:nth-child(4) { animation-delay: 0.6s; }
   .dot:nth-child(5) { animation-delay: 0.8s; }
 
-  @keyframes dotPulse {
-    0%, 100% { transform: scale(0.6); opacity: 0.3; }
-    50% { transform: scale(1.3); opacity: 1; }
+  @keyframes fbFlow {
+    0%, 100% { background-color: #f0f3f5; transform: scale(0.8); opacity: 0.4; }
+    50% { background-color: #059669; transform: scale(1.2); opacity: 1; }
+  }
+
+  /* ৫. নিচের ব্র্যান্ডিং সেকশন */
+  .footer-section {
+    position: absolute;
+    bottom: 50px; /* নিচ থেকে ৫০ পিক্সেল উপরে */
+    text-align: center;
+    width: 100%;
+    opacity: 0;
+    animation: fadeIn 1s forwards 1.8s;
+  }
+
+  .sub-text {
+    font-size: 13px;
+    color: #8899a6;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+  }
+
+  .brand-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: #059669;
+    text-transform: uppercase;
+    letter-spacing: 3px;
   }
 
   @keyframes fadeIn { to { opacity: 1; } }
 
-  /* পেজ ট্রানজিশন ফেড আউট (শেষে যাওয়ার সময়) */
-  .fade-out {
+  /* শেষে যাওয়ার ট্রানজিশন */
+  .fade-exit {
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.8s ease-in-out;
   }
 </style>
 </head>
-<body id="body">
+<body id="mainBody">
 
-  <div class="splash-container" id="splash">
+  <div class="main-group">
     <div class="logo-box">
       <img src="1000043334-removebg-preview.png" class="logo-img" alt="MingleJoys">
     </div>
-
-    <div class="dot-container">
+    
+    <div class="dot-loader">
       <div class="dot"></div>
       <div class="dot"></div>
       <div class="dot"></div>
@@ -103,18 +129,22 @@
     </div>
   </div>
 
+  <div class="footer-section">
+    <div class="sub-text">connecting you — MingleJoys</div>
+    <div class="brand-text">MINGLEJOYS</div>
+  </div>
+
   <script>
-    // ৩ সেকেন্ড (৩০০০ মিলি-সেকেন্ড) পর লগইন পেজে নিয়ে যাওয়ার লজিক
+    // ৬ সেকেন্ড (৬০০০ মিলি-সেকেন্ড) পর লগইন পেজে যাবে 
+    // যাতে আপনি অ্যানিমেশনটি ভালো করে উপভোগ করতে পারেন
     setTimeout(function() {
-      // স্ক্রিনটি হালকা ফেড আউট হবে
-      document.getElementById('body').classList.add('fade-out');
+      document.getElementById('mainBody').classList.add('fade-exit');
       
-      // ০.৫ সেকেন্ড পর পেজ পরিবর্তন হবে
       setTimeout(function() {
-        window.location.href = "login.html"; // আপনার লগইন ফাইলের নাম এখানে দিন
-      }, 500);
+        window.location.href = "login.html"; 
+      }, 800);
       
-    }, 3000); 
+    }, 6000); 
   </script>
 
 </body>
