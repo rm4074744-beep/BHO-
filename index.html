@@ -2,123 +2,119 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MingleJoys - Welcome</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap" rel="stylesheet">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  /* ১. সিকিউরিটি এবং সিলেকশন পুরোপুরি বন্ধ */
-  * {
-    -webkit-tap-highlight-color: transparent; /* ট্যাপ করলে নীল বক্স হবে না */
-    -webkit-touch-callout: none;                /* আইফোনে মেনু বন্ধ */
-    -webkit-user-select: none;                   /* টেক্সট সিলেকশন বন্ধ */
-    user-select: none;
-  }
-
-  body {
-    margin: 0; padding: 0;
+  /* ১. কন্টেইনার এবং ব্যাকগ্রাউন্ড */
+  body, html {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    display: flex; justify-content: center; align-items: center;
     background-color: #ffffff;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    height: 100vh; overflow: hidden;
-    font-family: 'Inter', sans-serif;
-  }
-
-  .logo-container {
-    width: 220px;
-    height: 220px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none; /* লোগোর ওপর ট্যাপ করলে কোনো কাজই হবে না */
-  }
-
-  .logo-container img {
-    max-width: 100%;
-    height: auto;
-  }
-
-  .brand-text {
-    margin-top: 15px;
-    font-size: 24px;
-    font-weight: 800;
-    color: #059669;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-  }
-
-  /* গ্লোয়িং লোডিং বার */
-  .loading-section {
-    margin-top: 35px;
-    text-align: center;
-  }
-
-  .loading-text {
-    font-size: 13px;
-    color: #999;
-    margin-bottom: 10px;
-  }
-
-  .glow-line {
-    width: 150px; height: 2px;
-    background: #f0f0f0;
-    margin: 0 auto;
-    position: relative;
     overflow: hidden;
-    border-radius: 2px;
   }
 
-  .glow-line::before {
-    content: '';
-    position: absolute;
-    left: -50%;
-    height: 100%; width: 50%;
-    background: linear-gradient(90deg, transparent, #059669, transparent);
-    animation: sweep 2s infinite linear;
+  .splash-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
-  @keyframes sweep {
-    0% { left: -50%; }
-    100% { left: 100%; }
+  /* ২. লোগো অ্যানিমেশন (Fade-in + Zoom + Blur) */
+  .logo-box {
+    opacity: 0;
+    filter: blur(10px);
+    transform: scale(0.8);
+    animation: logoReveal 1.2s ease-out forwards;
+  }
+
+  .logo-img {
+    width: 140px; /* আপনার লোগোর সাইজ */
+    height: auto;
+    animation: logoGlow 2.5s infinite alternate 1.2s;
+  }
+
+  @keyframes logoReveal {
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: scale(1);
+    }
+  }
+
+  @keyframes logoGlow {
+    to {
+      filter: drop-shadow(0 0 15px rgba(5, 150, 105, 0.4)); /* ব্র্যান্ড সবুজ গ্লো */
+    }
+  }
+
+  /* ৩. ৫টি ডট অ্যানিমেশন (Sequential Pulse) */
+  .dot-container {
+    margin-top: 40px;
+    display: flex;
+    gap: 12px;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards 0.8s;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    background-color: #059669;
+    border-radius: 50%;
+    transform: scale(0.6);
+    opacity: 0.3;
+    animation: dotPulse 1.4s infinite ease-in-out;
+  }
+
+  /* ডটগুলোর সিকোয়েন্স */
+  .dot:nth-child(1) { animation-delay: 0s; }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  .dot:nth-child(4) { animation-delay: 0.6s; }
+  .dot:nth-child(5) { animation-delay: 0.8s; }
+
+  @keyframes dotPulse {
+    0%, 100% { transform: scale(0.6); opacity: 0.3; }
+    50% { transform: scale(1.3); opacity: 1; }
+  }
+
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  /* পেজ ট্রানজিশন ফেড আউট (শেষে যাওয়ার সময়) */
+  .fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
   }
 </style>
 </head>
-<body oncontextmenu="return false;">
+<body id="body">
 
-  <div class="logo-container">
-    <img src="1000043334-removebg-preview.png" alt="MingleJoys Logo">
-  </div>
+  <div class="splash-container" id="splash">
+    <div class="logo-box">
+      <img src="1000043398.jpg" class="logo-img" alt="MingleJoys">
+    </div>
 
-  <div class="brand-text">MINGLEJOYS</div>
-
-  <div class="loading-section">
-    <p class="loading-text">Connecting to Mingle...</p>
-    <div class="glow-line"></div>
+    <div class="dot-container">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
   </div>
 
   <script>
-    /* শব্দ এবং ভাইব্রেশন বন্ধ করার জন্য অতিরিক্ত নিরাপত্তা */
-    
-    // ১. লং প্রেস ইভেন্ট আটকে দেওয়া
-    window.addEventListener('touchstart', function(e) {
-        if (e.touches.length > 1) {
-            e.preventDefault(); // মাল্টি টাচ বন্ধ
-        }
-    }, {passive: false});
-
-    // ২. কোনো এলিমেন্টের ওপর চেপে ধরে রাখা পুরোপুরি বন্ধ
-    window.oncontextmenu = function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        return false;
-    };
-
-    // ৩. সিলেকশন পুরোপুরি ব্লক করা (সব ব্রাউজারের জন্য)
-    document.onselectstart = function() { return false; };
-
-    // ৪.৫ সেকেন্ড পর রিডাইরেক্ট
+    // ৩ সেকেন্ড (৩০০০ মিলি-সেকেন্ড) পর লগইন পেজে নিয়ে যাওয়ার লজিক
     setTimeout(function() {
-      window.location.href = "home.html";
-    }, 4500);
+      // স্ক্রিনটি হালকা ফেড আউট হবে
+      document.getElementById('body').classList.add('fade-out');
+      
+      // ০.৫ সেকেন্ড পর পেজ পরিবর্তন হবে
+      setTimeout(function() {
+        window.location.href = "login.html"; // আপনার লগইন ফাইলের নাম এখানে দিন
+      }, 500);
+      
+    }, 3000); 
   </script>
 
 </body>
