@@ -5,19 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>MingleJoys Splash</title>
 <style>
-  /* ১. গ্লোবাল সেটিংস ও সিকিউরিটি লেয়ার */
+  /* ১. সিস্টেম সাউন্ড ও টাচ প্রোটেকশন (সবচেয়ে শক্তিশালী লেয়ার) */
   * {
     margin: 0; padding: 0; box-sizing: border-box;
-    -webkit-user-select: none;  /* টেক্সট কপি বন্ধ */
-    user-select: none;
-    -webkit-touch-callout: none; /* মোবাইলে চেপে ধরলে মেনু আসবে না */
-    -webkit-tap-highlight-color: transparent; /* টাচ করলে নীল বক্স আসবে না */
-    touch-action: none; /* কোনো জুম বা জেসচার কাজ করবে না */
+    -webkit-user-select: none; user-select: none;
+    -webkit-touch-callout: none; 
+    -webkit-tap-highlight-color: transparent; 
+    touch-action: none; /* স্ক্রিনে টিপে ধরলে কোনো 'গুম' শব্দ হবে না */
   }
 
   body, html {
     width: 100%; height: 100%;
-    background-color: #ffffff;
+    background: linear-gradient(180deg, #ffffff 0%, #f4f9ff 100%);
     font-family: 'Segoe UI', Roboto, sans-serif;
     overflow: hidden;
     display: flex;
@@ -25,93 +24,76 @@
     align-items: center;
   }
 
-  /* ২. লোগো ও ডট গ্রুপ (Upper Half Position) */
+  /* ২. লোগো ও ৪-ডট পজিশন (Visual Center) */
   .main-group {
     position: absolute;
-    top: 42%; 
+    top: 44%; 
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     width: 100%;
   }
 
-  /* লোগো অ্যানিমেশন ও প্রোটেকশন */
-  .logo-wrapper {
-    position: relative;
-    display: inline-block;
-  }
-  
-  /* অদৃশ্য কভার (লোগো সেভ করা অসম্ভব করবে) */
-  .overlay-guard {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 10;
-  }
-
+  /* লোগো অ্যানিমেশন (Fade + Slight Zoom) */
   .logo-box {
     opacity: 0;
-    filter: blur(10px);
-    transform: scale(0.85);
-    animation: logoReveal 1.5s ease-out forwards;
+    transform: scale(0.9);
+    animation: logoEntry 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 
   .logo-img {
-    width: 120px;
+    width: 110px;
     height: auto;
-    pointer-events: none; /* ক্লিক বা ড্র্যাগ বন্ধ */
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.05));
+    pointer-events: none;
     -webkit-user-drag: none;
-    animation: logoGlow 2s infinite alternate 1.5s;
   }
 
-  @keyframes logoReveal {
-    to { opacity: 1; filter: blur(0); transform: scale(1); }
+  @keyframes logoEntry {
+    to { opacity: 1; transform: scale(1); }
   }
 
-  @keyframes logoGlow {
-    to { filter: drop-shadow(0 0 15px rgba(5, 150, 105, 0.3)); }
-  }
-
-  /* ৩. ৫টি ডট অ্যানিমেশন (Facebook Style) */
+  /* ৩. ৪টি ডট অ্যানিমেশন (Sequential Pulse Flow: ● ○ ○ ○) */
   .dot-loader {
-    margin-top: 35px;
+    margin-top: 32px;
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 14px;
     opacity: 0;
-    animation: fadeInDots 0.8s forwards 1s;
+    animation: fadeIn 0.5s forwards 0.8s;
   }
 
   .dot {
-    width: 8px; height: 8px;
-    background-color: #f0f3f5;
+    width: 9px; height: 9px;
+    background-color: #059669; /* ব্র্যান্ড গ্রিন */
     border-radius: 50%;
-    animation: fbFlow 1.6s infinite ease-in-out;
+    opacity: 0.2;
+    transform: scale(0.8);
+    animation: dotPulseFlow 1.6s infinite ease-in-out;
   }
 
+  /* ডট সিকোয়েন্স টাইমিং (● ○ ○ ○ → ○ ● ○ ○) */
   .dot:nth-child(1) { animation-delay: 0s; }
-  .dot:nth-child(2) { animation-delay: 0.2s; }
-  .dot:nth-child(3) { animation-delay: 0.4s; }
-  .dot:nth-child(4) { animation-delay: 0.6s; }
-  .dot:nth-child(5) { animation-delay: 0.8s; }
+  .dot:nth-child(2) { animation-delay: 0.3s; }
+  .dot:nth-child(3) { animation-delay: 0.6s; }
+  .dot:nth-child(4) { animation-delay: 0.9s; }
 
-  @keyframes fbFlow {
-    0%, 100% { background-color: #f0f3f5; transform: scale(0.8); opacity: 0.4; }
-    50% { background-color: #059669; transform: scale(1.2); opacity: 1; }
+  @keyframes dotPulseFlow {
+    0%, 100% { transform: scale(0.8); opacity: 0.2; }
+    50% { transform: scale(1.3); opacity: 1; }
   }
 
-  @keyframes fadeInDots { to { opacity: 1; } }
-
-  /* ৪. নিচের স্থির ব্র্যান্ডিং (Meta Style) */
+  /* ৪. নিচের ব্র্যান্ডিং ফুটার (স্থির) */
   .footer-section {
     position: absolute;
-    bottom: 50px; 
+    bottom: 50px;
     text-align: center;
     width: 100%;
   }
 
   .powered-text {
     font-size: 13px;
-    color: #8899a6;
+    color: #94a3b8;
     display: block;
     margin-bottom: 2px;
   }
@@ -119,25 +101,31 @@
   .brand-footer {
     font-size: 19px;
     font-weight: 700;
-    color: #059669;
+    color: #0f172a;
     letter-spacing: 1px;
   }
 
-  /* ৫. এক্সিট ট্রানজিশন */
-  .fade-exit { opacity: 0; transition: opacity 0.8s ease-in-out; }
+  /* এক্সিট ট্রানজিশন ফেড আউট */
+  .fade-exit {
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+  }
+
+  @keyframes fadeIn { to { opacity: 1; } }
 </style>
 </head>
 <body id="mainBody">
 
   <div class="main-group">
-    <div class="logo-wrapper">
-      <div class="overlay-guard"></div> <div class="logo-box">
-        <img src="1000043334-removebg-preview.png" class="logo-img" alt="MingleJoys">
-      </div>
+    <div class="logo-box">
+      <img src="1000043334-removebg-preview.png" class="logo-img" alt="MingleJoys">
     </div>
     
     <div class="dot-loader">
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
     </div>
   </div>
 
@@ -147,37 +135,28 @@
   </div>
 
   <script>
-    /* --- সিকিউরিটি সিস্টেম (Security Shield) --- */
-
-    // ১. রাইট-ক্লিক ও লং-প্রেস মেনু বন্ধ
+    /* --- ১. সাইলেন্ট ও সিকিউর মোড লক --- */
     document.addEventListener('contextmenu', e => e.preventDefault());
-
-    // ২. টাচ জেসচার ও গুম শব্দ/ভাইব্রেশন প্রোটেকশন
     document.addEventListener('touchstart', function(e) {
-      if (e.touches.length > 1) e.preventDefault();
+      if (e.cancelable) e.preventDefault(); // 'গুম' শব্দ বা ভাইব্রেশন বন্ধ করবে
     }, { passive: false });
 
-    // ৩. কি-বোর্ড শর্টকাট লক (F12, Ctrl+U, Inspect)
-    document.onkeydown = function(e) {
-      if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
-        return false;
-      }
-    };
-
-    // ৪. ডেভ-টুলস ডিটেক্টর (কনসোল খুললেই ডিবাগার আটকাবে)
-    setInterval(function() { debugger; }, 100);
-
-    // ৫. ইমেজ ড্র্যাগ ও সিলেকশন লক
     document.ondragstart = function() { return false; };
     document.onselectstart = function() { return false; };
 
-    /* --- পেজ টাইমিং লজিক --- */
+    // ইনস্পেক্ট লক
+    setInterval(function() { debugger; }, 100);
+
+    /* --- ২. অটোমেটিক রিডাইরেক্ট টু লগইন (login.html) --- */
+    // ৪ সেকেন্ড পর ফেড আউট শুরু হবে এবং ৪.৮ সেকেন্ডে লগইন পেজে যাবে
     setTimeout(function() {
       document.getElementById('mainBody').classList.add('fade-exit');
+      
       setTimeout(function() {
-        window.location.href = "login.html"; 
+        window.location.href = "login.html"; // আপনার লগইন পেজের ফাইল নেম
       }, 800);
-    }, 6000); 
+      
+    }, 4000); 
   </script>
 
 </body>
