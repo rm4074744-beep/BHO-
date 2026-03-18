@@ -3,64 +3,115 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MingleJoys - When's your big day?</title>
+<title>Identify Yourself</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  * { font-family: 'Inter', sans-serif !important; box-sizing: border-box; -webkit-user-select: none; }
-  body { margin: 0; padding: 0; background-color: #ffffff; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+  * { 
+    font-family: 'Inter', sans-serif !important; 
+    box-sizing: border-box; 
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  body { 
+    margin: 0; padding: 0; 
+    background-color: #ffffff; /* একদম সাদা ব্যাকগ্রাউন্ড */
+    display: flex; flex-direction: column; align-items: center; 
+    min-height: 100vh; -webkit-user-select: none;
+  }
+
   .container { width: 90%; max-width: 400px; padding-top: 25px; }
-  
-  .back-nav { margin-bottom: 25px; cursor: pointer; display: inline-block; }
-  
-  h2 { font-size: 26px; font-weight: 800; color: #111827; margin: 0 0 10px 0; letter-spacing: -0.5px; }
+
+  /* ব্যাক বাটন ফিক্স */
+  .back-nav { 
+    margin-bottom: 25px; cursor: pointer; display: inline-block; 
+    padding: 10px; margin-left: -10px;
+  }
+
+  h2 { font-size: 26px; font-weight: 800; color: #111827; margin: 0 0 10px 0; }
   p.subtitle { color: #6b7280; font-size: 15px; margin-bottom: 35px; line-height: 1.5; }
 
   .input-wrapper { width: 100%; margin-bottom: 20px; }
-  label { display: block; font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 8px; text-transform: uppercase; }
   
-  /* মডার্ন ডেট ইনপুট */
-  input[type="date"] {
-    width: 100%; padding: 18px; border: 2px solid #f3f4f6; border-radius: 20px;
-    font-size: 16px; outline: none; background-color: #f9fafb; color: #111827;
-    transition: all 0.3s ease;
+  label { 
+    display: block; font-size: 13px; font-weight: 700; 
+    color: #374151; margin-bottom: 8px; text-transform: uppercase;
   }
-  input[type="date"]:focus { border-color: #059669; background-color: #ffffff; }
-
-  .next-btn {
+  
+  input[type="text"] {
     width: 100%; padding: 18px; 
-    background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
-    color: white; border: none; border-radius: 35px; 
-    font-size: 16px; font-weight: 700; margin-top: 20px; cursor: pointer;
-    box-shadow: 0 8px 15px rgba(5, 150, 105, 0.2);
+    border: 2px solid #f3f4f6; border-radius: 20px;
+    font-size: 16px; outline: none; background-color: #f9fafb;
+    transition: 0.3s; -webkit-user-select: text;
   }
+  
+  input:focus { border-color: #059669; background-color: #ffffff; }
+
+  /* কন্টিনিউ বাটন (আপনার সেই স্লিম ডিজাইন) */
+  .next-btn {
+    width: 100%; padding: 15px; 
+    background: #059669; color: white; border: none; 
+    border-radius: 30px; font-size: 16px; font-weight: 700; 
+    margin-top: 20px; cursor: pointer;
+    display: flex; justify-content: center; align-items: center; gap: 12px;
+    box-shadow: 0 5px 15px rgba(5, 150, 105, 0.2);
+  }
+
+  .btn-disabled { opacity: 0.7; pointer-events: none; }
+
+  .spinner {
+    width: 20px; height: 20px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-top: 3px solid #fff; border-radius: 50%;
+    animation: spin 0.8s linear infinite; display: none;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* মেসেজ কার্ড */
+  #msgCard {
+    position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+    background: #1f2937; color: #ffffff; padding: 14px 25px; 
+    border-radius: 15px; font-size: 14px; z-index: 9999;
+    transition: 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    width: 80%; text-align: center;
+  }
+  #msgCard.show { top: 30px; }
 </style>
 </head>
 <body>
 
+<div id="msgCard">Processing...</div>
+
 <div class="container">
-  <div class="back-nav" onclick="history.back()">
+  <div class="back-nav" onclick="window.history.back()">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="19" y1="12" x2="5" y2="12"></line>
-      <polyline points="12 19 5 12 12 5"></polyline>
+      <polyline points="15 18 9 12 15 6"></polyline>
     </svg>
   </div>
 
-  <h2>When's your big day?</h2>
-  <p class="subtitle">MingleJoys uses your birthday to make sure you get the right experience for your age.</p>
+  <h2>Identify yourself</h2>
+  <p class="subtitle">Enter your name to start your MingleJoys journey.</p>
 
   <div class="input-wrapper">
-    <label>Date of Birth</label>
-    <input type="date" id="birthDate">
+    <label>First Name</label>
+    <input type="text" id="fName" placeholder="First name" autofocus>
   </div>
 
-  <button class="next-btn" id="nextBtn">Continue</button>
+  <div class="input-wrapper">
+    <label>Last Name</label>
+    <input type="text" id="lName" placeholder="Last name">
+  </div>
+
+  <button class="next-btn" id="subBtn">
+    <span id="btnTxt">Continue</span>
+    <div class="spinner" id="btnSpin"></div>
+  </button>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
   import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
-  // আপনার ফায়ারবেস কনফিগারেশন (আগের পেজের মতই)
   const firebaseConfig = {
     apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
     authDomain: "my-website-a0545.firebaseapp.com",
@@ -74,34 +125,55 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  document.getElementById('nextBtn').addEventListener('click', async () => {
-    const dob = document.getElementById('birthDate').value;
-    const userId = localStorage.getItem("mj_user_id"); // আগের পেজে তৈরি হওয়া সেই ইউনিক আইডি
+  function showMsg(text) {
+    const card = document.getElementById('msgCard');
+    card.innerText = text;
+    card.classList.add('show');
+    setTimeout(() => card.classList.remove('show'), 3000);
+  }
 
-    if (!dob) {
-      alert("Please select your birthday to continue.");
+  document.getElementById('subBtn').onclick = async function() {
+    const fn = document.getElementById('fName').value.trim();
+    const ln = document.getElementById('lName').value.trim();
+    const btn = document.getElementById('subBtn');
+    const spin = document.getElementById('btnSpin');
+    const txt = document.getElementById('btnTxt');
+
+    if (!fn || !ln) {
+      showMsg("Please enter your full name");
       return;
     }
 
-    if (userId) {
-      try {
-        // 'update' ব্যবহার করে ঠিক ওই আইডির ভেতর জন্মদিন যোগ করা হচ্ছে
-        await update(ref(db, 'users/' + userId), {
-          birthday: dob,
-          registrationStep: "birthday_done" // ডাটাবেসে স্ট্যাটাস আপডেট
-        });
+    // বাটন লক এবং স্পিনার চালু
+    btn.classList.add('btn-disabled');
+    txt.style.opacity = "0.7";
+    spin.style.display = "block";
 
-        // সফলভাবে সেভ হলে জেন্ডার পেজে নিয়ে যাবে
-        window.location.href = 'signup_gender.html';
-      } catch (error) {
-        console.error("Update failed:", error);
-        alert("Something went wrong. Please try again.");
-      }
-    } else {
-        alert("Session expired. Please start again from the name page.");
-        window.location.href = 'signup_name.html';
+    let uid = localStorage.getItem("mj_user_id") || "MJ" + Math.floor(Math.random() * 900000);
+    localStorage.setItem("mj_user_id", uid);
+
+    try {
+      // ডেটা সেভ করার চেষ্টা
+      await update(ref(db, 'users/' + uid), {
+        firstName: fn,
+        lastName: ln,
+        registrationStep: "name_done",
+        lastActive: new Date().toISOString()
+      });
+
+      // সফল হলে নেক্সট পেজে যাবে
+      window.location.href = 'signup_birthday.html';
+
+    } catch (err) {
+      // ভুল হলে বাটন আবার ঠিক হবে এবং সঠিক মেসেজ দেখাবে
+      btn.classList.remove('btn-disabled');
+      spin.style.display = "none";
+      txt.style.opacity = "1";
+      
+      console.error(err);
+      showMsg("Something went wrong. Please try again!");
     }
-  });
+  };
 </script>
 
 </body>
