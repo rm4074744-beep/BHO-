@@ -3,77 +3,90 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MingleJoys - Identify Yourself</title>
+<title>Identify Yourself</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   * { 
     font-family: 'Inter', sans-serif !important; 
     box-sizing: border-box; 
-    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
   }
   
   body { 
-    margin: 0; padding: 0; 
-    background-color: #ffffff; 
+    margin: 0; padding: 0; background-color: #ffffff; 
     display: flex; flex-direction: column; align-items: center; 
-    min-height: 100vh; 
+    min-height: 100vh; -webkit-user-select: none;
   }
 
-  .container { width: 90%; max-width: 400px; padding-top: 25px; }
+  .container { width: 90%; max-width: 380px; padding-top: 25px; }
 
-  .back-nav { margin-bottom: 25px; cursor: pointer; display: inline-block; }
+  /* ব্যাক বাটন ডিজাইন */
+  .back-nav { 
+    margin-bottom: 20px; cursor: pointer; display: inline-flex;
+    padding: 5px; margin-left: -5px;
+  }
 
-  h2 { font-size: 26px; font-weight: 800; color: #111827; margin: 0 0 10px 0; letter-spacing: -0.5px; }
-  p.subtitle { color: #6b7280; font-size: 15px; margin-bottom: 35px; line-height: 1.5; }
+  h2 { font-size: 24px; font-weight: 800; color: #111827; margin: 0 0 8px 0; }
+  p.subtitle { color: #6b7280; font-size: 14px; margin-bottom: 30px; line-height: 1.4; }
 
-  .input-wrapper { width: 100%; margin-bottom: 20px; position: relative; }
+  /* ইনপুট স্লিম ডিজাইন */
+  .input-wrapper { width: 100%; margin-bottom: 18px; }
   
   label { 
-    display: block; font-size: 13px; font-weight: 700; 
-    color: #374151; margin-bottom: 8px; text-transform: uppercase;
+    display: block; font-size: 12px; font-weight: 700; 
+    color: #4b5563; margin-bottom: 6px; text-transform: uppercase;
   }
   
   input[type="text"] {
-    width: 100%; padding: 18px; 
-    border: 2px solid #f3f4f6;
-    border-radius: 20px;
-    font-size: 16px; outline: none; 
-    background-color: #f9fafb;
-    transition: all 0.3s ease;
+    width: 100%; padding: 15px; 
+    border: 1.5px solid #f3f4f6; border-radius: 15px;
+    font-size: 15px; outline: none; background-color: #f9fafb;
+    transition: 0.3s; -webkit-user-select: text;
   }
   
-  input:focus { 
-    border-color: #059669; 
-    background-color: #ffffff;
-  }
+  input:focus { border-color: #059669; background-color: #ffffff; }
 
-  /* এরর স্টাইল ও এনিমেশন */
-  input.error-shake { border-color: #ef4444 !important; animation: shake 0.4s ease-in-out; }
-  
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-8px); }
-    50% { transform: translateX(8px); }
-    75% { transform: translateX(-8px); }
-  }
-
+  /* কন্টিনিউ বাটন (স্লিম ও মডার্ন) */
   .next-btn {
-    width: 100%; padding: 18px; 
-    background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
-    color: white; border: none; border-radius: 35px; 
-    font-size: 16px; font-weight: 700; 
+    width: 100%; padding: 14px; /* মোটা থেকে কমিয়ে ১৪ করা হয়েছে */
+    background: #059669; color: white; border: none; 
+    border-radius: 12px; font-size: 16px; font-weight: 600; 
     margin-top: 20px; cursor: pointer;
-    box-shadow: 0 8px 15px rgba(5, 150, 105, 0.2);
+    display: flex; justify-content: center; align-items: center; gap: 10px;
+    box-shadow: 0 4px 10px rgba(5, 150, 105, 0.15);
   }
+
+  .btn-disabled { opacity: 0.6; pointer-events: none; }
+
+  /* ছোট স্পিনার */
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top: 2px solid #fff; border-radius: 50%;
+    animation: spin 0.8s linear infinite; display: none;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ডার্ক মেসেজ কার্ড */
+  #msgCard {
+    position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+    background: #1f2937; color: #fff; padding: 12px 25px; 
+    border-radius: 10px; font-size: 13px; font-weight: 500;
+    z-index: 9999; transition: 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    width: 80%; text-align: center;
+  }
+  #msgCard.show { top: 20px; }
 </style>
 </head>
 <body>
 
+<div id="msgCard">Please wait...</div>
+
 <div class="container">
-  <div class="back-nav" onclick="history.back()">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="19" y1="12" x2="5" y2="12"></line>
-      <polyline points="12 19 5 12 12 5"></polyline>
+  <div class="back-nav" onclick="window.history.back()">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
     </svg>
   </div>
 
@@ -82,22 +95,24 @@
 
   <div class="input-wrapper">
     <label>First Name</label>
-    <input type="text" id="firstName" placeholder="First name" autofocus>
+    <input type="text" id="fName" placeholder="First name" autofocus>
   </div>
 
   <div class="input-wrapper">
     <label>Last Name</label>
-    <input type="text" id="lastName" placeholder="Last name">
+    <input type="text" id="lName" placeholder="Last name">
   </div>
 
-  <button class="next-btn" id="submitBtn">Continue</button>
+  <button class="next-btn" id="subBtn">
+    <span id="btnTxt">Continue</span>
+    <div class="spinner" id="btnSpin"></div>
+  </button>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
   import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
-  // আপনার ফায়ারবেস কনফিগারেশন
   const firebaseConfig = {
     apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
     authDomain: "my-website-a0545.firebaseapp.com",
@@ -109,51 +124,53 @@
     measurementId: "G-CL6V2T77JL"
   };
 
-  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  document.getElementById('submitBtn').addEventListener('click', async () => {
-    const fNameInput = document.getElementById('firstName');
-    const lNameInput = document.getElementById('lastName');
-    const fName = fNameInput.value.trim();
-    const lName = lNameInput.value.trim();
+  function showMsg(text) {
+    const card = document.getElementById('msgCard');
+    card.innerText = text;
+    card.classList.add('show');
+    setTimeout(() => card.classList.remove('show'), 3000);
+  }
 
-    // ভ্যালিডেশন চেক
-    if (fName === "" || lName === "") {
-      if(fName === "") fNameInput.classList.add('error-shake');
-      if(lName === "") lNameInput.classList.add('error-shake');
-      
-      setTimeout(() => {
-        fNameInput.classList.remove('error-shake');
-        lNameInput.classList.remove('error-shake');
-      }, 400);
+  document.getElementById('subBtn').onclick = async function() {
+    const fName = document.getElementById('fName').value.trim();
+    const lName = document.getElementById('lName').value.trim();
+    const btn = document.getElementById('subBtn');
+    const spin = document.getElementById('btnSpin');
+    const txt = document.getElementById('btnTxt');
+
+    if (!fName || !lName) {
+      showMsg("Please enter your full name");
       return;
     }
 
-    // ১. নতুন ইউনিক আইডি তৈরি বা আগেরটি চেক করা
-    let userId = localStorage.getItem("mj_user_id");
-    if (!userId) {
-      userId = "MJ" + Math.floor(100000 + Math.random() * 900000); 
-      localStorage.setItem("mj_user_id", userId);
-    }
+    // লোডিং শুরু
+    btn.classList.add('btn-disabled');
+    spin.style.display = "block";
+    txt.style.opacity = "0.7";
 
-    // ২. রিয়েল-টাইম ডাটাবেসে ইউজারের নিজস্ব ফাইলে ডাটা সেভ
+    let uid = localStorage.getItem("mj_user_id") || ("MJ" + Math.floor(100000 + Math.random() * 900000));
+    localStorage.setItem("mj_user_id", uid);
+
     try {
-      await update(ref(db, 'users/' + userId), {
+      // ডেটা আপডেট
+      await update(ref(db, 'users/' + uid), {
         firstName: fName,
         lastName: lName,
-        registrationStep: "name_done",
-        createdAt: new Date().toISOString()
+        step: "name_done",
+        time: new Date().toISOString()
       });
 
-      // ডাটা সেভ হলে পরের পেজে যাবে
       window.location.href = 'signup_birthday.html';
-    } catch (error) {
-      console.error("Database Error:", error);
-      alert("Something went wrong. Please check your internet connection.");
+    } catch (e) {
+      btn.classList.remove('btn-disabled');
+      spin.style.display = "none";
+      txt.style.opacity = "1";
+      showMsg("Connection error. Try again!");
     }
-  });
+  };
 </script>
 
 </body>
