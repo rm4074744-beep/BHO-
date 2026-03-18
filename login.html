@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Login - MingleJoys</title>
+<style>
+  /* ১. গ্লোবাল সেটিংস */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+
+  input { user-select: text; -webkit-user-select: text; }
+
+  body {
+    background-color: #ffffff;
+    display: flex; flex-direction: column;
+    height: 100vh; align-items: center;
+    overflow: hidden;
+  }
+
+  /* ২. লোগো ও ফর্ম সেকশন (মাঝখানে) */
+  .top-container {
+    flex: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    width: 100%; margin-top: -20px;
+  }
+
+  .logo-img { width: 65px; margin-bottom: 10px; pointer-events: none; }
+  h1 { font-size: 24px; font-weight: 700; color: #059669; margin-bottom: 35px; letter-spacing: -0.5px; }
+
+  .form-box { width: 88%; max-width: 380px; }
+  .input-group { margin-bottom: 15px; position: relative; }
+
+  input {
+    width: 100%; padding: 15px 16px; border: 1.5px solid #dddfe2;
+    border-radius: 12px; font-size: 16px; outline: none;
+    background: #f5f6f7; transition: 0.3s;
+  }
+
+  input:focus { border-color: #059669; background: #fff; }
+
+  /* পাসওয়ার্ড আইকন */
+  .eye-icon {
+    position: absolute; right: 15px; top: 50%;
+    transform: translateY(-50%); cursor: pointer;
+    width: 22px; opacity: 0.6;
+  }
+
+  .login-btn {
+    width: 100%; padding: 14px; background: #059669;
+    color: #fff; border: none; border-radius: 30px;
+    font-size: 16px; font-weight: 700; margin-top: 10px;
+    display: flex; justify-content: center; align-items: center; gap: 10px;
+    cursor: pointer;
+  }
+
+  /* ৩. তলার বাটন সেকশন (Create Account) */
+  .bottom-container {
+    width: 100%; padding: 20px;
+    display: flex; flex-direction: column;
+    align-items: center; margin-bottom: 25px;
+  }
+
+  .create-btn {
+    width: 90%; max-width: 380px; padding: 12px;
+    background: #fff; color: #059669;
+    border: 1.5px solid #059669; border-radius: 30px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    margin-bottom: 25px;
+    display: flex; justify-content: center; align-items: center; gap: 10px;
+  }
+
+  /* ৪. স্পিনার ডিজাইন */
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(5, 150, 105, 0.2);
+    border-top: 2px solid #059669;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: none;
+  }
+
+  .spinner-white {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid #ffffff;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .slogan-text { font-size: 12px; color: #8a8d91; margin-bottom: 5px; }
+  .footer-brand { font-size: 13px; font-weight: 700; color: #059669; letter-spacing: 1px; }
+
+  .disabled { pointer-events: none; opacity: 0.7; }
+</style>
+</head>
+<body oncontextmenu="return false;">
+
+  <div class="top-container">
+    <img src="1000043334-removebg-preview.png" class="logo-img" alt="Logo">
+    <h1>MingleJoys</h1>
+
+    <div class="form-box">
+      <div class="input-group">
+        <input type="text" id="userInput" placeholder="Mobile number or email">
+      </div>
+      <div class="input-group">
+        <input type="password" id="passInput" placeholder="Password">
+        <img src="eye-close.png" id="eyeIcon" class="eye-icon" onclick="togglePassword()">
+      </div>
+      
+      <button class="login-btn" id="loginBtn" onclick="handleLogin()">
+        <span id="loginText">Log In</span>
+        <div class="spinner spinner-white" id="loginSpinner"></div>
+      </button>
+    </div>
+  </div>
+
+  <div class="bottom-container">
+    <button class="create-btn" id="createBtn" onclick="handleCreate()">
+      <span id="createText">Create new account</span>
+      <div class="spinner" id="createSpinner"></div>
+    </button>
+    
+    <p class="slogan-text">Connect. Share. Enjoy.</p>
+    <p class="footer-brand">MINGLEJOYS</p>
+  </div>
+
+  <script>
+    // ১. পাসওয়ার্ড দেখা এবং লুকানোর ফাংশন
+    function togglePassword() {
+      const passInput = document.getElementById('passInput');
+      const eyeIcon = document.getElementById('eyeIcon');
+      
+      if (passInput.type === "password") {
+        passInput.type = "text";
+        eyeIcon.src = "eye-open.png"; // এখানে আপনার 'খোলা চোখের' ইমেজ দিন
+      } else {
+        passInput.type = "password";
+        eyeIcon.src = "eye-close.png"; // এখানে আপনার 'বন্ধ চোখের' ইমেজ দিন
+      }
+    }
+
+    // ২. লগইন বাটন হ্যান্ডলার
+    function handleLogin() {
+      const btn = document.getElementById('loginBtn');
+      const spinner = document.getElementById('loginSpinner');
+      const text = document.getElementById('loginText');
+
+      btn.classList.add('disabled');
+      text.style.opacity = "0.5";
+      spinner.style.display = "block";
+
+      setTimeout(() => {
+        window.location.href = "account_list.html"; 
+      }, 1500);
+    }
+
+    // ৩. ক্রিয়েট বাটন হ্যান্ডলার (স্পিনারসহ)
+    function handleCreate() {
+      const btn = document.getElementById('createBtn');
+      const spinner = document.getElementById('createSpinner');
+      const text = document.getElementById('createText');
+
+      btn.classList.add('disabled');
+      text.style.opacity = "0.5";
+      spinner.style.display = "block";
+
+      setTimeout(() => {
+        window.location.href = "join.html"; 
+      }, 1500);
+    }
+
+    // সিকিউরিটি: রাইট ক্লিক বন্ধ
+    document.addEventListener('contextmenu', e => e.preventDefault());
+  </script>
+
+</body>
+</html>
