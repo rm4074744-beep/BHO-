@@ -14,22 +14,23 @@
   
   body { 
     margin: 0; padding: 0; 
-    background-color: #ffffff; /* একদম সাদা ব্যাকগ্রাউন্ড */
+    background-color: #ffffff; /* আপনার চাহিদা মতো একদম সাদা */
     display: flex; flex-direction: column; align-items: center; 
     min-height: 100vh; -webkit-user-select: none;
   }
 
   .container { width: 90%; max-width: 400px; padding-top: 25px; }
 
-  /* ব্যাক বাটন ফিক্স */
+  /* ব্যাক বাটন সরাসরি আগের পেজে নিয়ে যাবে */
   .back-nav { 
     margin-bottom: 25px; cursor: pointer; display: inline-block; 
     padding: 10px; margin-left: -10px;
   }
 
-  h2 { font-size: 26px; font-weight: 800; color: #111827; margin: 0 0 10px 0; }
+  h2 { font-size: 26px; font-weight: 800; color: #111827; margin: 0 0 10px 0; letter-spacing: -0.5px; }
   p.subtitle { color: #6b7280; font-size: 15px; margin-bottom: 35px; line-height: 1.5; }
 
+  /* ইনপুট ডিজাইন (আপনার অরিজিনাল গোল ডিজাইন) */
   .input-wrapper { width: 100%; margin-bottom: 20px; }
   
   label { 
@@ -46,7 +47,7 @@
   
   input:focus { border-color: #059669; background-color: #ffffff; }
 
-  /* কন্টিনিউ বাটন (আপনার সেই স্লিম ডিজাইন) */
+  /* কন্টিনিউ বাটন */
   .next-btn {
     width: 100%; padding: 15px; 
     background: #059669; color: white; border: none; 
@@ -67,7 +68,7 @@
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* মেসেজ কার্ড */
+  /* ডার্ক নোটিফিকেশন কার্ড */
   #msgCard {
     position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
     background: #1f2937; color: #ffffff; padding: 14px 25px; 
@@ -80,7 +81,7 @@
 </head>
 <body>
 
-<div id="msgCard">Processing...</div>
+<div id="msgCard">Connecting...</div>
 
 <div class="container">
   <div class="back-nav" onclick="window.history.back()">
@@ -112,6 +113,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
   import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
+  // আপনার সঠিক কনফিগারেশন
   const firebaseConfig = {
     apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
     authDomain: "my-website-a0545.firebaseapp.com",
@@ -140,38 +142,32 @@
     const txt = document.getElementById('btnTxt');
 
     if (!fn || !ln) {
-      showMsg("Please enter your full name");
+      showMsg("Please enter your name");
       return;
     }
 
-    // বাটন লক এবং স্পিনার চালু
     btn.classList.add('btn-disabled');
     txt.style.opacity = "0.7";
     spin.style.display = "block";
 
-    let uid = localStorage.getItem("mj_user_id") || "MJ" + Math.floor(Math.random() * 900000);
+    let uid = localStorage.getItem("mj_user_id") || "MJ" + Math.floor(100000 + Math.random() * 900000);
     localStorage.setItem("mj_user_id", uid);
 
     try {
-      // ডেটা সেভ করার চেষ্টা
+      // রিয়েল-টাইম ডাটাবেসে সেভ করা
       await update(ref(db, 'users/' + uid), {
         firstName: fn,
         lastName: ln,
-        registrationStep: "name_done",
-        lastActive: new Date().toISOString()
+        regStep: "name_done"
       });
 
-      // সফল হলে নেক্সট পেজে যাবে
       window.location.href = 'signup_birthday.html';
 
     } catch (err) {
-      // ভুল হলে বাটন আবার ঠিক হবে এবং সঠিক মেসেজ দেখাবে
       btn.classList.remove('btn-disabled');
       spin.style.display = "none";
       txt.style.opacity = "1";
-      
-      console.error(err);
-      showMsg("Something went wrong. Please try again!");
+      showMsg("Something went wrong. Try again!");
     }
   };
 </script>
