@@ -3,164 +3,175 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Identify yourself - MingleJoys</title>
+  <title>Your Birthday - MingleJoys</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    /* ফোনের সিস্টেম ফন্ট ওভাররাইড করতে ইন্টার বোল্ড ফন্ট */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
     * {
-      -webkit-user-select: none;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
       font-family: 'Inter', sans-serif !important;
+      -webkit-user-select: none;
+      user-select: none; /* ইমেজ বা টেক্সট কপি করা যাবে না */
+      -webkit-tap-highlight-color: transparent;
     }
 
-    input {
-      -webkit-user-select: text !important;
-      user-select: text !important;
+    /* ইমেজ সেভ বা ড্র্যাগ করা বন্ধ করা */
+    img {
+      -webkit-user-drag: none;
+      pointer-events: none;
     }
 
     body {
       background-color: #ffffff;
-      margin: 0;
       display: flex;
       justify-content: center;
+      min-height: 100vh;
     }
 
     .app-container {
       width: 100%;
-      max-width: 450px;
-      padding: 24px;
-      min-height: 100vh;
+      max-width: 420px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
+      align-items: center;
     }
 
-    .back-btn {
-      font-size: 20px;
+    /* আপনার পাঠানো রিয়েল অ্যারো ব্যাক বাটন */
+    .header-nav {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
       margin-top: 10px;
-      cursor: pointer;
-    }
-
-    header {
-      margin-top: 30px;
-      margin-bottom: 40px;
-    }
-
-    h1 {
-      font-size: 32px;
-      font-weight: 800; /* এক্সট্রা বোল্ড লুক */
-      margin: 0;
-      color: #000;
-    }
-
-    p.subtitle {
-      color: #65676b;
-      font-size: 16px;
-      margin-top: 10px;
-      font-weight: 600;
-    }
-
-    .form-group {
-      margin-bottom: 25px;
-    }
-
-    label {
-      display: block;
-      font-size: 13px;
-      font-weight: 800;
-      color: #000;
       margin-bottom: 10px;
     }
 
-    input {
-      width: 100%;
-      padding: 18px 25px;
-      border: 2px solid #008069; /* আপনার অরিজিনাল গ্রিন বর্ডার */
-      border-radius: 30px; /* গোল ডিজাইন */
-      font-size: 17px;
-      font-weight: 700;
-      outline: none;
-      background: #fff;
+    .back-arrow {
+      width: 24px; /* অ্যারো সাইজ */
+      height: auto;
+      cursor: pointer;
     }
 
-    .btn-container {
-      margin-top: 20px;
+    .icon-wrapper { margin-bottom: 15px; }
+    .calendar-img { width: 110px; height: auto; }
+
+    header { text-align: center; margin-bottom: 25px; }
+    h1 { 
+      font-size: 26px; 
+      font-weight: 800; 
+      color: #000;
+      margin-bottom: 8px;
+    }
+    .subtitle { 
+      color: #65676b; 
+      font-size: 14px; 
+      font-weight: 500; 
+      line-height: 1.4;
+      padding: 0 20px;
     }
 
+    /* ফেসবুক স্টাইল বক্স */
+    .birthday-box {
+      width: 90%;
+      background: #ffffff;
+      border: 1px solid #ced4da;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 30px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .label-tag { 
+      font-size: 11px; 
+      font-weight: 600; 
+      color: #65676b; 
+      margin-bottom: 2px;
+    }
+    
+    .display-value { 
+      font-size: 17px; 
+      font-weight: 500; 
+      color: #1c1e21; 
+    }
+
+    #datePicker { 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      opacity: 0; 
+      cursor: pointer; 
+    }
+
+    /* ফেসবুকের মতো সরু কন্টিনিউ বাটন */
     .continue-btn {
       width: 100%;
+      height: 48px; /* সরু বাটন */
       background: #008069;
       color: white;
       border: none;
-      padding: 18px;
-      border-radius: 30px;
-      font-size: 18px;
-      font-weight: 800;
+      border-radius: 24px;
+      font-size: 16px;
+      font-weight: 700;
       cursor: pointer;
       display: flex;
-      justify-content: center;
       align-items: center;
-      box-shadow: 0 4px 10px rgba(0, 128, 105, 0.2);
+      justify-content: center;
+      transition: 0.2s;
     }
 
-    .loader {
+    .continue-btn:active { transform: scale(0.98); opacity: 0.9; }
+
+    /* ভিডিওর মতো সেন্ট্রাল স্পিনার */
+    .spinner {
       width: 22px;
       height: 22px;
-      border: 3px solid rgba(255,255,255,0.3);
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top: 3px solid #ffffff;
       border-radius: 50%;
-      border-top-color: #fff;
       animation: spin 0.8s linear infinite;
       display: none;
     }
 
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    #msg {
-      color: #d32f2f;
-      text-align: center;
-      margin-top: 15px;
-      font-weight: 700;
-      display: none;
-    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   </style>
 </head>
-<body oncontextmenu="return false;">
+<body oncontextmenu="return false;"> <div class="app-container">
+    <div class="header-nav">
+      <img src="https://i.ibb.co/LkhmFfG/1000043392.png" class="back-arrow" alt="Back" onclick="history.back()">
+    </div>
 
-  <div class="app-container">
-    <div class="back-btn" onclick="history.back()">
-      <i class="fa-solid fa-chevron-left"></i>
+    <div class="icon-wrapper">
+      <img src="https://i.ibb.co/v4YpS6m/calendar-star.png" class="calendar-img" alt="Calendar">
     </div>
 
     <header>
-      <h1>Identify yourself</h1>
-      <p class="subtitle">Enter your name to start your MingleJoys journey.</p>
+      <h1>What's your birthday?</h1>
+      <p class="subtitle">Choose your date of birth. You can always make this private later.</p>
     </header>
 
-    <div class="form-group">
-      <label>FIRST NAME</label>
-      <input type="text" id="fName" placeholder="First name" autocomplete="off">
+    <div class="birthday-box">
+      <span class="label-tag" id="ageLabel">Birthday</span>
+      <div class="display-value" id="finalDate">Select Date</div>
+      <input type="date" id="datePicker">
     </div>
 
-    <div class="form-group">
-      <label>LAST NAME</label>
-      <input type="text" id="lName" placeholder="Last name" autocomplete="off">
-    </div>
-
-    <div class="btn-container">
-      <button class="continue-btn" id="subBtn">
-        <span id="btnText">Continue</span>
-        <div class="loader" id="loader"></div>
-      </button>
-      <p id="msg"></p>
-    </div>
+    <button class="continue-btn" id="submitBtn">
+      <span id="btnText">Continue</span>
+      <div class="spinner" id="spinner"></div>
+    </button>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+    import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
@@ -175,50 +186,38 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    const btn = document.getElementById('subBtn');
+    const picker = document.getElementById('datePicker');
+    const display = document.getElementById('finalDate');
+    const ageLabel = document.getElementById('ageLabel');
+    const btn = document.getElementById('submitBtn');
+    const spinner = document.getElementById('spinner');
     const btnText = document.getElementById('btnText');
-    const loader = document.getElementById('loader');
-    const msg = document.getElementById('msg');
 
-    // Anti-Copy Logic
-    document.onkeydown = function(e) {
-      if(e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 73)) return false;
+    picker.oninput = function() {
+      const birth = new Date(this.value);
+      if(!isNaN(birth)) {
+        display.innerText = birth.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        const age = new Date().getFullYear() - birth.getFullYear();
+        ageLabel.innerText = `Birthday (${age} years old)`;
+      }
     };
 
     btn.onclick = async function() {
-      const fn = document.getElementById('fName').value.trim();
-      const ln = document.getElementById('lName').value.trim();
+      if(!picker.value) return alert("Please select your birthday.");
 
-      if (!fn || !ln) {
-        alert("Please enter your name");
-        return;
-      }
-
-      // UI Update
       btnText.style.display = "none";
-      loader.style.display = "block";
+      spinner.style.display = "block";
       btn.style.pointerEvents = "none";
-      msg.style.display = "none";
 
       try {
         const id = Date.now();
-        // ডাটাবেজে সেভ করা
-        await set(ref(db, 'users/' + id), {
-          firstName: fn,
-          lastName: ln,
-          timestamp: new Date().toISOString()
-        });
-        
-        // রিডাইরেক্ট - একদম সরাসরি পাথ ব্যবহার করা হয়েছে
-        window.location.assign('signup_birthday.html');
-
+        await update(ref(db, 'users/' + id), { birthday: picker.value });
+        window.location.href = 'signup_gender.html';
       } catch (e) {
+        alert("Error: " + e.message);
         btnText.style.display = "block";
-        loader.style.display = "none";
+        spinner.style.display = "none";
         btn.style.pointerEvents = "auto";
-        msg.innerText = "Error: " + e.message;
-        msg.style.display = "block";
-        console.error(e);
       }
     };
   </script>
