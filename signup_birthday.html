@@ -1,176 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Identify Yourself</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<style>
-  * { 
-    font-family: 'Inter', sans-serif !important; 
-    box-sizing: border-box; 
-    -webkit-tap-highlight-color: transparent;
-  }
-  
-  body { 
-    margin: 0; padding: 0; 
-    background-color: #ffffff; /* আপনার চাহিদা মতো একদম সাদা */
-    display: flex; flex-direction: column; align-items: center; 
-    min-height: 100vh; -webkit-user-select: none;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Identify yourself - MingleJoys</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* ফোনের সিস্টেম ফন্ট ওভাররাইড করতে ইন্টার বোল্ড ফন্ট */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700;800&display=swap');
 
-  .container { width: 90%; max-width: 400px; padding-top: 25px; }
+    * {
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif !important;
+    }
 
-  /* ব্যাক বাটন সরাসরি আগের পেজে নিয়ে যাবে */
-  .back-nav { 
-    margin-bottom: 25px; cursor: pointer; display: inline-block; 
-    padding: 10px; margin-left: -10px;
-  }
+    input {
+      -webkit-user-select: text !important;
+      user-select: text !important;
+    }
 
-  h2 { font-size: 26px; font-weight: 800; color: #111827; margin: 0 0 10px 0; letter-spacing: -0.5px; }
-  p.subtitle { color: #6b7280; font-size: 15px; margin-bottom: 35px; line-height: 1.5; }
+    body {
+      background-color: #ffffff;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+    }
 
-  /* ইনপুট ডিজাইন (আপনার অরিজিনাল গোল ডিজাইন) */
-  .input-wrapper { width: 100%; margin-bottom: 20px; }
-  
-  label { 
-    display: block; font-size: 13px; font-weight: 700; 
-    color: #374151; margin-bottom: 8px; text-transform: uppercase;
-  }
-  
-  input[type="text"] {
-    width: 100%; padding: 18px; 
-    border: 2px solid #f3f4f6; border-radius: 20px;
-    font-size: 16px; outline: none; background-color: #f9fafb;
-    transition: 0.3s; -webkit-user-select: text;
-  }
-  
-  input:focus { border-color: #059669; background-color: #ffffff; }
+    .app-container {
+      width: 100%;
+      max-width: 450px;
+      padding: 24px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-  /* কন্টিনিউ বাটন */
-  .next-btn {
-    width: 100%; padding: 15px; 
-    background: #059669; color: white; border: none; 
-    border-radius: 30px; font-size: 16px; font-weight: 700; 
-    margin-top: 20px; cursor: pointer;
-    display: flex; justify-content: center; align-items: center; gap: 12px;
-    box-shadow: 0 5px 15px rgba(5, 150, 105, 0.2);
-  }
+    .back-btn {
+      font-size: 20px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
 
-  .btn-disabled { opacity: 0.7; pointer-events: none; }
+    header {
+      margin-top: 30px;
+      margin-bottom: 40px;
+    }
 
-  .spinner {
-    width: 20px; height: 20px;
-    border: 3px solid rgba(255,255,255,0.3);
-    border-top: 3px solid #fff; border-radius: 50%;
-    animation: spin 0.8s linear infinite; display: none;
-  }
+    h1 {
+      font-size: 32px;
+      font-weight: 800; /* এক্সট্রা বোল্ড লুক */
+      margin: 0;
+      color: #000;
+    }
 
-  @keyframes spin { to { transform: rotate(360deg); } }
+    p.subtitle {
+      color: #65676b;
+      font-size: 16px;
+      margin-top: 10px;
+      font-weight: 600;
+    }
 
-  /* ডার্ক নোটিফিকেশন কার্ড */
-  #msgCard {
-    position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-    background: #1f2937; color: #ffffff; padding: 14px 25px; 
-    border-radius: 15px; font-size: 14px; z-index: 9999;
-    transition: 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-    width: 80%; text-align: center;
-  }
-  #msgCard.show { top: 30px; }
-</style>
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 800;
+      color: #000;
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 18px 25px;
+      border: 2px solid #008069; /* আপনার অরিজিনাল গ্রিন বর্ডার */
+      border-radius: 30px; /* গোল ডিজাইন */
+      font-size: 17px;
+      font-weight: 700;
+      outline: none;
+      background: #fff;
+    }
+
+    .btn-container {
+      margin-top: 20px;
+    }
+
+    .continue-btn {
+      width: 100%;
+      background: #008069;
+      color: white;
+      border: none;
+      padding: 18px;
+      border-radius: 30px;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 128, 105, 0.2);
+    }
+
+    .loader {
+      width: 22px;
+      height: 22px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #msg {
+      color: #d32f2f;
+      text-align: center;
+      margin-top: 15px;
+      font-weight: 700;
+      display: none;
+    }
+  </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
-<div id="msgCard">Connecting...</div>
+  <div class="app-container">
+    <div class="back-btn" onclick="history.back()">
+      <i class="fa-solid fa-chevron-left"></i>
+    </div>
 
-<div class="container">
-  <div class="back-nav" onclick="window.history.back()">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="15 18 9 12 15 6"></polyline>
-    </svg>
+    <header>
+      <h1>Identify yourself</h1>
+      <p class="subtitle">Enter your name to start your MingleJoys journey.</p>
+    </header>
+
+    <div class="form-group">
+      <label>FIRST NAME</label>
+      <input type="text" id="fName" placeholder="First name" autocomplete="off">
+    </div>
+
+    <div class="form-group">
+      <label>LAST NAME</label>
+      <input type="text" id="lName" placeholder="Last name" autocomplete="off">
+    </div>
+
+    <div class="btn-container">
+      <button class="continue-btn" id="subBtn">
+        <span id="btnText">Continue</span>
+        <div class="loader" id="loader"></div>
+      </button>
+      <p id="msg"></p>
+    </div>
   </div>
 
-  <h2>Identify yourself</h2>
-  <p class="subtitle">Enter your name to start your MingleJoys journey.</p>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
-  <div class="input-wrapper">
-    <label>First Name</label>
-    <input type="text" id="fName" placeholder="First name" autofocus>
-  </div>
+    const firebaseConfig = {
+      apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
+      authDomain: "my-website-a0545.firebaseapp.com",
+      databaseURL: "https://my-website-a0545-default-rtdb.firebaseio.com",
+      projectId: "my-website-a0545",
+      storageBucket: "my-website-a0545.firebasestorage.app",
+      messagingSenderId: "103602694974",
+      appId: "1:103602694974:web:12f890844e6ad6a513da6f"
+    };
 
-  <div class="input-wrapper">
-    <label>Last Name</label>
-    <input type="text" id="lName" placeholder="Last name">
-  </div>
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-  <button class="next-btn" id="subBtn">
-    <span id="btnTxt">Continue</span>
-    <div class="spinner" id="btnSpin"></div>
-  </button>
-</div>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-  import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
-
-  // আপনার সঠিক কনফিগারেশন
-  const firebaseConfig = {
-    apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
-    authDomain: "my-website-a0545.firebaseapp.com",
-    databaseURL: "https://my-website-a0545-default-rtdb.firebaseio.com",
-    projectId: "my-website-a0545",
-    storageBucket: "my-website-a0545.firebasestorage.app",
-    messagingSenderId: "103602694974",
-    appId: "1:103602694974:web:12f890844e6ad6a513da6f"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-
-  function showMsg(text) {
-    const card = document.getElementById('msgCard');
-    card.innerText = text;
-    card.classList.add('show');
-    setTimeout(() => card.classList.remove('show'), 3000);
-  }
-
-  document.getElementById('subBtn').onclick = async function() {
-    const fn = document.getElementById('fName').value.trim();
-    const ln = document.getElementById('lName').value.trim();
     const btn = document.getElementById('subBtn');
-    const spin = document.getElementById('btnSpin');
-    const txt = document.getElementById('btnTxt');
+    const btnText = document.getElementById('btnText');
+    const loader = document.getElementById('loader');
+    const msg = document.getElementById('msg');
 
-    if (!fn || !ln) {
-      showMsg("Please enter your name");
-      return;
-    }
+    // Anti-Copy Logic
+    document.onkeydown = function(e) {
+      if(e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 73)) return false;
+    };
 
-    btn.classList.add('btn-disabled');
-    txt.style.opacity = "0.7";
-    spin.style.display = "block";
+    btn.onclick = async function() {
+      const fn = document.getElementById('fName').value.trim();
+      const ln = document.getElementById('lName').value.trim();
 
-    let uid = localStorage.getItem("mj_user_id") || "MJ" + Math.floor(100000 + Math.random() * 900000);
-    localStorage.setItem("mj_user_id", uid);
+      if (!fn || !ln) {
+        alert("Please enter your name");
+        return;
+      }
 
-    try {
-      // রিয়েল-টাইম ডাটাবেসে সেভ করা
-      await update(ref(db, 'users/' + uid), {
-        firstName: fn,
-        lastName: ln,
-        regStep: "name_done"
-      });
+      // UI Update
+      btnText.style.display = "none";
+      loader.style.display = "block";
+      btn.style.pointerEvents = "none";
+      msg.style.display = "none";
 
-      window.location.href = 'signup_birthday.html';
+      try {
+        const id = Date.now();
+        // ডাটাবেজে সেভ করা
+        await set(ref(db, 'users/' + id), {
+          firstName: fn,
+          lastName: ln,
+          timestamp: new Date().toISOString()
+        });
+        
+        // রিডাইরেক্ট - একদম সরাসরি পাথ ব্যবহার করা হয়েছে
+        window.location.assign('signup_birthday.html');
 
-    } catch (err) {
-      btn.classList.remove('btn-disabled');
-      spin.style.display = "none";
-      txt.style.opacity = "1";
-      showMsg("Something went wrong. Try again!");
-    }
-  };
-</script>
-
+      } catch (e) {
+        btnText.style.display = "block";
+        loader.style.display = "none";
+        btn.style.pointerEvents = "auto";
+        msg.innerText = "Error: " + e.message;
+        msg.style.display = "block";
+        console.error(e);
+      }
+    };
+  </script>
 </body>
 </html>
