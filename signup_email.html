@@ -1,124 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MingleJoys - Join with Email</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>MingleJoys - Secure Access</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-<style>
-  /* কপি ও সিলেক্ট বন্ধ */
-  * { font-family: 'Inter', sans-serif !important; box-sizing: border-box; -webkit-user-select: none; }
-  input { -webkit-user-select: text; user-select: text; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif !important; -webkit-user-select: none; user-select: none; }
+    body { background-color: #ffffff; display: flex; justify-content: center; min-height: 100vh; overflow: hidden; }
+    
+    .app-container { width: 100%; max-width: 420px; padding: 20px; display: flex; flex-direction: column; }
 
-  body { margin: 0; padding: 0; background-color: #ffffff; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-  .container { width: 90%; max-width: 400px; padding-top: 25px; flex: 1; display: flex; flex-direction: column; }
-  
-  .back-nav { margin-bottom: 25px; cursor: pointer; display: inline-block; }
-  
-  /* হেডিং - কালো কালার */
-  h2 { font-size: 24px; font-weight: 800; color: #000000; margin: 0 0 10px 0; letter-spacing: -0.5px; }
-  
-  .subtitle { font-size: 14px; color: #4b5563; line-height: 1.5; margin-bottom: 30px; }
+    /* একদম উপরে ব্যাক বাটন */
+    .top-nav { width: 100%; height: 50px; display: flex; align-items: center; margin-bottom: 10px; }
+    .back-btn { cursor: pointer; padding: 5px; }
+    .back-btn img { width: 22px; }
 
-  /* ইনপুট গ্রুপ স্টাইল (আপনার লগইন পেজের মত) */
-  .input-group { position: relative; width: 100%; margin-bottom: 20px; }
-  
-  label { display: block; font-size: 13px; font-weight: 700; color: #000000; margin-bottom: 8px; }
+    header h1 { font-size: 24px; font-weight: 700; color: #000; margin-bottom: 8px; }
+    header p { font-size: 14px; color: #65676b; margin-bottom: 30px; line-height: 1.5; }
 
-  input {
-    width: 100%; padding: 16px; 
-    border: 1px solid #e5e7eb; border-radius: 14px;
-    font-size: 16px; outline: none; background: #f9fafb;
-    transition: all 0.3s ease;
-  }
-  input:focus { border-color: #10b981; background: #fff; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }
+    /* ইনপুট স্টাইল */
+    .input-group { margin-bottom: 35px; }
+    .phone-view { display: flex; gap: 10px; }
+    .email-view { display: none; }
 
-  /* নেক্সট বাটন - পান্না সবুজ গ্রেডিয়েন্ট */
-  .next-btn {
-    width: 100%; padding: 16px;
-    background: linear-gradient(135deg, #059669 0%, #0d9488 100%); 
-    color: white; border: none; border-radius: 30px; 
-    font-size: 17px; font-weight: 700; cursor: pointer;
-    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
-    margin-top: 10px;
-  }
+    .glass-box { background: #ffffff; border: 1.5px solid #ced4da; border-radius: 12px; padding: 10px 15px; display: flex; flex-direction: column; transition: 0.2s; }
+    .glass-box:focus-within { border-color: #008069; }
+    .country-trigger { flex: 0 0 95px; cursor: pointer; }
+    .input-main { flex: 1; }
+    
+    .label { font-size: 10px; font-weight: 700; color: #65676b; text-transform: uppercase; margin-bottom: 2px; }
+    .selected-val { display: flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; }
+    .selected-val img { width: 20px; border-radius: 2px; }
+    input { border: none; outline: none; font-size: 16px; font-weight: 600; width: 100%; background: transparent; user-select: text; }
 
-  .switch-btn {
-    text-align: center; margin-top: 20px; font-size: 15px;
-    font-weight: 600; color: #059669; cursor: pointer;
-  }
-</style>
+    /* বাটন বিন্যাস */
+    .btn-row { display: flex; gap: 10px; align-items: center; }
+    .toggle-btn { flex: 1; height: 45px; background: #f0f2f5; color: #1c1e21; border: none; border-radius: 25px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .next-btn { flex: 0 0 110px; height: 45px; background: #008069; color: white; border: none; border-radius: 25px; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+    /* স্পিনার */
+    .spinner { width: 18px; height: 18px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid #fff; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* কান্ট্রি পপ-আপ ও সার্চ বার */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: flex-end; z-index: 1000; }
+    .modal-content { width: 100%; max-width: 420px; background: white; border-radius: 25px 25px 0 0; height: 85vh; display: flex; flex-direction: column; }
+    
+    .modal-header { padding: 20px; border-bottom: 1px solid #eee; }
+    .search-bar { width: 100%; height: 45px; background: #f0f2f5; border: none; border-radius: 12px; padding: 0 15px; font-size: 15px; outline: none; }
+    
+    .country-list { flex: 1; overflow-y: auto; padding: 10px 0; }
+    .country-item { padding: 15px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #f8f9fa; cursor: pointer; }
+  </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="back-nav" onclick="history.back()">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+  <div class="app-container">
+    <div class="top-nav">
+      <div class="back-btn" onclick="history.back()">
+        <img src="https://i.ibb.co/LkhmFfG/1000043392.png" alt="Back">
+      </div>
+    </div>
+
+    <header>
+      <h1>Secure your account</h1>
+      <p id="subText">Enter your phone number to keep your <b>MingleJoys</b> profile verified.</p>
+    </header>
+
+    <div class="input-group">
+      <div class="phone-view" id="phoneView">
+        <div class="glass-box country-trigger" onclick="openModal()">
+          <span class="label">Code</span>
+          <div class="selected-val">
+            <img id="mainFlag" src="https://flagcdn.com/w40/in.png">
+            <span id="mainCode">+91</span>
+          </div>
+        </div>
+        <div class="glass-box input-main">
+          <span class="label">Phone Number</span>
+          <input type="tel" id="userPhone" placeholder="01XXXXXXXXX" maxlength="11">
+        </div>
+      </div>
+
+      <div class="email-view" id="emailView">
+        <div class="glass-box input-main">
+          <span class="label">Email Address</span>
+          <input type="email" id="userEmail" placeholder="example@mail.com">
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="toggle-btn" id="switchBtn" onclick="toggleInput()">Use Email instead</button>
+      <button class="next-btn" onclick="handleNext()">
+        <span id="btnText">Next</span>
+        <div class="spinner" id="loader"></div>
+      </button>
+    </div>
   </div>
 
-  <h2>What's your email?</h2>
-  <div class="subtitle">
-    Enter the email address where you can be contacted. No one will see this on your MingleJoys profile.
+  <div class="modal-overlay" id="overlay" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h2 style="font-size: 17px; margin-bottom: 12px;">Select Country</h2>
+        <input type="text" class="search-bar" id="countrySearch" placeholder="Search by country or code...">
+      </div>
+      <div class="country-list" id="countryList"></div>
+    </div>
   </div>
 
-  <div class="input-group">
-    <label>Email address</label>
-    <input type="email" id="emailInput" placeholder="Enter your email">
-  </div>
+  <script>
+    let isEmail = false;
 
-  <button class="next-btn" id="emailNextBtn">Next</button>
-  
-  <div class="switch-btn">Sign up with mobile number</div>
-</div>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-  import { getDatabase, ref, update, push } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
-    authDomain: "my-website-a0545.firebaseapp.com",
-    databaseURL: "https://my-website-a0545-default-rtdb.firebaseio.com",
-    projectId: "my-website-a0545",
-    storageBucket: "my-website-a0545.firebasestorage.app",
-    messagingSenderId: "103602694974",
-    appId: "1:103602694974:web:12f890844e6ad6a513da6f"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-
-  document.getElementById('emailNextBtn').onclick = async () => {
-    const email = document.getElementById('emailInput').value.trim();
-
-    if (!email || !email.includes('@')) {
-      alert("Please enter a valid email address.");
-      return;
+    function toggleInput() {
+      isEmail = !isEmail;
+      document.getElementById('phoneView').style.display = isEmail ? "none" : "flex";
+      document.getElementById('emailView').style.display = isEmail ? "block" : "none";
+      document.getElementById('switchBtn').innerText = isEmail ? "Use Phone instead" : "Use Email instead";
+      document.getElementById('subText').innerText = isEmail ? "Enter your email address to secure your MingleJoys profile." : "Enter your phone number to keep your MingleJoys profile verified.";
     }
 
-    try {
-      // ১. ইমেইলটি মেমোরিতে সেভ করা (এটিই পাসওয়ার্ড পেজের এরর দূর করবে)
-      localStorage.setItem("mj_temp_email", email);
-
-      // ২. ডাটাবেসে নতুন ইউজার তৈরি শুরু করা
-      const newUserRef = push(ref(db, 'users'));
-      const userId = newUserRef.key;
-      localStorage.setItem("mj_user_id", userId);
-
-      await update(ref(db, 'users/' + userId), {
-        email: email,
-        registrationStep: "email_done",
-        createdAt: new Date().toISOString()
-      });
-
-      // ৩. সফলভাবে সেভ হওয়ার পর পাসওয়ার্ড পেজে পাঠানো
-      window.location.href = 'signup_password.html';
-      
-    } catch (error) {
-      alert("Error: " + error.message);
+    function handleNext() {
+      document.getElementById('btnText').style.display = "none";
+      document.getElementById('loader').style.display = "block";
+      setTimeout(() => { window.location.href = 'signup_otp.html'; }, 1500);
     }
-  };
-</script>
+
+    // ১০০টি দেশের ডেটা
+    const countries = [
+      { n: "India", c: "+91", i: "in" }, { n: "Bangladesh", c: "+880", i: "bd" },
+      { n: "USA", c: "+1", i: "us" }, { n: "UK", c: "+44", i: "gb" },
+      { n: "UAE", c: "+971", i: "ae" }, { n: "Saudi Arabia", c: "+966", i: "sa" },
+      { n: "Canada", c: "+1", i: "ca" }, { n: "Australia", c: "+61", i: "au" },
+      { n: "Malaysia", c: "+60", i: "my" }, { n: "Singapore", c: "+65", i: "sg" }
+      // আপনি চাইলে এখানে আরও দেশ যোগ করতে পারেন...
+    ];
+
+    function openModal() {
+      document.getElementById('overlay').style.display = 'flex';
+      renderList(countries);
+    }
+
+    function closeModal() { document.getElementById('overlay').style.display = 'none'; }
+
+    function renderList(data) {
+      const container = document.getElementById('countryList');
+      container.innerHTML = data.map(c => `
+        <div class="country-item" onclick="select('${c.c}', '${c.i}')">
+          <img src="https://flagcdn.com/w40/${c.i}.png" style="width:22px; border-radius:2px;">
+          <span style="flex:1; font-size:14px; font-weight:500;">${c.n}</span>
+          <span style="color:#65676b; font-weight:600;">${c.c}</span>
+        </div>
+      `).join('');
+    }
+
+    // সার্চ ফিল্টার ফাংশন
+    document.getElementById('countrySearch').addEventListener('input', function(e) {
+      const term = e.target.value.toLowerCase();
+      const filtered = countries.filter(c => 
+        c.n.toLowerCase().includes(term) || c.c.includes(term)
+      );
+      renderList(filtered);
+    });
+
+    function select(code, iso) {
+      document.getElementById('mainCode').innerText = code;
+      document.getElementById('mainFlag').src = `https://flagcdn.com/w40/${iso}.png`;
+      closeModal();
+    }
+  </script>
 </body>
 </html>
