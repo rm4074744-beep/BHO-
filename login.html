@@ -160,13 +160,7 @@ window.handleLogin = function() {
   text.style.opacity = "0.5";
   spinner.style.display = "block";
 
-  // Firebase login
-  signInWithEmailAndPassword(auth, email, password)
-    .then(() => {
-      window.location.href = "account_list.html";
-    })
-    .catch((error) => {
-      alert(error.message);
+  
 
       // ❌ Error হলে spinner বন্ধ
       spinner.style.display = "none";
