@@ -189,37 +189,6 @@ window.handleLogin = function() {
         passInput.type = "password";
         eyeIcon.src = "eye-close.png"; // এখানে আপনার 'বন্ধ চোখের' ইমেজ দিন
       }
-    }
-
-    // ২. লগইন বাটন হ্যান্ডলার
-    function handleLogin() {
-      const btn = document.getElementById('loginBtn');
-      const spinner = document.getElementById('loginSpinner');
-      const text = document.getElementById('loginText');
-
-      btn.classList.add('disabled');
-      text.style.opacity = "0.5";
-      spinner.style.display = "block";
-
-      setTimeout(() => {
-        window.location.href = "account_list.html"; 
-      }, 1500);
-    }
-
-    // ৩. ক্রিয়েট বাটন হ্যান্ডলার (স্পিনারসহ)
-    function handleCreate() {
-      const btn = document.getElementById('createBtn');
-      const spinner = document.getElementById('createSpinner');
-      const text = document.getElementById('createText');
-
-      btn.classList.add('disabled');
-      text.style.opacity = "0.5";
-      spinner.style.display = "block";
-
-      setTimeout(() => {
-        window.location.href = "join.html"; 
-      }, 1500);
-    }
 
     // সিকিউরিটি: রাইট ক্লিক বন্ধ
     document.addEventListener('contextmenu', e => e.preventDefault());
