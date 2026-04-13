@@ -131,6 +131,51 @@
     <p class="footer-brand">MINGLEJOYS</p>
   </div>
 
+  <!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA1h3IIRC9la-kXyYnVEfwxzzoyBIL70Js",
+  authDomain: "my-website-a0545.firebaseapp.com",
+  projectId: "my-website-a0545"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// 🔥 UPDATED LOGIN FUNCTION (Spinner + Firebase)
+window.handleLogin = function() {
+
+  const btn = document.getElementById('loginBtn');
+  const spinner = document.getElementById('loginSpinner');
+  const text = document.getElementById('loginText');
+
+  const email = document.getElementById('userInput').value;
+  const password = document.getElementById('passInput').value;
+
+  // UI Loading start
+  btn.classList.add('disabled');
+  text.style.opacity = "0.5";
+  spinner.style.display = "block";
+
+  // Firebase login
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      window.location.href = "account_list.html";
+    })
+    .catch((error) => {
+      alert(error.message);
+
+      // ❌ Error হলে spinner বন্ধ
+      spinner.style.display = "none";
+      text.style.opacity = "1";
+      btn.classList.remove('disabled');
+    });
+};
+</script>
+  
   <script>
     // ১. পাসওয়ার্ড দেখা এবং লুকানোর ফাংশন
     function togglePassword() {
