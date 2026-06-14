@@ -271,47 +271,49 @@ const productRef = ref(db, "products");
 
 // Load products realtime
 onValue(productRef, (snapshot) => {
+
   const data = snapshot.val();
   const list = document.getElementById("productList");
+
   list.innerHTML = "";
+
   if(data){
-  Object.values(data).reverse().forEach(product => {
 
-    list.innerHTML += `
-      ...
-    `;
+    Object.values(data)
+      .reverse()
+      .forEach(product => {
 
-  });
+        list.innerHTML += `
+          <div class="card">
 
-  initImageLoaders();
+            <div class="image-box">
+
+              <div class="skeleton"></div>
+
+              <img
+                class="product-image"
+                src="${product.image}"
+                loading="lazy">
+
+            </div>
+
+            <div class="card-body">
+              <div>${product.name}</div>
+              <div class="price">₹ ${product.price}</div>
+            </div>
+
+          </div>
+        `;
+
+      });
+
+    document.getElementById("loadingProducts").style.display = "none";
+
+    initImageLoaders();
+
   }
 
-  
-      list.innerHTML += `
-  <div class="card">
-
-    <div class="image-box">
-
-      <div class="skeleton"></div>
-
-      <img
-        class="product-image"
-        src="${product.image}"
-        loading="lazy">
-
-    </div>
-
-    <div class="card-body">
-      <div>${product.name}</div>
-      <div class="price">₹ ${product.price}</div>
-    </div>
-
-  </div>
-`;
-    });
-  }
 });
-
 // Add Product
 window.addProduct = async function() {
 
