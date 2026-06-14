@@ -95,6 +95,26 @@ body{
   color:green;
   font-weight:bold;
 }
+  .image-card{
+    width:400px;
+    overflow:hidden;
+    border-radius:20px;
+}
+
+.blur-up{
+    width:100%;
+    display:block;
+    filter:blur(20px);
+    transform:scale(1.08);
+    transition:
+        filter .7s ease,
+        transform .7s ease;
+}
+
+.blur-up.loaded{
+    filter:blur(0);
+    transform:scale(1);
+}
 
 </style>
 </head>
@@ -117,6 +137,15 @@ body{
   <input type="file" id="pimage"><br><br>
   <button onclick="addProduct()">Add Product</button>
 </div>
+  <div class="image-card">
+    <img
+        id="mingjoysImage"
+        class="blur-up"
+        src="images/product-small.webp"
+        data-full="images/product.webp"
+        loading="lazy"
+        alt="Product">
+  </div>
 
 <!-- Products -->
 <div class="products" id="productList"></div>
@@ -221,6 +250,16 @@ function searchProduct(){
     }
   });
 }
+  const image = document.getElementById("mingjoysImage");
+
+const fullImage = new Image();
+
+fullImage.src = image.dataset.full;
+
+fullImage.onload = () => {
+    image.src = fullImage.src;
+    image.classList.add("loaded");
+};
 
 </script>
 
