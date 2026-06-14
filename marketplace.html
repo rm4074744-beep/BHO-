@@ -121,6 +121,23 @@ body{
   background-size:200% 100%;
   animation:shimmer 1.2s infinite;
 }
+  .product-image{
+  opacity:0;
+}
+
+.product-image.loaded{
+  opacity:1;
+}
+
+.image-box{
+  position:relative;
+  min-height:300px;
+}
+
+.skeleton{
+  position:absolute;
+  inset:0;
+}
 
 .skeleton-text{
   height:20px;
