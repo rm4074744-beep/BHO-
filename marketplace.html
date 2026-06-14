@@ -95,23 +95,54 @@ body{
   color:green;
   font-weight:bold;
 }
-  .image-card{
-    width:400px;
+  .image-box{
+    position:relative;
     overflow:hidden;
-    border-radius:20px;
 }
 
-.blur-up{
+#skeleton{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        90deg,
+        #ececec 25%,
+        #f5f5f5 50%,
+        #ececec 75%
+    );
+    background-size:200% 100%;
+    animation:shimmer 1.2s infinite;
+}
+
+@keyframes shimmer{
+    from{
+        background-position:200% 0;
+    }
+    to{
+        background-position:-200% 0;
+    }
+}
+
+#postImage{
     width:100%;
     display:block;
+
+    opacity:0;
+
     filter:blur(20px);
-    transform:scale(1.08);
+
+    transform:scale(1.05);
+
     transition:
-        filter .7s ease,
-        transform .7s ease;
+        opacity .5s,
+        filter .7s,
+        transform .7s;
 }
 
-.blur-up.loaded{
+#postImage.preview{
+    opacity:1;
+}
+
+#postImage.loaded{
     filter:blur(0);
     transform:scale(1);
 }
@@ -137,15 +168,16 @@ body{
   <input type="file" id="pimage"><br><br>
   <button onclick="addProduct()">Add Product</button>
 </div>
-  <div class="image-card">
+  <div class="image-box">
+    <div id="skeleton"></div>
+
     <img
-        id="mingjoysImage"
-        class="blur-up"
-        src="images/product-small.webp"
-        data-full="images/product.webp"
-        loading="lazy"
-        alt="Product">
+        id="postImage"
+        src="small.webp"
+        data-full="large.webp"
+        alt="">
   </div>
+
 
 <!-- Products -->
 <div class="products" id="productList"></div>
@@ -250,17 +282,27 @@ function searchProduct(){
     }
   });
 }
-  const image = document.getElementById("mingjoysImage");
+  const image = document.getElementById("postImage");
+const skeleton = document.getElementById("skeleton");
 
-const fullImage = new Image();
+// ছোট blur image
+image.onload = () => {
+    image.classList.add("preview");
 
-fullImage.src = image.dataset.full;
+    const hdImage = new Image();
 
-fullImage.onload = () => {
-    image.src = fullImage.src;
-    image.classList.add("loaded");
+    hdImage.src = image.dataset.full;
+
+    hdImage.onload = () => {
+
+        image.src = hdImage.src;
+
+        image.classList.add("loaded");
+
+        skeleton.style.display = "none";
+    };
 };
-
+  
 </script>
 
 </body>
